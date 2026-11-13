@@ -91,6 +91,33 @@ describe('VoiceSection and useVoiceBilling', () => {
     expect(pendingDraft?.items[0]?.unitPrice).toBe(250000);
   });
 
+  it.each([
+    ['en', 'hello, 500 taka', 'Item'],
+    ['bn', '৫০০ টাকা', 'পণ্য'],
+  ] as const)(
+    'turns a bare amount (%s: "%s") into a filled line, not an empty invoice',
+    async (language, spoken, itemName) => {
+      fakeSpeech.setMockResult(spoken, 0.95);
+      await renderWithApp(
+        <VoiceSection speechEngine={fakeSpeech} ttsEngine={fakeTts} />,
+        app.services,
+        language,
+      );
+
+      const micButton = screen.getByTestId('voice-mic-button');
+      await fireEvent(micButton, 'onPressIn');
+      await fireEvent(micButton, 'onPressOut');
+
+      await waitFor(() => {
+        expect(router.push).toHaveBeenCalledWith('/invoices/new?fromVoice=1');
+      });
+      const draft = useVoiceDraftStore.getState().pendingDraft;
+      expect(draft?.items).toEqual([
+        expect.objectContaining({ name: itemName, qtyMilli: 1000, unitPrice: 50_000 }),
+      ]);
+    },
+  );
+
   it('handles customer balance query and speaks the result aloud', async () => {
     await app.ctx.db.write(async (tx) => {
       await tx.orm.insert(ledgerEntries).values({

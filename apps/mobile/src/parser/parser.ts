@@ -3,6 +3,13 @@ import { type MinorUnits, type PaymentInstruction } from '@/shared';
 import { matchCustomerInTokens, matchProductAt, resolveUnit } from './entity-matcher';
 import { detectVoiceIntent } from './intent-detector';
 import { getAllLanguagePacks, getLanguagePack } from './lang';
+import {
+  genericItem,
+  isCurrencyWord,
+  parseMoneyAt,
+  priceItem,
+  separateCurrencySymbols,
+} from './money';
 import { normalizeVoiceInput } from './normalizer';
 import { parseNumberAt } from './numbers';
 import { stripSuffix } from './string-similarity';
@@ -29,7 +36,7 @@ export function parseVoice(
         ]
       : getAllLanguagePacks());
 
-  const normalized = normalizeVoiceInput(rawText, packs);
+  const normalized = normalizeVoiceInput(separateCurrencySymbols(rawText, packs), packs);
   const initialTokens = normalized.split(/\s+/).filter(Boolean);
 
   // 1. Check for payment phrases (FRACTION, FULL, NONE, AMOUNT)
@@ -92,7 +99,12 @@ export function parseVoice(
   const remainingTokens = tokensWithoutPayment.filter((_, idx) => !customerTokensConsumed.has(idx));
 
   // 3. Extract Items
-  const items = extractItems(remainingTokens, context.products, packs, context.corrections ?? []);
+  const { items, amounts } = extractItems(
+    remainingTokens,
+    context.products,
+    packs,
+    context.corrections ?? [],
+  );
 
   // 4. Extract Discount (if any)
   const discount = extractDiscount(remainingTokens, packs);
@@ -135,13 +147,17 @@ export function parseVoice(
     };
   }
 
-  // SALE Intent
-  const overallConfidence = calculateSaleConfidence(parsedCustomer, items, paymentConfidence);
+  // SALE Intent. An amount with no product ("500 taka") becomes a line for the user to name.
+  const primaryPack = packs[0];
+  const saleItems = primaryPack
+    ? [...items, ...amounts.map((amount) => genericItem(amount, primaryPack))]
+    : items;
+  const overallConfidence = calculateSaleConfidence(parsedCustomer, saleItems, paymentConfidence);
 
   return {
     intent: 'SALE',
     customer: parsedCustomer,
-    items,
+    items: saleItems,
     discount,
     payment,
     customerConfidence: parsedCustomer?.confidence,
@@ -217,32 +233,16 @@ function extractPaymentInstruction(
     }
   }
 
-  // Check amount payments (e.g. "paid 500", "500 paid", "৫০০ টাকা দিল")
-  for (let i = 0; i < tokens.length; i++) {
-    const tokenStr = tokens[i];
-    if (!tokenStr) continue;
-    const t = tokenStr.toLowerCase();
-    if (t === 'paid' || t === 'দিল' || t === 'দিছে' || t === 'টাকা' || t === 'জমা') {
-      // Look before or after for a number
-      const numBefore = i > 0 ? parseNumberAt(tokens, i - 1, packs) : null;
-      const numAfter = i + 1 < tokens.length ? parseNumberAt(tokens, i + 1, packs) : null;
-
-      if (numAfter && !numAfter.isFraction) {
-        consumed.add(i);
-        for (let k = 0; k < numAfter.consumedTokens; k++) consumed.add(i + 1 + k);
-        // Convert to minor units (e.g. 500 taka -> 50000 paisa)
-        const minorUnits = Math.round(numAfter.value * 100);
+  // Check amount payments with each pack's own patterns ("paid {amount}", "{amount} টাকা দিল").
+  // A currency word next to the amount is optional, so "paid 500" and "paid 500 taka" both
+  // match. A bare "500 taka" is NOT a payment: with no payment word it is the price of a sale.
+  for (const pack of packs) {
+    for (const pattern of pack.paymentPhrases.amountPatterns) {
+      const match = matchAmountPattern(tokens, pattern, packs);
+      if (match) {
+        for (let k = match.start; k < match.end; k++) consumed.add(k);
         return {
-          payment: { type: 'AMOUNT', amount: minorUnits },
-          paymentTokensConsumed: consumed,
-          paymentConfidence: 0.95,
-        };
-      } else if (numBefore && !numBefore.isFraction) {
-        consumed.add(i);
-        for (let k = 0; k < numBefore.consumedTokens; k++) consumed.add(i - 1 - k);
-        const minorUnits = Math.round(numBefore.value * 100);
-        return {
-          payment: { type: 'AMOUNT', amount: minorUnits },
+          payment: { type: 'AMOUNT', amount: match.amount },
           paymentTokensConsumed: consumed,
           paymentConfidence: 0.95,
         };
@@ -259,6 +259,47 @@ function extractPaymentInstruction(
 }
 
 /**
+ * Finds a payment-amount pattern such as "paid {amount}" or "{amount} টাকা দিল". Currency
+ * words are optional around the amount (and so are dropped from the pattern itself). Returns
+ * the token range and the amount in minor units.
+ */
+function matchAmountPattern(
+  tokens: readonly string[],
+  pattern: string,
+  packs: readonly LanguagePack[],
+): { start: number; end: number; amount: MinorUnits } | null {
+  const parts = pattern
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((part) => part !== '' && !isCurrencyWord(part, packs));
+  for (let start = 0; start < tokens.length; start++) {
+    let position = start;
+    let amount: MinorUnits | null = null;
+    let matched = true;
+    for (const part of parts) {
+      if (part === '{amount}') {
+        if (isCurrencyWord(tokens[position], packs)) position++;
+        const number = parseNumberAt(tokens, position, packs);
+        if (!number || number.isFraction) {
+          matched = false;
+          break;
+        }
+        position += number.consumedTokens;
+        if (isCurrencyWord(tokens[position], packs)) position++;
+        amount = Math.round(number.value * 100);
+      } else if (tokens[position]?.toLowerCase() === part) {
+        position++;
+      } else {
+        matched = false;
+        break;
+      }
+    }
+    if (matched && amount !== null) return { start, end: position, amount };
+  }
+  return null;
+}
+
+/**
  * Extracts line items (product, quantity, unit, price) from remaining tokens.
  */
 function extractItems(
@@ -270,14 +311,61 @@ function extractItems(
     correctedText: string;
     fieldType: 'customer' | 'product';
   }[],
-): ParsedItem[] {
+): { items: ParsedItem[]; amounts: MinorUnits[] } {
   const items: ParsedItem[] = [];
+  /** Spoken amounts that belong to no product. */
+  const amounts: MinorUnits[] = [];
   const consumed = new Set<number>();
+  /** The last line, and whether its quantity was spoken and its amount already given. */
+  let last: { index: number; quantitySpoken: boolean; priced: boolean } | null = null;
+  const isOf = (token: string | undefined) => token === 'of' || token === 'এর';
 
   let i = 0;
   while (i < tokens.length) {
     if (consumed.has(i)) {
       i++;
+      continue;
+    }
+
+    // Money is never a quantity: "500 taka", "৫০০ টাকা", "৳500".
+    const money = parseMoneyAt(tokens, i, packs);
+    if (money) {
+      let next = i + money.consumedTokens;
+      if (isOf(tokens[next]?.toLowerCase())) next++;
+      // "৫০০ টাকার চাল" / "500 taka of rice": a product worth the amount.
+      const worth = matchProductAt(tokens, next, products, corrections, packs);
+      if (worth.match && worth.match.score >= 0.65) {
+        const prod = worth.match.item;
+        items.push(
+          priceItem(
+            {
+              productId: prod.id ?? null,
+              name: prod.name,
+              unit: prod.unit,
+              qtyMilli: 1000,
+              unitPrice: prod.defaultPrice ?? null,
+              confidence: worth.match.score,
+              candidates: worth.topCandidates,
+            },
+            money.amount,
+            false,
+          ),
+        );
+        last = { index: items.length - 1, quantitySpoken: false, priced: true };
+        for (let k = i; k < next + worth.match.consumedTokens; k++) consumed.add(k);
+        i = next + worth.match.consumedTokens;
+        continue;
+      }
+      // "চাল ২ কেজি ১২০ টাকা" / "rice 120 taka": the amount of the line just spoken.
+      const target = last && !last.priced ? items[last.index] : undefined;
+      if (last && target) {
+        items[last.index] = priceItem(target, money.amount, last.quantitySpoken);
+        last.priced = true;
+      } else {
+        amounts.push(money.amount);
+      }
+      for (let k = i; k < i + money.consumedTokens; k++) consumed.add(k);
+      i += money.consumedTokens;
       continue;
     }
 
@@ -322,6 +410,7 @@ function extractItems(
           confidence: productMatch.match.score,
           candidates: productMatch.topCandidates,
         });
+        last = { index: items.length - 1, quantitySpoken: true, priced: false };
 
         for (let k = i; k < nextIdx + productMatch.match.consumedTokens; k++) {
           consumed.add(k);
@@ -338,7 +427,10 @@ function extractItems(
       let nextIdx = i + prodFirst.match.consumedTokens;
 
       // Check number after product
-      const numAfter = parseNumberAt(tokens, nextIdx, packs);
+      // A number followed by a currency word is the price, handled on the next pass.
+      const numAfter = parseMoneyAt(tokens, nextIdx, packs)
+        ? null
+        : parseNumberAt(tokens, nextIdx, packs);
       let qtyMilli = 1000;
       let matchedUnit: string | null = null;
 
@@ -364,6 +456,7 @@ function extractItems(
         confidence: prodFirst.match.score,
         candidates: prodFirst.topCandidates,
       });
+      last = { index: items.length - 1, quantitySpoken: numAfter !== null, priced: false };
 
       for (let k = i; k < nextIdx; k++) consumed.add(k);
       i = nextIdx;
@@ -373,7 +466,7 @@ function extractItems(
     i++;
   }
 
-  return items;
+  return { items, amounts };
 }
 
 /**

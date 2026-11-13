@@ -1,11 +1,13 @@
 import { type LanguageCode } from '@/shared';
 
+import bnCurrency from './bn/currency.json';
 import bnFractions from './bn/fractions.json';
 import bnIntentPhrases from './bn/intent_phrases.json';
 import bnNumbers from './bn/numbers.json';
 import bnPaymentPhrases from './bn/payment_phrases.json';
 import bnTranslit from './bn/translit.json';
 import bnUnits from './bn/units.json';
+import enCurrency from './en/currency.json';
 import enFractions from './en/fractions.json';
 import enIntentPhrases from './en/intent_phrases.json';
 import enNumbers from './en/numbers.json';
@@ -77,6 +79,7 @@ export const EN_PACK: LanguagePack = {
   fractions: enFractions as LanguagePack['fractions'],
   units: enUnits as LanguagePack['units'],
   paymentPhrases: enPaymentPhrases as LanguagePack['paymentPhrases'],
+  currency: enCurrency,
   intentPhrases: enIntentPhrases as LanguagePack['intentPhrases'],
   suffixes: EN_SUFFIXES,
   fillers: EN_FILLERS,
@@ -89,6 +92,7 @@ export const BN_PACK: LanguagePack = {
   fractions: bnFractions as LanguagePack['fractions'],
   units: bnUnits as LanguagePack['units'],
   paymentPhrases: bnPaymentPhrases as LanguagePack['paymentPhrases'],
+  currency: bnCurrency,
   intentPhrases: bnIntentPhrases as LanguagePack['intentPhrases'],
   suffixes: BN_SUFFIXES,
   fillers: BN_FILLERS,

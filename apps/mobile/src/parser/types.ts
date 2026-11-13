@@ -144,12 +144,22 @@ export interface LanguagePackIntentPhrases {
   querySales: string[];
 }
 
+/** Words for the currency: a number next to one is money, never a quantity. */
+export interface LanguagePackCurrency {
+  words: string[];
+  /** Signs written before or after an amount, e.g. ৳500. */
+  symbols: string[];
+  /** Name of a line created from a bare amount ("500 taka"), for the user to rename. */
+  genericItem: string;
+}
+
 export interface LanguagePack {
   code: LanguageCode;
   numbers: LanguagePackNumbers;
   fractions: LanguagePackFractions;
   units: LanguagePackUnits;
   paymentPhrases: LanguagePackPaymentPhrases;
+  currency: LanguagePackCurrency;
   intentPhrases: LanguagePackIntentPhrases;
   suffixes: string[];
   fillers: string[];
