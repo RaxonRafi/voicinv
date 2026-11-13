@@ -198,20 +198,91 @@ describe('planTable', () => {
 
   it('does not report a conflict with the device’s own earlier push', () => {
     const own = stored(customer(1), { deviceId: DEVICE, serverSeq: 12 });
-    const result = plan('customers', { updated: [customer(1, { name: 'Again' })] }, [[id(1), own]], {
-      lastPulledCursor: 10,
-      seq: 12,
-    });
+    const result = plan(
+      'customers',
+      { updated: [customer(1, { name: 'Again' })] },
+      [[id(1), own]],
+      {
+        lastPulledCursor: 10,
+        seq: 12,
+      },
+    );
     expect(result.conflicts.updated).toEqual([]);
   });
 
-  it('never replaces an append-only record, even with different content', () => {
-    const result = plan('payments', { created: [payment(1, { amount: 999_999 })] }, [
+  it('treats re-sending a stored append-only record unchanged as a no-op', () => {
+    const result = plan('payments', { created: [payment(1)] }, [[id(1), stored(payment(1))]]);
+
+    expect(result.writes).toEqual([]);
+    expect(result.rejection).toBeNull();
+    expect(result.seq).toBe(10);
+  });
+
+  it('rejects an append-only record sent again with different content', () => {
+    const result = plan('payments', { created: [payment(2), payment(1, { amount: 999_999 })] }, [
       [id(1), stored(payment(1))],
     ]);
 
+    expect(result.rejection).toEqual({ reason: 'APPEND_ONLY', table: 'payments', id: id(1) });
     expect(result.writes).toEqual([]);
-    expect(result.seq).toBe(10);
+  });
+
+  describe('cancelled invoices', () => {
+    function invoice(n: number, overrides: Record<string, unknown> = {}): RecordData {
+      return {
+        id: id(n),
+        shopId: SHOP,
+        createdAt: 1000,
+        updatedAt: 1000,
+        deletedAt: null,
+        deviceId: DEVICE,
+        invoiceNumber: 'RS-A-000001',
+        customerId: id(1),
+        date: 1000,
+        subtotal: 5000,
+        discount: 0,
+        total: 5000,
+        paidAmount: 0,
+        dueAmount: 5000,
+        status: 'ACTIVE',
+        sourceText: null,
+        ...overrides,
+      };
+    }
+    const planInvoices = (pushed: RecordData, storedVersion: RecordData) =>
+      planTable({
+        table: 'invoices',
+        changes: changes({ invoices: { created: [], updated: [pushed], deleted: [] } }),
+        stored: new Map([[pushed.id, stored(storedVersion, { deviceId: OTHER_DEVICE })]]),
+        deviceId: DEVICE,
+        lastPulledCursor: 0,
+        seq: 10,
+        now: NOW,
+      });
+
+    it('keeps a cancelled invoice cancelled and returns it as the winning version', () => {
+      const cancelled = invoice(7, { status: 'CANCELLED', updatedAt: 2000 });
+      const staleEdit = invoice(7, { paidAmount: 5000, dueAmount: 0, updatedAt: 3000 });
+
+      const result = planInvoices(staleEdit, cancelled);
+
+      expect(result.writes).toEqual([]);
+      expect(result.conflicts.updated).toEqual([cancelled]);
+      expect(result.rejection).toBeNull();
+    });
+
+    it('still applies a newer version of an invoice that is cancelled on both sides', () => {
+      const cancelled = invoice(7, { status: 'CANCELLED', updatedAt: 2000 });
+      const later = invoice(7, { status: 'CANCELLED', updatedAt: 4000 });
+
+      expect(planInvoices(later, cancelled).writes).toHaveLength(1);
+    });
+
+    it('lets an active invoice be cancelled', () => {
+      const cancelled = invoice(7, { status: 'CANCELLED', updatedAt: 2000 });
+
+      expect(planInvoices(cancelled, invoice(7)).writes).toHaveLength(1);
+    });
   });
 
   it('stores new append-only records and never flags them deleted', () => {

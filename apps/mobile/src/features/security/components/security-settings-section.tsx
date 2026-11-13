@@ -4,12 +4,8 @@ import { useTranslation } from '@/core/i18n';
 import { useServices } from '@/core/services';
 import { Box, Button, Card, Icon, ListItem, SectionHeader, showToast } from '@/core/ui';
 
-import {
-  authenticateWithBiometrics,
-  getSecurityLockEnabled,
-  isBiometricSupported,
-  setSecurityLockEnabled,
-} from '../service';
+import { authenticate, changeLockSetting } from '../lock-store';
+import { getSecurityLockEnabled, isBiometricSupported, setSecurityLockEnabled } from '../service';
 
 export function SecuritySettingsSection() {
   const { t } = useTranslation();
@@ -36,7 +32,11 @@ export function SecuritySettingsSection() {
   const handleToggle = async () => {
     setBusy(true);
     try {
-      const authenticated = await authenticateWithBiometrics(t('security.unlockPrompt'));
+      // Through the lock store, so leaving the app for the PIN screen does not lock it.
+      const authenticated = await authenticate({
+        prompt: t('security.unlockPrompt'),
+        fallbackLabel: t('security.usePin'),
+      });
       if (!authenticated) {
         showToast(t('security.authFailed'), 'danger');
         return;
@@ -44,6 +44,7 @@ export function SecuritySettingsSection() {
 
       const next = !enabled;
       await setSecurityLockEnabled(services.db, next);
+      changeLockSetting(next);
       setEnabled(next);
       showToast(next ? t('security.lockEnabled') : t('security.lockDisabled'), 'success');
     } catch {

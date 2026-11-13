@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { type EntityManager, In, MoreThan, Repository } from 'typeorm';
+import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity.js';
 
 import { SyncCursor } from './entities/sync-cursor.entity.js';
 import { SyncRecord } from './entities/sync-record.entity.js';
@@ -74,24 +75,24 @@ export class SyncRepository {
     manager: EntityManager,
   ): Promise<void> {
     for (let start = 0; start < writes.length; start += WRITE_CHUNK) {
-      const chunk = writes.slice(start, start + WRITE_CHUNK);
+      const rows = writes.slice(start, start + WRITE_CHUNK).map((write) => ({
+        shopId,
+        deviceId,
+        tableName: write.tableName,
+        id: write.id,
+        // TypeORM's deep-partial type cannot express an open JSON document (`jsonb`), so the
+        // row is typed by hand; every field is checked against SyncRecord above.
+        data: write.data as QueryDeepPartialEntity<SyncRecord['data']>,
+        deleted: write.deleted,
+        createdSeq: write.serverSeq,
+        serverSeq: write.serverSeq,
+        updatedAt: at,
+      })) satisfies QueryDeepPartialEntity<SyncRecord>[];
       await manager
         .getRepository(SyncRecord)
         .createQueryBuilder()
         .insert()
-        .values(
-          chunk.map((write) => ({
-            shopId,
-            deviceId,
-            tableName: write.tableName,
-            id: write.id,
-            data: write.data,
-            deleted: write.deleted,
-            createdSeq: write.serverSeq,
-            serverSeq: write.serverSeq,
-            updatedAt: at,
-          })),
-        )
+        .values(rows)
         .orUpdate(
           ['data', 'deleted', 'device_id', 'server_seq', 'updated_at'],
           ['shop_id', 'table_name', 'id'],

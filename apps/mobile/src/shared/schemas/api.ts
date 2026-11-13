@@ -157,6 +157,20 @@ export const backupMetadataSchema = z.object({
 });
 export type BackupMetadata = z.infer<typeof backupMetadataSchema>;
 
+/**
+ * Query of `POST /backups`. The body is the encrypted backup file itself
+ * (`Content-Type: application/octet-stream`); see `src/shared/backup/format`.
+ */
+export const backupUploadQuerySchema = z.strictObject({
+  /** SHA-256 of the uploaded bytes, hex encoded. The server refuses a body that differs. */
+  checksum: z.string().regex(/^[0-9a-f]{64}$/),
+  /** The registered device creating the backup. */
+  deviceId: idSchema.optional(),
+});
+export type BackupUploadQuery = z.infer<typeof backupUploadQuerySchema>;
+
+export const backupListSchema = z.array(backupMetadataSchema);
+
 /** Error envelope returned by every API endpoint on failure. */
 export const apiErrorSchema = z.object({
   error: z.object({ code: z.string(), message: z.string(), details: z.unknown().optional() }),

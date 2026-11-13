@@ -1,8 +1,9 @@
 // Public API of @voiceledger/shared.
+export * from './backup/format';
 export * from './constants';
 export * from './format/date-format';
 export * from './format/number-format';
-export { DIGIT_SETS, type NumberingSystem, toAsciiDigits, toLocalDigits } from './format/numerals';
+export * from './format/numerals';
 export {
   createUuidV7Generator,
   isUuidV7,

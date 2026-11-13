@@ -104,6 +104,20 @@ export async function writeCacheFile(fileName: string, content: string): Promise
   return target.uri;
 }
 
+/** Writes binary content to a file in the cache directory (encrypted backups) and returns its URI. */
+export async function writeCacheBytes(fileName: string, content: Uint8Array): Promise<string> {
+  const target = new File(Paths.cache, safeFileName(fileName));
+  if (target.exists) target.delete();
+  target.create();
+  await target.write(content);
+  return target.uri;
+}
+
+/** Reads a file the user picked (e.g. a backup to restore) as bytes. */
+export function readFileBytes(uri: string): Promise<Uint8Array> {
+  return new File(uri).bytes();
+}
+
 export type AppLifecycleState = 'active' | 'background' | 'inactive';
 
 export function getCurrentAppState(): AppLifecycleState {
