@@ -71,7 +71,26 @@ export async function exportDatabaseDump(
   };
 }
 
+/**
+ * Runs `work` with the append-only DELETE guards lifted. Only a full restore needs this: it
+ * replaces the whole history with the backup's, which the user confirmed. Triggers are
+ * re-created from their exact stored definitions in the same transaction, so on any failure
+ * the rollback brings the guards back too. UPDATE guards stay in place throughout.
+ */
+async function withoutDeleteGuards(tx: Tx, work: () => Promise<void>): Promise<void> {
+  const guards = await tx.execute(
+    `SELECT name, sql FROM sqlite_master WHERE type = 'trigger' AND name LIKE '%\\_no\\_delete' ESCAPE '\\'`,
+  );
+  for (const [name] of guards) await tx.execute(`DROP TRIGGER "${String(name)}"`);
+  await work();
+  for (const [, definition] of guards) await tx.execute(String(definition));
+}
+
 export async function clearAllTables(tx: Tx): Promise<void> {
+  await withoutDeleteGuards(tx, () => deleteEverything(tx));
+}
+
+async function deleteEverything(tx: Tx): Promise<void> {
   // Clear in child-to-parent order to respect referential integrity
   await tx.orm.delete(invoiceRevisions);
   await tx.orm.delete(invoiceItems);

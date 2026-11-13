@@ -1,6 +1,6 @@
 import { createHash, createHmac, pbkdf2Sync, randomBytes } from 'crypto';
 
-import { customers, products, shops } from '@/core/db';
+import { customers, ledgerEntries, payments, products, shops } from '@/core/db';
 import { writeCacheBytes } from '@/core/platform';
 import { createTestShopApp, type TestShopApp } from '@/core/testing/harness';
 import { BACKUP_MIN_KDF_ITERATIONS, isEncryptedBackup } from '@/shared';
@@ -190,6 +190,46 @@ describe('backup feature', () => {
     expect(await app.ctx.db.orm.select().from(shops)).toEqual(dump.tables.shops);
     expect(await app.ctx.db.orm.select().from(customers)).toEqual(dump.tables.customers);
     expect(await app.ctx.db.orm.select().from(products)).toEqual(dump.tables.products);
+  });
+
+  it('restores over a shop with payments and ledger entries, keeping the delete guards', async () => {
+    const [customer] = await app.ctx.db.orm.select().from(customers);
+    if (!customer) throw new Error('seeded customer missing');
+    const paymentId = app.ctx.newId();
+    await app.ctx.db.write(async (tx) => {
+      const common = { shopId: app.shopId, createdAt: now, deviceId: app.ctx.deviceId };
+      await tx.orm.insert(payments).values({
+        ...common,
+        id: paymentId,
+        customerId: customer.id,
+        amount: 10_000,
+        date: now,
+      });
+      await tx.orm.insert(ledgerEntries).values({
+        ...common,
+        id: app.ctx.newId(),
+        customerId: customer.id,
+        type: 'PAYMENT',
+        amount: -10_000,
+        refId: paymentId,
+      });
+    });
+    const { bytes } = await createBackupFile(
+      app.ctx.db.orm,
+      app.shopId,
+      app.ctx.deviceId,
+      PASSWORD,
+      now,
+      FAST,
+    );
+
+    await restoreFromBackupFile(app.ctx.db, bytes, PASSWORD);
+
+    expect(await app.ctx.db.orm.select().from(payments)).toHaveLength(1);
+    expect(await app.ctx.db.orm.select().from(ledgerEntries)).toHaveLength(1);
+    // Outside a restore, financial records still cannot be deleted.
+    await expect(app.ctx.db.write((tx) => tx.orm.delete(payments))).rejects.toThrow();
+    expect(await app.ctx.db.orm.select().from(payments)).toHaveLength(1);
   });
 
   it('leaves the current records untouched when the password is wrong', async () => {

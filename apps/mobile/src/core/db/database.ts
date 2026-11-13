@@ -13,6 +13,8 @@ export interface Tx {
   orm: Orm;
   /** Declares which tables were changed, so screens showing them refresh after the commit. */
   touch(...tables: TableName[]): void;
+  /** Runs a raw statement inside the open transaction (schema maintenance, restore). */
+  execute(sql: string, params?: readonly SqlValue[]): Promise<SqlRow[]>;
 }
 
 export type ChangeListener = (tables: ReadonlySet<TableName>) => void;
@@ -90,6 +92,7 @@ export class Database {
       const tx: Tx = {
         orm: this.txOrm,
         touch: (...tables) => tables.forEach((table) => touched.add(table)),
+        execute: (sql, params = []) => this.driver.execute(sql, params),
       };
       await this.driver.execute('BEGIN IMMEDIATE');
       let result: T;
