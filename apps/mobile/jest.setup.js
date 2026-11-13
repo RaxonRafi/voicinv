@@ -66,6 +66,11 @@ jest.mock('expo-speech-recognition', () => ({
     supportsOnDeviceRecognition: jest.fn(() => true),
     requestPermissionsAsync: jest.fn(async () => ({ granted: true })),
     getPermissionsAsync: jest.fn(async () => ({ granted: true })),
+    isRecognitionAvailable: jest.fn(() => true),
+    androidTriggerOfflineModelDownload: jest.fn(async () => ({
+      status: 'opened_dialog',
+      message: '',
+    })),
     start: jest.fn(),
     stop: jest.fn(),
     abort: jest.fn(),

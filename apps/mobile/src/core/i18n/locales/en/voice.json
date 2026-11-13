@@ -13,5 +13,19 @@
   "querySales": "Today's sales total {{total}}.",
   "querySalesZero": "No sales recorded yet today.",
   "repeatAnswer": "Listen again",
-  "dismiss": "Dismiss"
+  "dismiss": "Dismiss",
+  "errors": {
+    "PERMISSION_REQUESTED": "Microphone allowed. Now hold the button and speak.",
+    "PERMISSION_DENIED": "VoiceLedger cannot use the microphone. Allow it in your phone's Settings → Apps → VoiceLedger → Permissions.",
+    "LANGUAGE_NOT_INSTALLED": "The offline speech pack for this language is not on your phone yet.",
+    "NO_SPEECH": "Didn't hear anything. Hold the button while you speak, then let go.",
+    "MIC_BUSY": "Another app is using the microphone. Close it and try again.",
+    "NOT_AVAILABLE": "This phone has no offline speech recognition. You can type the sale instead.",
+    "UNKNOWN": "Could not understand speech. Please try again."
+  },
+  "languagePackTitle": "Download the speech pack",
+  "languagePackMessage": "Voice works offline once the speech pack for this language is downloaded. This is a one-time download by your phone.",
+  "languagePackDownload": "Download",
+  "languagePackRequested": "Download started. When it finishes, hold the button and speak.",
+  "languagePackUnavailable": "This phone cannot download the speech pack. Open Settings → Google → Speech to add the language, or type the sale instead."
 }
