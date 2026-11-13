@@ -1,0 +1,40 @@
+/* Global stylesheet of the landing site. All colors, type sizes, radii and shadows come from
+   the design tokens (design-tokens/tokens.json); nothing here introduces a raw design value. */
+@import 'tailwindcss';
+@import '../../design-tokens/generated/tokens.css';
+@import '../../design-tokens/generated/tailwind.css';
+
+/* Self-hosted variable fonts (served from this site, never from a font CDN). */
+@import '@fontsource-variable/noto-sans/wght.css';
+@import '@fontsource-variable/noto-sans-bengali/wght.css';
+
+@theme inline {
+  /* The variable builds register under "… Variable" names; the token stack stays as fallback. */
+  --font-sans: 'Noto Sans Variable', 'Noto Sans Bengali Variable', var(--vl-font-sans);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-bg-canvas);
+    color: var(--color-text-primary);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+  }
+
+  /* One visible focus style for every interactive element. */
+  :focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "balance": "হিসাব",
+  "takePayment": "টাকা জমা নিন",
+  "newInvoice": "নতুন ইনভয়েস",
+  "sendReminder": "তাগাদা পাঠান",
+  "shareStatement": "হিসাবের বিবরণী শেয়ার করুন",
+  "editCustomer": "কাস্টমারের তথ্য বদলান",
+  "history": "লেনদেনের ইতিহাস",
+  "noHistory": "এখনো কোনো লেনদেন নেই।",
+  "entries": {
+    "INVOICE_DUE": "ইনভয়েসের বাকি",
+    "PAYMENT": "টাকা জমা",
+    "REVERSAL": "ইনভয়েস বাতিল",
+    "ADJUSTMENT": "ইনভয়েস বদলানো হয়েছে"
+  },
+  "balanceAfter": "হিসাব: {{balance}}",
+  "overLimit": "বাকির সীমা {{limit}} ছাড়িয়ে গেছে",
+  "nothingDue": "{{name}}-এর কোনো বাকি নেই।",
+  "reminder": "প্রিয় {{customer}}, {{shop}}-এ আপনার বাকি {{amount}}। সুবিধামতো পরিশোধ করার অনুরোধ রইল। ধন্যবাদ।",
+  "shareFailed": "এটি শেয়ার করা যায়নি। আবার চেষ্টা করুন।",
+  "payment": {
+    "title": "টাকা জমা নিন",
+    "customer": "কাস্টমার",
+    "chooseCustomer": "কাস্টমার বেছে নিন",
+    "amount": "যত টাকা পেয়েছেন",
+    "note": "নোট",
+    "save": "জমা সেভ করুন",
+    "saved": "জমা সেভ হয়েছে। {{balance}}"
+  },
+  "statement": {
+    "title": "হিসাবের বিবরণী",
+    "for": "{{name}}-এর হিসাবের বিবরণী",
+    "date": "তারিখ",
+    "description": "বিবরণ",
+    "amount": "টাকা",
+    "balance": "হিসাব",
+    "closing": "বর্তমান হিসাব"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "title": "সেটিংস",
+  "general": "সাধারণ",
+  "language": "ভাষা",
+  "languages": {
+    "en": "English",
+    "bn": "বাংলা"
+  },
+  "shopProfile": "দোকানের তথ্য",
+  "shopProfileHint": "নাম, ফোন, ঠিকানা ও ইনভয়েস নম্বর",
+  "invoicePrefix": "ইনভয়েস নম্বরের শুরুর অংশ",
+  "invoicePrefixHint": "আপনার ইনভয়েস নম্বর দেখতে এমন হবে: {{example}}।",
+  "saved": "সেটিংস সেভ হয়েছে"
+}

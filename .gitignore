@@ -1,0 +1,43 @@
+# old monorepo root kept for reference after the move to standalone apps; safe to delete
+_legacy-monorepo/
+
+# dependencies
+node_modules/
+.pnpm-store/
+
+# build output
+dist/
+out/
+.next/
+.turbo/
+*.tsbuildinfo
+next-env.d.ts
+coverage/
+
+# environment — never commit real secrets (see AGENTS.md §12)
+.env
+.env.*
+!.env.example
+
+# expo / react native
+.expo/
+apps/mobile/android/
+apps/mobile/ios/
+*.jks
+*.keystore
+*.p8
+*.p12
+*.mobileprovision
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json

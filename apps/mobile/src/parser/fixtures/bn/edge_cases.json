@@ -1,0 +1,1747 @@
+[
+  {
+    "input": "কোরিমকে দুই বস্তা চাল দাও অর্ধেক দিছে",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": "করিম",
+      "items": [
+        {
+          "product": "Rice",
+          "qtyMilli": 2000,
+          "unit": "bag",
+          "unitPrice": 250000
+        }
+      ],
+      "payment": {
+        "type": "FRACTION",
+        "value": 0.5
+      }
+    }
+  },
+  {
+    "input": "রোহিমকে পাঁচ কেজি চিনি দাও নগদ",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": "রহিম",
+      "items": [
+        {
+          "product": "Sugar",
+          "qtyMilli": 5000,
+          "unit": "kg",
+          "unitPrice": 12000
+        }
+      ],
+      "payment": {
+        "type": "FULL"
+      }
+    }
+  },
+  {
+    "input": "জামেলকে এক লিটার তেল দাও বাকি",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": "জামাল",
+      "items": [
+        {
+          "product": "Oil",
+          "qtyMilli": 1000,
+          "unit": "liter",
+          "unitPrice": 18000
+        }
+      ],
+      "payment": {
+        "type": "NONE"
+      }
+    }
+  },
+  {
+    "input": "কোমালকে তিন পিস সাবান দাও নগদ",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": "কামাল",
+      "items": [
+        {
+          "product": "Soap",
+          "qtyMilli": 3000,
+          "unit": "piece",
+          "unitPrice": 5000
+        }
+      ],
+      "payment": {
+        "type": "FULL"
+      }
+    }
+  },
+  {
+    "input": "হাচানকে দশ কেজি আটা দাও ৫০০ টাকা দিল",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": "হাসান",
+      "items": [
+        {
+          "product": "Flour",
+          "qtyMilli": 10000,
+          "unit": "kg",
+          "unitPrice": 6500
+        }
+      ],
+      "payment": {
+        "type": "AMOUNT",
+        "amount": 50000
+      }
+    }
+  },
+  {
+    "input": "আলিকে দুই প্যাকেট চা দাও সব বাকি",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": "আলী",
+      "items": [
+        {
+          "product": "Tea",
+          "qtyMilli": 2000,
+          "unit": "packet",
+          "unitPrice": 15000
+        }
+      ],
+      "payment": {
+        "type": "NONE"
+      }
+    }
+  },
+  {
+    "input": "দুই বস্তা চাল দাও নগদ",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": null,
+      "items": [
+        {
+          "product": "Rice",
+          "qtyMilli": 2000,
+          "unit": "bag",
+          "unitPrice": 250000
+        }
+      ],
+      "payment": {
+        "type": "FULL"
+      }
+    }
+  },
+  {
+    "input": "পাঁচ কেজি চিনি দাও ক্যাশ",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": null,
+      "items": [
+        {
+          "product": "Sugar",
+          "qtyMilli": 5000,
+          "unit": "kg",
+          "unitPrice": 12000
+        }
+      ],
+      "payment": {
+        "type": "FULL"
+      }
+    }
+  },
+  {
+    "input": "এক লিটার তেল দাও বাকি",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": null,
+      "items": [
+        {
+          "product": "Oil",
+          "qtyMilli": 1000,
+          "unit": "liter",
+          "unitPrice": 18000
+        }
+      ],
+      "payment": {
+        "type": "NONE"
+      }
+    }
+  },
+  {
+    "input": "দুই কেজি লবণ দাও পুরো পরিশোধ",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": null,
+      "items": [
+        {
+          "product": "Salt",
+          "qtyMilli": 2000,
+          "unit": "kg",
+          "unitPrice": 3500
+        }
+      ],
+      "payment": {
+        "type": "FULL"
+      }
+    }
+  },
+  {
+    "input": "দশ পিস সাবান দাও ক্যাশ",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": null,
+      "items": [
+        {
+          "product": "Soap",
+          "qtyMilli": 10000,
+          "unit": "piece",
+          "unitPrice": 5000
+        }
+      ],
+      "payment": {
+        "type": "FULL"
+      }
+    }
+  },
+  {
+    "input": "করিমকে তিন কেজি গম দাও অর্ধেক দিল",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": "করিম",
+      "items": [
+        {
+          "product": "Wheat",
+          "qtyMilli": 3000,
+          "unit": "kg",
+          "unitPrice": null
+        }
+      ],
+      "payment": {
+        "type": "FRACTION",
+        "value": 0.5
+      }
+    }
+  },
+  {
+    "input": "রহিমকে দুই কেজি গম দাও নগদ",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": "রহিম",
+      "items": [
+        {
+          "product": "Wheat",
+          "qtyMilli": 2000,
+          "unit": "kg",
+          "unitPrice": null
+        }
+      ],
+      "payment": {
+        "type": "FULL"
+      }
+    }
+  },
+  {
+    "input": "জামালকে পাঁচ কেজি গম দাও সব বাকি",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": "জামাল",
+      "items": [
+        {
+          "product": "Wheat",
+          "qtyMilli": 5000,
+          "unit": "kg",
+          "unitPrice": null
+        }
+      ],
+      "payment": {
+        "type": "NONE"
+      }
+    }
+  },
+  {
+    "input": "করিমকে ২ বস্তা চাল দাও অর্ধেক দিছে",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": "করিম",
+      "items": [
+        {
+          "product": "Rice",
+          "qtyMilli": 2000,
+          "unit": "bag",
+          "unitPrice": 250000
+        }
+      ],
+      "payment": {
+        "type": "FRACTION",
+        "value": 0.5
+      }
+    }
+  },
+  {
+    "input": "রহিমকে ৫ কেজি চিনি দাও নগদ",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": "রহিম",
+      "items": [
+        {
+          "product": "Sugar",
+          "qtyMilli": 5000,
+          "unit": "kg",
+          "unitPrice": 12000
+        }
+      ],
+      "payment": {
+        "type": "FULL"
+      }
+    }
+  },
+  {
+    "input": "জামালরে ১ লিটার তেল দাও বাকি",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": "জামাল",
+      "items": [
+        {
+          "product": "Oil",
+          "qtyMilli": 1000,
+          "unit": "liter",
+          "unitPrice": 18000
+        }
+      ],
+      "payment": {
+        "type": "NONE"
+      }
+    }
+  },
+  {
+    "input": "কামালরে ১০ পিস সাবান দাও পুরো পরিশোধ",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": "কামাল",
+      "items": [
+        {
+          "product": "Soap",
+          "qtyMilli": 10000,
+          "unit": "piece",
+          "unitPrice": 5000
+        }
+      ],
+      "payment": {
+        "type": "FULL"
+      }
+    }
+  },
+  {
+    "input": "হাসানকে ৩ প্যাকেট চা দাও ক্যাশ",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": "হাসান",
+      "items": [
+        {
+          "product": "Tea",
+          "qtyMilli": 3000,
+          "unit": "packet",
+          "unitPrice": 15000
+        }
+      ],
+      "payment": {
+        "type": "FULL"
+      }
+    }
+  },
+  {
+    "input": "আলীকে ৪ কেজি ডাল দাও অর্ধেক দিল",
+    "customers": ["করিম", "রহিম", "জামাল", "কামাল", "হাসান", "আলী"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000,
+        "aliases": ["চাল", "রাইস"]
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000,
+        "aliases": ["চিনি"]
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000,
+        "aliases": ["তেল", "সয়াবিন তেল"]
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500,
+        "aliases": ["আটা", "ময়দা"]
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000,
+        "aliases": ["সাবান"]
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500,
+        "aliases": ["লবণ"]
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000,
+        "aliases": ["চা"]
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000,
+        "aliases": ["ডাল"]
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200,
+        "aliases": ["ডিম"]
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000,
+        "aliases": ["দুধ"]
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null,
+        "aliases": ["গম"]
+      }
+    ],
+    "expected": {
+      "intent": "SALE",
+      "customer": "আলী",
+      "items": [
+        {
+          "product": "Lentils",
+          "qtyMilli": 4000,
+          "unit": "kg",
+          "unitPrice": 14000
+        }
+      ],
+      "payment": {
+        "type": "FRACTION",
+        "value": 0.5
+      }
+    }
+  }
+]

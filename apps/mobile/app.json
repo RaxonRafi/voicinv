@@ -1,0 +1,95 @@
+{
+  "expo": {
+    "name": "VoiceLedger",
+    "slug": "voiceledger",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "voiceledger",
+    "userInterfaceStyle": "automatic",
+    "icon": "./assets/images/icon.png",
+    "ios": {
+      "bundleIdentifier": "com.voiceledger.app",
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSBluetoothAlwaysUsageDescription": "VoiceLedger uses Bluetooth to print receipts on your thermal printer.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.voiceledger.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#0B7347",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.BLUETOOTH_CONNECT",
+        "android.permission.BLUETOOTH_SCAN",
+        "android.permission.USE_BIOMETRIC"
+      ],
+      "blockedPermissions": [
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION"
+      ],
+      "allowBackup": false
+    },
+    "plugins": [
+      "expo-router",
+      "expo-dev-client",
+      "expo-status-bar",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0B7347",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 96
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./node_modules/@expo-google-fonts/noto-sans/400Regular/NotoSans_400Regular.ttf",
+            "./node_modules/@expo-google-fonts/noto-sans/500Medium/NotoSans_500Medium.ttf",
+            "./node_modules/@expo-google-fonts/noto-sans/600SemiBold/NotoSans_600SemiBold.ttf",
+            "./node_modules/@expo-google-fonts/noto-sans/700Bold/NotoSans_700Bold.ttf",
+            "./node_modules/@expo-google-fonts/noto-sans-bengali/400Regular/NotoSansBengali_400Regular.ttf",
+            "./node_modules/@expo-google-fonts/noto-sans-bengali/500Medium/NotoSansBengali_500Medium.ttf",
+            "./node_modules/@expo-google-fonts/noto-sans-bengali/600SemiBold/NotoSansBengali_600SemiBold.ttf",
+            "./node_modules/@expo-google-fonts/noto-sans-bengali/700Bold/NotoSansBengali_700Bold.ttf"
+          ]
+        }
+      ],
+      "expo-localization",
+      "expo-secure-store",
+      "expo-image",
+      "expo-sharing",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow VoiceLedger to use Face ID to unlock your shop records."
+        }
+      ],
+      [
+        "expo-contacts",
+        {
+          "contactsPermission": "VoiceLedger can add customers from your contacts. Contacts stay on this phone."
+        }
+      ],
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "VoiceLedger listens when you hold the mic button, to turn what you say into an invoice. Audio never leaves this phone.",
+          "speechRecognitionPermission": "VoiceLedger turns what you say into text on this phone.",
+          "androidSpeechServicePackages": ["com.google.android.googlequicksearchbox"]
+        }
+      ],
+      "expo-asset"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}

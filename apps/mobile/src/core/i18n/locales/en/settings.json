@@ -1,0 +1,14 @@
+{
+  "title": "Settings",
+  "general": "General",
+  "language": "Language",
+  "languages": {
+    "en": "English",
+    "bn": "বাংলা"
+  },
+  "shopProfile": "Shop profile",
+  "shopProfileHint": "Name, phone, address and invoice numbers",
+  "invoicePrefix": "Invoice number prefix",
+  "invoicePrefixHint": "Your invoice numbers look like {{example}}.",
+  "saved": "Settings saved"
+}

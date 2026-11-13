@@ -1,0 +1,9 @@
+# pnpm settings for the API. The API is a standalone project with its own lockfile; this file
+# holds settings only (there is no `packages` list).
+allowBuilds:
+  '@parcel/watcher': false
+  # Install-time analytics tracker (pulled in by swagger-ui-dist). Never allow it to run.
+  '@scarf/scarf': false
+minimumReleaseAgeExclude:
+  - prettier@3.10.0
+  - vite@8.3.8

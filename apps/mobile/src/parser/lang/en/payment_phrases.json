@@ -1,0 +1,82 @@
+{
+  "full": [
+    "paid full",
+    "paid in full",
+    "full paid",
+    "paid cash",
+    "cash paid",
+    "in cash",
+    "cash",
+    "paid all",
+    "all paid",
+    "fully paid",
+    "paid completely",
+    "settled"
+  ],
+  "none": [
+    "all due",
+    "due",
+    "on credit",
+    "unpaid",
+    "no payment",
+    "nothing paid",
+    "zero paid",
+    "full due",
+    "credit"
+  ],
+  "fraction": [
+    {
+      "phrase": "paid half",
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    {
+      "phrase": "half paid",
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    {
+      "phrase": "paid a half",
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    {
+      "phrase": "paid quarter",
+      "value": 0.25,
+      "numerator": 1,
+      "denominator": 4
+    },
+    {
+      "phrase": "paid a quarter",
+      "value": 0.25,
+      "numerator": 1,
+      "denominator": 4
+    },
+    {
+      "phrase": "paid one fourth",
+      "value": 0.25,
+      "numerator": 1,
+      "denominator": 4
+    },
+    {
+      "phrase": "paid three quarters",
+      "value": 0.75,
+      "numerator": 3,
+      "denominator": 4
+    }
+  ],
+  "amountPatterns": [
+    "paid {amount}",
+    "{amount} paid",
+    "gave {amount}",
+    "received {amount}",
+    "{amount} cash",
+    "cash {amount}",
+    "deposit {amount}",
+    "advance {amount}"
+  ]
+}
+

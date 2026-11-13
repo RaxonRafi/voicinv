@@ -1,0 +1,22 @@
+{
+  "title": "Set up your shop",
+  "subtitle": "It takes a minute. No account is needed.",
+  "privacy": "Your records stay on this phone and are encrypted.",
+  "language": "Language",
+  "shopName": "Shop name",
+  "shopNameHint": "This appears on your invoices.",
+  "phone": "Shop phone number",
+  "address": "Shop address",
+  "currency": "Currency",
+  "shopType": "Type of shop",
+  "shopTypeHint": "We add a few common products to get you started. You can change them later.",
+  "types": {
+    "grocery": "Grocery",
+    "wholesale": "Wholesale",
+    "pharmacy": "Pharmacy",
+    "hardware": "Hardware",
+    "clothing": "Clothing",
+    "other": "Other (start with no products)"
+  },
+  "start": "Start using VoiceLedger"
+}

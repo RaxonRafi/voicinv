@@ -1,0 +1,39 @@
+{
+  "balance": "Balance",
+  "takePayment": "Take a payment",
+  "newInvoice": "New invoice",
+  "sendReminder": "Send reminder",
+  "shareStatement": "Share statement",
+  "editCustomer": "Edit customer",
+  "history": "History",
+  "noHistory": "Nothing recorded yet.",
+  "entries": {
+    "INVOICE_DUE": "Invoice due",
+    "PAYMENT": "Payment received",
+    "REVERSAL": "Invoice cancelled",
+    "ADJUSTMENT": "Invoice changed"
+  },
+  "balanceAfter": "Balance: {{balance}}",
+  "overLimit": "Over the credit limit of {{limit}}",
+  "nothingDue": "{{name}} has nothing due.",
+  "reminder": "Dear {{customer}}, your due at {{shop}} is {{amount}}. Please pay when you can. Thank you.",
+  "shareFailed": "This could not be shared. Please try again.",
+  "payment": {
+    "title": "Take a payment",
+    "customer": "Customer",
+    "chooseCustomer": "Choose customer",
+    "amount": "Amount received",
+    "note": "Note",
+    "save": "Save payment",
+    "saved": "Payment saved. {{balance}}"
+  },
+  "statement": {
+    "title": "Statement",
+    "for": "Statement for {{name}}",
+    "date": "Date",
+    "description": "Description",
+    "amount": "Amount",
+    "balance": "Balance",
+    "closing": "Balance now"
+  }
+}

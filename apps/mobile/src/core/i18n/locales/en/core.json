@@ -1,0 +1,61 @@
+{
+  "common": {
+    "appName": "VoiceLedger",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "done": "Done",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "skip": "Skip",
+    "add": "Add",
+    "search": "Search",
+    "retry": "Try again",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "optional": "optional",
+    "loading": "Loading…",
+    "walkIn": "Walk-in customer",
+    "somethingWrong": "Something went wrong. Please try again."
+  },
+  "ui": {
+    "increase": "Increase",
+    "decrease": "Decrease",
+    "checkThis": "Please check this",
+    "lowConfidence": "The app is not sure about this. Please check it.",
+    "choose": "Choose",
+    "micHold": "Hold to talk",
+    "micListening": "Listening… release when done",
+    "micHint": "Press and hold, say the sale, then let go",
+    "dismiss": "Dismiss",
+    "clear": "Clear"
+  },
+  "status": {
+    "paid": "Paid",
+    "partlyPaid": "Partly paid",
+    "due": "Due",
+    "cancelled": "Cancelled"
+  },
+  "startup": {
+    "failedTitle": "VoiceLedger could not open your records",
+    "failedBody": "Your data is still on this phone. Close the app and open it again, or try again now."
+  },
+  "errors": {
+    "required": "This is required.",
+    "tooLong": "This is too long.",
+    "invalidPhone": "Enter a valid phone number.",
+    "invalidAmount": "Enter a valid amount.",
+    "invalidQuantity": "Enter a valid quantity.",
+    "invalidPrefix": "Use 1 to 6 capital letters or digits.",
+    "invalidEmail": "Enter a valid email address.",
+    "duplicateName": "This already exists.",
+    "passwordTooShort": "Use at least 8 characters.",
+    "passwordMismatch": "The two passwords are not the same.",
+    "invalid": "Please check this.",
+    "notFound": "This record no longer exists.",
+    "freeLimitReached": "You have used all free invoices for this month. Upgrade to Pro to keep billing."
+  }
+}

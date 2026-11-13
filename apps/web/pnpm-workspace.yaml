@@ -1,0 +1,10 @@
+# pnpm settings for the landing site. The site is a standalone project with its own lockfile;
+# this file holds settings only (there is no `packages` list).
+allowBuilds:
+  '@parcel/watcher': false
+  # Image processing for next/image, which a static export does not use.
+  sharp: false
+  unrs-resolver: false
+minimumReleaseAgeExclude:
+  - prettier@3.10.0
+  - vite@8.3.8

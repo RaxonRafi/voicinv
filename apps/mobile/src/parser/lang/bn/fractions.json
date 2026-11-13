@@ -1,0 +1,107 @@
+{
+  "standalone": {
+    "আধা": {
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    "অর্ধেক": {
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    "হাফ": {
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    "পোয়া": {
+      "value": 0.25,
+      "numerator": 1,
+      "denominator": 4
+    },
+    "পোয়া": {
+      "value": 0.25,
+      "numerator": 1,
+      "denominator": 4
+    },
+    "এক পোয়া": {
+      "value": 0.25,
+      "numerator": 1,
+      "denominator": 4
+    },
+    "এক পোয়া": {
+      "value": 0.25,
+      "numerator": 1,
+      "denominator": 4
+    },
+    "দেড়": {
+      "value": 1.5,
+      "numerator": 3,
+      "denominator": 2
+    },
+    "দেড়": {
+      "value": 1.5,
+      "numerator": 3,
+      "denominator": 2
+    },
+    "আড়াই": {
+      "value": 2.5,
+      "numerator": 5,
+      "denominator": 2
+    },
+    "আড়াই": {
+      "value": 2.5,
+      "numerator": 5,
+      "denominator": 2
+    },
+    "পৌনে এক": {
+      "value": 0.75,
+      "numerator": 3,
+      "denominator": 4
+    },
+    "তিন পোয়া": {
+      "value": 0.75,
+      "numerator": 3,
+      "denominator": 4
+    },
+    "তিন পোয়া": {
+      "value": 0.75,
+      "numerator": 3,
+      "denominator": 4
+    }
+  },
+  "prefixes": {
+    "সোয়া": {
+      "type": "add",
+      "value": 0.25,
+      "numerator": 1,
+      "denominator": 4
+    },
+    "সোয়া": {
+      "type": "add",
+      "value": 0.25,
+      "numerator": 1,
+      "denominator": 4
+    },
+    "পৌনে": {
+      "type": "subtract",
+      "value": 0.25,
+      "numerator": 1,
+      "denominator": 4
+    },
+    "সাড়ে": {
+      "type": "add",
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    "সাড়ে": {
+      "type": "add",
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    }
+  }
+}
+
