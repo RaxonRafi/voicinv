@@ -516,9 +516,12 @@ cd apps/mobile && pnpm install && pnpm start
 - [x] **M7** `parser` module with language packs and fixtures (Node tests only)
 - [x] **M8** Voice feature: SpeechEngine, confirmation screen, corrections, TTS answers
 - [x] **M9** Reports, CSV/PDF export, local backup/restore, biometric lock
+      (still open: daily automatic local backups, keep last 7)
 - [x] **M10** Bluetooth thermal printing
 - [x] **M11** API: auth, users, shops, devices, app-config
 - [ ] **M12** Sync engine + encrypted cloud backups
+      (done: API sync/backups with e2e tests; mobile API client, optional account, sync engine
+      and auto-sync. Open: cloud backup upload/restore in the mobile backup screen)
 - [ ] **M12b** Web dashboard (asked for on 2026-11-13): a signed-in, online-only site where the
       shop owner sees and edits the same synced data through the API. Needs M12. No voice.
 - [ ] **M13** Billing: store purchases, server verification, entitlements, free-tier limits
