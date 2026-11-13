@@ -137,7 +137,7 @@ describe('voice usecases', () => {
         language: 'en',
         tts,
         formatMoney: formatters.money,
-        translate: mockTranslate,
+        translate: mockTranslate as unknown as Parameters<typeof answerVoiceQuery>[0]['translate'],
         now: app.ctx.now,
       });
 
@@ -161,7 +161,7 @@ describe('voice usecases', () => {
         language: 'en',
         tts,
         formatMoney: formatters.money,
-        translate: mockTranslate,
+        translate: mockTranslate as unknown as Parameters<typeof answerVoiceQuery>[0]['translate'],
         now: app.ctx.now,
       });
 
@@ -183,7 +183,7 @@ describe('voice usecases', () => {
         language: 'en',
         tts,
         formatMoney: formatters.money,
-        translate: mockTranslate,
+        translate: mockTranslate as unknown as Parameters<typeof answerVoiceQuery>[0]['translate'],
       });
 
       expect(answer.text).toBe('Customer not found.');
@@ -202,7 +202,7 @@ describe('voice usecases', () => {
         language: 'en',
         tts,
         formatMoney: formatters.money,
-        translate: mockTranslate,
+        translate: mockTranslate as unknown as Parameters<typeof answerVoiceQuery>[0]['translate'],
         now: app.ctx.now,
       });
 
@@ -301,4 +301,3 @@ describe('voice usecases', () => {
     });
   });
 });
-

@@ -7,4 +7,3 @@ export * from './entity-matcher';
 export * from './intent-detector';
 export * from './draft-adapter';
 export * from './parser';
-

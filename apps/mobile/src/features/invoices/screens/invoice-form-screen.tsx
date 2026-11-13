@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { useReducer, useState } from 'react';
 
 import { useLiveQuery } from '@/core/db';
-import { useTranslation } from '@/core/i18n';
+import { isLanguage, useTranslation } from '@/core/i18n';
 import { type ShopContext, useShopContext } from '@/core/services';
 import { Button, EmptyState, Screen, ScreenHeader, showToast, Spinner, TextField } from '@/core/ui';
 import { isDomainError } from '@/core/utils';
@@ -60,7 +60,7 @@ function InvoiceForm({ app, initialDraft, invoiceId, guard }: InvoiceFormProps) 
                 tx,
                 initialDraft,
                 draft,
-                app.shop.defaultLanguage,
+                isLanguage(app.shop.defaultLanguage) ? app.shop.defaultLanguage : 'en',
                 app.ctx.newId,
                 app.ctx.now,
               );

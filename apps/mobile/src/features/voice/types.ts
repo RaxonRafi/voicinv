@@ -49,4 +49,3 @@ export interface VoiceDraftState {
   setPendingDraft: (draft: InvoiceDraftShape | null) => void;
   clearPendingDraft: () => void;
 }
-

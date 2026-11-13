@@ -72,4 +72,3 @@ describe('numbers parser', () => {
     expect(res2?.value).toBe(5000);
   });
 });
-

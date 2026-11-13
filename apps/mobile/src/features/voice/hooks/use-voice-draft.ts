@@ -9,4 +9,3 @@ export const useVoiceDraftStore = create<VoiceDraftState>((set) => ({
   setPendingDraft: (draft: InvoiceDraftShape | null) => set({ pendingDraft: draft }),
   clearPendingDraft: () => set({ pendingDraft: null }),
 }));
-

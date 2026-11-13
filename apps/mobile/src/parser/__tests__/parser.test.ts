@@ -112,4 +112,3 @@ describe('voice parser pipeline', () => {
     expect(draft.payment.type).toBe('FRACTION');
   });
 });
-

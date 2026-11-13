@@ -62,4 +62,3 @@ export class FakeSpeechEngine implements SpeechEngine {
     this.activeCallbacks = null;
   }
 }
-

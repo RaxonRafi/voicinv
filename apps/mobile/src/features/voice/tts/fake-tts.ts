@@ -5,7 +5,7 @@ import { type TTSEngine } from '../types';
 export class FakeTTSEngine implements TTSEngine {
   public lastSpokenText: string | null = null;
   public lastLanguage: LanguageCode | null = null;
-  public spokenHistory: Array<{ text: string; lang: LanguageCode }> = [];
+  public spokenHistory: { text: string; lang: LanguageCode }[] = [];
   public speaking = false;
 
   async isSpeaking(): Promise<boolean> {
@@ -31,4 +31,3 @@ export class FakeTTSEngine implements TTSEngine {
     this.speaking = false;
   }
 }
-

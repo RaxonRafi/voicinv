@@ -77,4 +77,3 @@ export function VoiceSection({ speechEngine, ttsEngine, testID }: VoiceSectionPr
     </Card>
   );
 }
-

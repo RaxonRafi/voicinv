@@ -127,4 +127,3 @@ export class PlatformSpeechEngine implements SpeechEngine {
     this.endSubscription = null;
   }
 }
-

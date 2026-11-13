@@ -12,4 +12,3 @@ export async function parseVoiceTranscript(
   const context = await loadParserContext(orm, language);
   return parseVoice(transcript, context);
 }
-

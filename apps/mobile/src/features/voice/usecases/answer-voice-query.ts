@@ -1,3 +1,5 @@
+import { type TFunction } from 'i18next';
+
 import { type Orm } from '@/core/db';
 import { type ParsedQuery } from '@/parser';
 import { type LanguageCode, type MinorUnits } from '@/shared';
@@ -11,7 +13,7 @@ export interface AnswerQueryOptions {
   language: LanguageCode;
   tts: TTSEngine;
   formatMoney: (amount: MinorUnits) => string;
-  translate: (key: string, options?: Record<string, string | number>) => string;
+  translate: TFunction;
   now?: () => number;
 }
 
@@ -24,7 +26,7 @@ export async function answerVoiceQuery({
   translate: t,
   now = Date.now,
 }: AnswerQueryOptions): Promise<QueryAnswer> {
-  let answerText = '';
+  let answerText: string;
   let amount: MinorUnits | null = null;
 
   switch (query.queryType) {
@@ -91,4 +93,3 @@ export async function answerVoiceQuery({
     amount,
   };
 }
-

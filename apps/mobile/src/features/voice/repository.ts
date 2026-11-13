@@ -50,7 +50,11 @@ export async function recordCorrection(
 ): Promise<void> {
   const trimmedHeard = correction.heardText.trim();
   const trimmedCorrected = correction.correctedText.trim();
-  if (!trimmedHeard || !trimmedCorrected || trimmedHeard.toLowerCase() === trimmedCorrected.toLowerCase()) {
+  if (
+    !trimmedHeard ||
+    !trimmedCorrected ||
+    trimmedHeard.toLowerCase() === trimmedCorrected.toLowerCase()
+  ) {
     return;
   }
 
@@ -191,4 +195,3 @@ export async function loadParserContext(
     language: languageCode,
   };
 }
-

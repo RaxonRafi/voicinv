@@ -73,7 +73,7 @@ export function useVoiceBilling(options: UseVoiceBillingOptions = {}) {
       const text = transcription?.text?.trim() || transcriptRef.current.trim();
       if (!text) {
         setState({ status: 'idle', transcript: '' });
-        showToast(t('voice.unrecognized'), 'warning');
+        showToast(t('voice.unrecognized'), 'info');
         return;
       }
 
@@ -97,9 +97,9 @@ export function useVoiceBilling(options: UseVoiceBillingOptions = {}) {
             params.initialAmount = String(parseResult.amount);
           }
           router.push({
-            pathname: '/payments/new' as unknown as Parameters<typeof router.push>[0],
+            pathname: '/payments/new',
             params,
-          });
+          } as unknown as Parameters<typeof router.push>[0]);
           break;
         }
         case 'QUERY': {
@@ -126,7 +126,16 @@ export function useVoiceBilling(options: UseVoiceBillingOptions = {}) {
       setState({ status: 'idle', transcript: '' });
       showToast(t('common.somethingWrong'), 'danger');
     }
-  }, [language, services.db.orm, services.now, setPendingDraft, shopContext, speechEngine, t, ttsEngine]);
+  }, [
+    language,
+    services.db.orm,
+    services.now,
+    setPendingDraft,
+    shopContext,
+    speechEngine,
+    t,
+    ttsEngine,
+  ]);
 
   const dismissAnswer = useCallback(() => {
     setState({ status: 'idle', transcript: '' });
@@ -146,4 +155,3 @@ export function useVoiceBilling(options: UseVoiceBillingOptions = {}) {
     repeatAnswer,
   };
 }
-
