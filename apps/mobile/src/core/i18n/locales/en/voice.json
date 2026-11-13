@@ -1,0 +1,18 @@
+{
+  "title": "Voice Assistant",
+  "micHold": "Hold to talk",
+  "micListening": "Listening...",
+  "micProcessing": "Processing...",
+  "micHint": "Hold to speak an invoice, payment, or balance query",
+  "unrecognized": "Could not understand speech. Please try again.",
+  "notAvailable": "On-device speech recognition is not available for this language.",
+  "permissionDenied": "Microphone or speech recognition permission was denied.",
+  "queryBalance": "{{name}} owes {{balance}}.",
+  "queryBalanceZero": "{{name}} has no balance due.",
+  "queryCustomerNotFound": "Customer not found.",
+  "querySales": "Today's sales total {{total}}.",
+  "querySalesZero": "No sales recorded yet today.",
+  "repeatAnswer": "Listen again",
+  "dismiss": "Dismiss"
+}
+

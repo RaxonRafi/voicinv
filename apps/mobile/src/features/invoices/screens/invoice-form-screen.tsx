@@ -7,6 +7,7 @@ import { type ShopContext, useShopContext } from '@/core/services';
 import { Button, EmptyState, Screen, ScreenHeader, showToast, Spinner, TextField } from '@/core/ui';
 import { isDomainError } from '@/core/utils';
 import { findCustomer } from '@/features/customers';
+import { detectAndSaveCorrections } from '@/features/voice';
 
 import { InvoiceEditor } from '../components/invoice-editor';
 import {
@@ -52,6 +53,22 @@ function InvoiceForm({ app, initialDraft, invoiceId, guard }: InvoiceFormProps) 
         router.back();
       } else {
         const invoice = await createInvoice(app.ctx, input, guard);
+        if (initialDraft.sourceText) {
+          try {
+            await app.ctx.db.write(async (tx) => {
+              await detectAndSaveCorrections(
+                tx,
+                initialDraft,
+                draft,
+                app.shop.defaultLanguage,
+                app.ctx.newId,
+                app.ctx.now,
+              );
+            });
+          } catch {
+            // Non-fatal correction recording failure
+          }
+        }
         showToast(t('invoices.saved', { number: invoice.invoiceNumber }));
         router.replace({ pathname: '/invoices/[id]', params: { id: invoice.id } });
       }

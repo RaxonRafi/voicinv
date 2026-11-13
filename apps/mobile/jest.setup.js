@@ -48,3 +48,21 @@ jest.mock('expo-router', () => ({
   Redirect: () => null,
   useLocalSearchParams: jest.fn(() => ({})),
 }));
+
+jest.mock('expo-speech', () => ({
+  speak: jest.fn(),
+  stop: jest.fn(async () => undefined),
+  isSpeakingAsync: jest.fn(async () => false),
+}));
+
+jest.mock('expo-speech-recognition', () => ({
+  ExpoSpeechRecognitionModule: {
+    supportsOnDeviceRecognition: jest.fn(() => true),
+    requestPermissionsAsync: jest.fn(async () => ({ granted: true })),
+    getPermissionsAsync: jest.fn(async () => ({ granted: true })),
+    start: jest.fn(),
+    stop: jest.fn(),
+    abort: jest.fn(),
+    addListener: jest.fn(() => ({ remove: jest.fn() })),
+  },
+}));
