@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { type ReactNode, useEffect, useState } from 'react';
 
 import { useTranslation } from '@/core/i18n';
+import { AutoSync } from '@/core/sync';
 import { type AppServices, AppServicesProvider } from '@/core/services';
 import { fontFamily, useTheme } from '@/core/theme';
 import { Button, EmptyState, Screen, ToastHost } from '@/core/ui';
@@ -76,7 +77,10 @@ export function AppRoot({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider value={navigationTheme}>
       {state.status === 'ready' ? (
-        <AppServicesProvider services={state.services}>{children}</AppServicesProvider>
+        <AppServicesProvider services={state.services}>
+          <AutoSync />
+          {children}
+        </AppServicesProvider>
       ) : (
         <StartupFailed
           onRetry={() => {

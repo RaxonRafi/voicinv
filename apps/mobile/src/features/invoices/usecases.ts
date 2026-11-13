@@ -34,6 +34,7 @@ import {
 
 import {
   findInvoice,
+  highestInvoiceSequence,
   findInvoiceWithCustomer,
   insertInvoice,
   insertInvoiceItems,
@@ -88,17 +89,22 @@ async function assertCustomerExists(orm: Orm, customerId: string | null): Promis
 /**
  * Takes the next number of this device's own sequence (AGENTS.md §8.4). The sequence only ever
  * moves forward, so a number is never reused even if the invoice is cancelled later.
+ *
+ * The counter lives in device-local settings, which backups and sync do not carry. After a
+ * restore or a first sync the invoices may already use higher numbers, so the next number is
+ * also kept above every number that already exists for this prefix and device code.
  */
 async function nextInvoiceNumber(tx: Tx): Promise<string> {
   const shop = await findCurrentShop(tx.orm);
   if (!shop) throw new DomainError('noShop');
-  const sequence = (await getCounter(tx.orm, SETTINGS.invoiceSequence)) + 1;
+  const deviceCode = (await getValue(tx.orm, SETTINGS.deviceCode)) ?? DEFAULT_DEVICE_CODE;
+  const sequence =
+    Math.max(
+      await getCounter(tx.orm, SETTINGS.invoiceSequence),
+      await highestInvoiceSequence(tx.orm, shop.invoicePrefix, deviceCode),
+    ) + 1;
   await setValue(tx, SETTINGS.invoiceSequence, String(sequence));
-  return formatInvoiceNumber({
-    shopPrefix: shop.invoicePrefix,
-    deviceCode: (await getValue(tx.orm, SETTINGS.deviceCode)) ?? DEFAULT_DEVICE_CODE,
-    sequence,
-  });
+  return formatInvoiceNumber({ shopPrefix: shop.invoicePrefix, deviceCode, sequence });
 }
 
 function itemRows(

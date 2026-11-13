@@ -1,6 +1,7 @@
 import { isNull } from 'drizzle-orm';
 import { createContext, type ReactNode, use } from 'react';
 
+import { type ApiClient } from '@/core/api';
 import {
   type Database,
   DatabaseProvider,
@@ -22,6 +23,8 @@ export interface AppServices {
   now: () => number;
   newId: () => string;
   device: DeviceIdentity;
+  /** Our backend, for the optional account features only. Never needed by the core loop. */
+  api: ApiClient;
 }
 
 const ServicesContext = createContext<AppServices | null>(null);

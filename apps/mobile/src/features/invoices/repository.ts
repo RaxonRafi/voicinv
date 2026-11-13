@@ -1,4 +1,4 @@
-import { and, asc, count, desc, eq, gte, inArray, isNull, like, lt, or } from 'drizzle-orm';
+import { and, asc, count, desc, eq, gte, inArray, isNull, like, lt, or, sql } from 'drizzle-orm';
 
 import {
   customers,
@@ -188,4 +188,24 @@ export async function listPaymentsForAllocation(
     .from(payments)
     .where(customerIds ? inArray(payments.customerId, [...customerIds]) : undefined)
     .orderBy(asc(payments.date), asc(payments.id));
+}
+
+/**
+ * The highest sequence number already used with this prefix and device code, or 0. Numbers
+ * are zero-padded, so among numbers of equal length the text order is the numeric order.
+ */
+export async function highestInvoiceSequence(
+  orm: Orm,
+  shopPrefix: string,
+  deviceCode: string,
+): Promise<number> {
+  const start = `${shopPrefix}-${deviceCode}-`;
+  const rows = await orm
+    .select({ invoiceNumber: invoices.invoiceNumber })
+    .from(invoices)
+    .where(like(invoices.invoiceNumber, `${start}%`))
+    .orderBy(desc(sql`length(${invoices.invoiceNumber})`), desc(invoices.invoiceNumber))
+    .limit(1);
+  const digits = rows[0]?.invoiceNumber.slice(start.length) ?? '';
+  return /^\d+$/.test(digits) ? Number(digits) : 0;
 }

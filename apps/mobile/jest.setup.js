@@ -41,6 +41,8 @@ jest.mock('@/core/platform', () => ({
   writeCacheFile: jest.fn(async (fileName) => `file:///cache/${fileName}`),
   writeCacheBytes: jest.fn(async (fileName) => `file:///cache/${fileName}`),
   readFileBytes: jest.fn(async () => new Uint8Array()),
+  downloadBytes: jest.fn(async () => new Uint8Array()),
+  devicePlatform: jest.fn(() => 'android'),
   getCurrentAppState: jest.fn(() => 'active'),
   onAppStateChange: jest.fn(() => () => undefined),
 }));

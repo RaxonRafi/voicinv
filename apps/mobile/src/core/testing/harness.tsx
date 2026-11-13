@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react-native';
 import { type ReactElement } from 'react';
 
+import { ApiClient, memorySessionStore } from '@/core/api';
 import { type Database, shops, type WriteContext } from '@/core/db';
 import { createTestDatabase } from '@/core/db/testing/node-sqlite-driver';
 import { initI18n } from '@/core/i18n';
@@ -57,7 +58,14 @@ export async function createTestApp(): Promise<TestApp> {
   const newId = createUuidV7Generator({ now: clock.now, randomBytes: seededRandomBytes() });
   const device = await loadOrCreateDevice(db, newId);
   return {
-    services: { db, now: clock.now, newId, device },
+    services: {
+      db,
+      now: clock.now,
+      newId,
+      device,
+      // No server unless a test brings its own client (see core/sync tests).
+      api: new ApiClient({ baseUrl: null, sessions: memorySessionStore(), now: clock.now }),
+    },
     db,
     clock,
     close: () => db.close(),

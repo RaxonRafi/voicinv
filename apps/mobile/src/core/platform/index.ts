@@ -2,7 +2,7 @@ import { Asset } from 'expo-asset';
 import { File, Paths } from 'expo-file-system';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
-import { AppState, Share } from 'react-native';
+import { AppState, Platform, Share } from 'react-native';
 
 import { FONT_FACE_PLACEHOLDER, PAGE_FORMATS, type PageFormat } from '@/core/documents';
 
@@ -113,9 +113,31 @@ export async function writeCacheBytes(fileName: string, content: Uint8Array): Pr
   return target.uri;
 }
 
+/**
+ * Downloads a URL into the cache and returns its bytes (encrypted cloud backups). Uses the
+ * native downloader, which handles binary content reliably on every React Native version.
+ */
+export async function downloadBytes(
+  url: string,
+  headers: Record<string, string>,
+): Promise<Uint8Array> {
+  const target = new File(Paths.cache, `download-${Date.now()}.bin`);
+  try {
+    const file = await File.downloadFileAsync(url, target, { headers });
+    return await file.bytes();
+  } finally {
+    if (target.exists) target.delete();
+  }
+}
+
 /** Reads a file the user picked (e.g. a backup to restore) as bytes. */
 export function readFileBytes(uri: string): Promise<Uint8Array> {
   return new File(uri).bytes();
+}
+
+/** The operating system, as the API's device registration names it. */
+export function devicePlatform(): 'android' | 'ios' {
+  return Platform.OS === 'ios' ? 'ios' : 'android';
 }
 
 export type AppLifecycleState = 'active' | 'background' | 'inactive';
