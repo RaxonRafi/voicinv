@@ -63,6 +63,59 @@ describe('validateEnv', () => {
     );
   });
 
+  describe('signing secrets', () => {
+    const production = {
+      ...valid,
+      NODE_ENV: 'production',
+      JWT_ACCESS_SECRET: 'a'.repeat(48),
+      JWT_REFRESH_SECRET: 'b'.repeat(48),
+    };
+
+    it('falls back to development secrets outside production', () => {
+      const env = validateEnv({ ...valid, JWT_ACCESS_SECRET: '', JWT_REFRESH_SECRET: '' });
+      expect(env.JWT_ACCESS_SECRET.length).toBeGreaterThanOrEqual(32);
+      expect(env.JWT_REFRESH_SECRET).not.toBe(env.JWT_ACCESS_SECRET);
+      expect(env).toMatchObject({
+        JWT_ACCESS_TTL_SECONDS: 900,
+        JWT_REFRESH_TTL_SECONDS: 2_592_000,
+      });
+    });
+
+    it('accepts private secrets in production', () => {
+      expect(validateEnv(production).JWT_ACCESS_SECRET).toBe('a'.repeat(48));
+    });
+
+    it('refuses to start in production without its own secrets', () => {
+      expect(() => validateEnv({ ...valid, NODE_ENV: 'production' })).toThrow(
+        /JWT_ACCESS_SECRET[\s\S]*JWT_REFRESH_SECRET/,
+      );
+    });
+
+    it('refuses short secrets and identical secrets', () => {
+      expect(() => validateEnv({ ...valid, JWT_ACCESS_SECRET: 'too-short' })).toThrow(
+        /JWT_ACCESS_SECRET/,
+      );
+      expect(() =>
+        validateEnv({ ...production, JWT_REFRESH_SECRET: production.JWT_ACCESS_SECRET }),
+      ).toThrow(/JWT_REFRESH_SECRET/);
+    });
+  });
+
+  describe('app config', () => {
+    it('parses feature flags', () => {
+      expect(
+        validateEnv({ ...valid, FEATURE_FLAGS: 'sync=true, cloudBackup=false' }),
+      ).toMatchObject({ FEATURE_FLAGS: { sync: true, cloudBackup: false } });
+      expect(validateEnv(valid).FEATURE_FLAGS).toEqual({});
+    });
+
+    it('rejects malformed feature flags and versions', () => {
+      expect(() => validateEnv({ ...valid, FEATURE_FLAGS: 'sync=yes' })).toThrow(/FEATURE_FLAGS/);
+      expect(() => validateEnv({ ...valid, FEATURE_FLAGS: 'sync' })).toThrow(/FEATURE_FLAGS/);
+      expect(() => validateEnv({ ...valid, MIN_APP_VERSION: '1.0' })).toThrow(/MIN_APP_VERSION/);
+    });
+  });
+
   it('reports every problem at once', () => {
     expect(() => validateEnv({ PORT: 'abc' })).toThrow(
       /PORT[\s\S]*DATABASE_URL[\s\S]*CORS_ORIGINS/,

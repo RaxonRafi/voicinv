@@ -1,7 +1,7 @@
 import { type InvoiceItemRow, type InvoiceRow } from '@/features/invoices';
 import { type Formatters } from '@/core/i18n';
 
-import { EscPosBuilder, PAPER_COLUMNS } from '../escpos/encoder';
+import { EscPosBuilder } from '../escpos/encoder';
 import { type PaperSize } from '../types';
 
 export interface FormatInvoiceReceiptInput {

@@ -40,14 +40,14 @@ describe('printing feature', () => {
       const builder58 = new EscPosBuilder();
       builder58.twoColumns('Total', '500', '58mm');
       const text58 = new TextDecoder().decode(builder58.build());
-      // First line should be padded to 32 chars + newline
-      const line58 = text58.split('\n')[0].replace(/^[\x00-\x1f]+/, '');
+      // First line should be padded to 32 chars + newline (excluding 2-byte ESC @ prefix)
+      const line58 = text58.split('\n')[0]?.substring(2) ?? '';
       expect(line58.length).toBe(PAPER_COLUMNS['58mm']);
 
       const builder80 = new EscPosBuilder();
       builder80.twoColumns('Total', '500', '80mm');
       const text80 = new TextDecoder().decode(builder80.build());
-      const line80 = text80.split('\n')[0].replace(/^[\x00-\x1f]+/, '');
+      const line80 = text80.split('\n')[0]?.substring(2) ?? '';
       expect(line80.length).toBe(PAPER_COLUMNS['80mm']);
     });
   });
@@ -56,8 +56,22 @@ describe('printing feature', () => {
     it('converts pixel buffer into ESC/POS GS v 0 raster command', () => {
       // 8x2 pixels (1 byte wide, 2 lines high)
       const pixels = new Uint8Array([
-        0, 255, 0, 255, 0, 255, 0, 255, // line 1: black & white alternating
-        255, 255, 255, 255, 255, 255, 255, 255, // line 2: all white
+        0,
+        255,
+        0,
+        255,
+        0,
+        255,
+        0,
+        255, // line 1: black & white alternating
+        255,
+        255,
+        255,
+        255,
+        255,
+        255,
+        255,
+        255, // line 2: all white
       ]);
 
       const bytes = convertToEscPosRaster(
@@ -155,6 +169,8 @@ describe('printing feature', () => {
       expect(devices.length).toBeGreaterThan(0);
 
       const targetDevice = devices[0];
+      expect(targetDevice).toBeDefined();
+      if (!targetDevice) throw new Error('No devices returned');
       const connected = await store.connect(targetDevice);
       expect(connected).toBe(true);
       expect(usePrinterStore.getState().status).toBe('connected');

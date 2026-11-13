@@ -39,6 +39,8 @@ jest.mock('@/core/platform', () => ({
   htmlToPdf: jest.fn(async (_html, fileName) => `file:///cache/${fileName}.pdf`),
   printHtml: jest.fn(async () => undefined),
   writeCacheFile: jest.fn(async (fileName) => `file:///cache/${fileName}`),
+  getCurrentAppState: jest.fn(() => 'active'),
+  onAppStateChange: jest.fn(() => () => undefined),
 }));
 
 // Navigation is replaced by spies: screens are tested for what they do, not for routing itself.

@@ -11,8 +11,6 @@ export class FakePrinterDriver implements PrinterDriver {
   public shouldFailPrint = false;
 
   async scan(): Promise<BluetoothDevice[]> {
-    // Simulate short discovery delay
-    await new Promise((r) => setTimeout(r, 20));
     return [...this.mockDevices];
   }
 

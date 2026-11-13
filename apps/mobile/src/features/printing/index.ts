@@ -23,7 +23,4 @@ export {
   type PrinterDriver,
   type PrinterSettings,
 } from './types';
-export {
-  formatInvoiceEscPos,
-  type FormatInvoiceReceiptInput,
-} from './usecases/format-receipt';
+export { formatInvoiceEscPos, type FormatInvoiceReceiptInput } from './usecases/format-receipt';

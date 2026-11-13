@@ -57,7 +57,18 @@ describe('API foundation (e2e)', () => {
 
     expect(response.status).toBe(200);
     expect(Object.keys(response.body.paths)).toEqual(
-      expect.arrayContaining(['/api/v1/waitlist', '/api/v1/health']),
+      expect.arrayContaining([
+        '/api/v1/waitlist',
+        '/api/v1/health',
+        '/api/v1/app-config',
+        '/api/v1/auth/register',
+        '/api/v1/auth/login',
+        '/api/v1/auth/refresh',
+        '/api/v1/auth/logout',
+        '/api/v1/auth/recover',
+        '/api/v1/me',
+        '/api/v1/devices',
+      ]),
     );
   });
 });

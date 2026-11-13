@@ -1,4 +1,5 @@
 // Public API of @voiceledger/shared.
+export * from './backup/format.js';
 export * from './constants.js';
 export * from './format/date-format.js';
 export * from './format/number-format.js';

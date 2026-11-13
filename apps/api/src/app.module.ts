@@ -11,7 +11,12 @@ import {
 } from './common/index.js';
 import { type AppConfigService, validateEnv } from './config/index.js';
 import { DatabaseModule } from './database/database.module.js';
+import { AppConfigModule } from './modules/app-config/index.js';
+import { AuthModule } from './modules/auth/index.js';
+import { BackupsModule } from './modules/backups/index.js';
+import { DevicesModule } from './modules/devices/index.js';
 import { HealthModule } from './modules/health/index.js';
+import { SyncModule } from './modules/sync/index.js';
 import { WaitlistModule } from './modules/waitlist/index.js';
 
 @Module({
@@ -45,6 +50,11 @@ import { WaitlistModule } from './modules/waitlist/index.js';
     }),
     DatabaseModule,
     HealthModule,
+    AppConfigModule,
+    AuthModule,
+    DevicesModule,
+    SyncModule,
+    BackupsModule,
     WaitlistModule,
   ],
   providers: [

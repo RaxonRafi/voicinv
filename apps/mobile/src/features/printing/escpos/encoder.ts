@@ -44,8 +44,8 @@ export class EscPosBuilder {
   text(str: string): this {
     const encoder = new TextEncoder();
     const bytes = encoder.encode(str);
-    for (let i = 0; i < bytes.length; i++) {
-      this.buffer.push(bytes[i]);
+    for (const b of bytes) {
+      this.buffer.push(b);
     }
     return this;
   }
@@ -88,8 +88,8 @@ export class EscPosBuilder {
     const yH = (heightPx >> 8) & 0xff;
 
     this.buffer.push(0x1d, 0x76, 0x30, 0x00, xL, xH, yL, yH);
-    for (let i = 0; i < data.length; i++) {
-      this.buffer.push(data[i]);
+    for (const b of data) {
+      this.buffer.push(b);
     }
     return this;
   }

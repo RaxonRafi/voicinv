@@ -51,6 +51,10 @@ export const recoverRequestSchema = z.strictObject({
 });
 export type RecoverRequest = z.infer<typeof recoverRequestSchema>;
 
+/** The code just used is spent; this is the new one for the user to write down. */
+export const recoverResponseSchema = z.object({ recoveryCode: z.string() });
+export type RecoverResponse = z.infer<typeof recoverResponseSchema>;
+
 export const authTokensSchema = z.object({
   accessToken: z.string(),
   refreshToken: z.string(),

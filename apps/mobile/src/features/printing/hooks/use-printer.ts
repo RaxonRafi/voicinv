@@ -1,11 +1,7 @@
 import { create } from 'zustand';
 
 import { getPrinterDriver } from '../driver';
-import {
-  type BluetoothDevice,
-  type PaperSize,
-  type PrinterConnectionStatus,
-} from '../types';
+import { type BluetoothDevice, type PaperSize, type PrinterConnectionStatus } from '../types';
 
 interface PrinterStoreState {
   status: PrinterConnectionStatus;
@@ -22,7 +18,7 @@ interface PrinterStoreState {
   printData: (data: Uint8Array) => Promise<boolean>;
 }
 
-export const usePrinterStore = create<PrinterStoreState>((set, get) => ({
+export const usePrinterStore = create<PrinterStoreState>((set) => ({
   status: 'disconnected',
   connectedDevice: null,
   devices: [],

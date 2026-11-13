@@ -31,7 +31,8 @@ export const FREE_INVOICES_PER_MONTH = 30;
 /** Automatic local backups kept on the device. */
 export const LOCAL_BACKUPS_TO_KEEP = 7;
 
-export const PLATFORMS = ['android', 'ios'] as const;
+/** `web` is the signed-in web dashboard, which registers as a device like a phone does. */
+export const PLATFORMS = ['android', 'ios', 'web'] as const;
 export type Platform = (typeof PLATFORMS)[number];
 
 /** Field length limits shared by forms, the local database and the API. */

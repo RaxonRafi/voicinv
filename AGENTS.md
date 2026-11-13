@@ -91,7 +91,8 @@ Read **§1 Hard constraints**, **§5 Repository structure**, **§6 Modular archi
 | Framework  | NestJS                                                                                 |
 | Database   | PostgreSQL                                                                             |
 | ORM        | TypeORM (migrations only, `synchronize: false`)                                        |
-| Auth       | JWT access + refresh tokens, Argon2 password hashing                                   |
+| Runtime    | Node.js 24.7 or newer (Argon2 comes from Node's built-in `crypto`)                     |
+| Auth       | JWT access + rotating refresh tokens (stored hashed), Argon2id password hashing        |
 | Validation | `class-validator` DTOs + global `ValidationPipe` (`whitelist`, `forbidNonWhitelisted`) |
 | Config     | `@nestjs/config` with schema validation at startup                                     |
 | Docs       | `@nestjs/swagger` (OpenAPI)                                                            |
@@ -466,7 +467,7 @@ OpenAPI docs served at `/api/docs` in non-production environments.
 ### Later (do not build unless asked)
 
 Supplier ledger; expenses and profit view; stock tracking; barcode scanning; staff roles;
-multiple shops; more languages; whisper.rn engine; iOS release; web dashboard.
+multiple shops; more languages; whisper.rn engine; iOS release.
 
 ### Out of scope
 
@@ -491,6 +492,12 @@ cd apps/web && pnpm install && pnpm dev
 cd apps/mobile && pnpm install && pnpm start
 ```
 
+- **Android builds on Windows:** `pnpm android` (in `apps/mobile`) builds and installs the app on
+  a running emulator or connected phone. Two settings keep the C++ build inside Windows'
+  260-character path limit; do not remove them: `nodeLinker: hoisted` in
+  `apps/mobile/pnpm-workspace.yaml`, and the `plugins/with-short-native-build-dir.cjs` Expo
+  config plugin, which puts CMake build folders in `C:\vl-cxx` (override with
+  `VOICELEDGER_CXX_DIR`; safe to delete).
 - Each app has `.env.example`; never commit real `.env` files.
 - API config is validated at startup; the app refuses to start with missing variables.
 
@@ -509,9 +516,11 @@ cd apps/mobile && pnpm install && pnpm start
 - [x] **M7** `parser` module with language packs and fixtures (Node tests only)
 - [x] **M8** Voice feature: SpeechEngine, confirmation screen, corrections, TTS answers
 - [x] **M9** Reports, CSV/PDF export, local backup/restore, biometric lock
-- [ ] **M10** Bluetooth thermal printing
-- [ ] **M11** API: auth, users, shops, devices, app-config
+- [x] **M10** Bluetooth thermal printing
+- [x] **M11** API: auth, users, shops, devices, app-config
 - [ ] **M12** Sync engine + encrypted cloud backups
+- [ ] **M12b** Web dashboard (asked for on 2026-11-13): a signed-in, online-only site where the
+      shop owner sees and edits the same synced data through the API. Needs M12. No voice.
 - [ ] **M13** Billing: store purchases, server verification, entitlements, free-tier limits
 - [ ] **M14** (optional) whisper.rn engine with downloadable model packs
 

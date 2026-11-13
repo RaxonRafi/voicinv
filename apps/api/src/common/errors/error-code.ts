@@ -10,6 +10,19 @@ export const ErrorCode = {
   RATE_LIMITED: 'RATE_LIMITED',
   SERVICE_UNAVAILABLE: 'SERVICE_UNAVAILABLE',
   INTERNAL_ERROR: 'INTERNAL_ERROR',
+
+  /** Wrong identifier or password. Deliberately the same for unknown accounts. */
+  INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
+  /** The phone number or email already has an account. */
+  IDENTIFIER_TAKEN: 'IDENTIFIER_TAKEN',
+  /** The refresh token is unknown, expired or revoked: the user must sign in again. */
+  INVALID_REFRESH_TOKEN: 'INVALID_REFRESH_TOKEN',
+  /** Wrong identifier or recovery code. */
+  INVALID_RECOVERY_CODE: 'INVALID_RECOVERY_CODE',
+  /** A push tried to change or delete a financial record; those can only be added. */
+  APPEND_ONLY_VIOLATION: 'APPEND_ONLY_VIOLATION',
+  /** The uploaded backup is not an encrypted VoiceLedger backup, or arrived damaged. */
+  INVALID_BACKUP: 'INVALID_BACKUP',
 } as const;
 
 export type ErrorCode = (typeof ErrorCode)[keyof typeof ErrorCode];

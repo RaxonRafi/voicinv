@@ -6,7 +6,7 @@
  */
 module.exports = {
   preset: 'jest-expo',
-  roots: ['<rootDir>/src', '<rootDir>/design-tokens'],
+  roots: ['<rootDir>/src', '<rootDir>/design-tokens', '<rootDir>/plugins'],
   testMatch: ['**/__tests__/**/*.test.ts', '**/__tests__/**/*.test.tsx'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',

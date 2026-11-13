@@ -7,6 +7,8 @@ import { type AppConfigService } from './config/index.js';
 
 export const API_PREFIX = 'api/v1';
 export const DOCS_PATH = 'api/docs';
+/** Largest JSON request body accepted (a full sync push fits comfortably). */
+export const JSON_BODY_LIMIT = '4mb';
 
 /**
  * HTTP-level setup shared by `main.ts` and the e2e tests, so tests exercise the same prefix,
@@ -30,10 +32,19 @@ export function configureApp(app: NestExpressApplication): void {
             'Success responses are `{ data }`; errors are `{ error: { code, message, details? } }`.',
         )
         .setVersion('1')
+        .addBearerAuth()
         .build(),
     );
     SwaggerModule.setup(DOCS_PATH, app, document);
   }
+
+  // A sync push carries up to SYNC_PUSH_MAX_RECORDS records, so JSON bodies may be larger
+  // than Express' 100 kB default. Encrypted backups arrive as raw bytes.
+  app.useBodyParser('json', { limit: JSON_BODY_LIMIT });
+  app.useBodyParser('raw', {
+    type: 'application/octet-stream',
+    limit: config.get('BACKUP_MAX_BYTES', { infer: true }),
+  });
 
   app.set('trust proxy', config.get('TRUST_PROXY', { infer: true }));
   app.disable('x-powered-by');

@@ -2,6 +2,12 @@ allowBuilds:
   '@parcel/watcher': false
 # pnpm settings for the mobile app. The app is a standalone project with its own lockfile; this
 # file holds settings only (there is no `packages` list).
+
+# Flat node_modules, as Expo recommends for pnpm. pnpm's default nested layout
+# (node_modules/.pnpm/<name+hash>/node_modules/<name>) adds about 80 characters to every native
+# library path, which pushes the Android C++ build past Windows' 260-character path limit
+# ("ninja: error: manifest 'build.ninja' still dirty after 100 tries").
+nodeLinker: hoisted
 minimumReleaseAgeExclude:
   - prettier@3.10.0
   - '@expo/cli@58.1.20'

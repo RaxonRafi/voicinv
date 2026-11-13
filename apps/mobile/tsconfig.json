@@ -14,6 +14,13 @@
     },
     "types": ["jest", "node"]
   },
-  "include": ["src", "design-tokens", ".expo/types/**/*.ts", "expo-env.d.ts", "*.config.js"],
+  "include": [
+    "src",
+    "design-tokens",
+    "plugins",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts",
+    "*.config.js"
+  ],
   "exclude": ["node_modules"]
 }

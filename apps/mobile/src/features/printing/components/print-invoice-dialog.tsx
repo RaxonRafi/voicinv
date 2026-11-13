@@ -3,17 +3,16 @@ import { useState } from 'react';
 import { useTranslation } from '@/core/i18n';
 import { type ShopContext } from '@/core/services';
 import {
+  BottomSheet,
   Box,
   Button,
   Card,
-  Dialog,
   Divider,
   Icon,
   ListItem,
   Row,
   Select,
   showToast,
-  Spinner,
   Text,
 } from '@/core/ui';
 import { type InvoiceDetails } from '@/features/invoices';
@@ -29,12 +28,7 @@ export interface PrintInvoiceDialogProps {
   onClose: () => void;
 }
 
-export function PrintInvoiceDialog({
-  app,
-  details,
-  visible,
-  onClose,
-}: PrintInvoiceDialogProps) {
+export function PrintInvoiceDialog({ app, details, visible, onClose }: PrintInvoiceDialogProps) {
   const { t } = useTranslation();
   const {
     status,
@@ -87,7 +81,7 @@ export function PrintInvoiceDialog({
   };
 
   return (
-    <Dialog
+    <BottomSheet
       visible={visible}
       title={t('printing.title')}
       onClose={onClose}
@@ -169,6 +163,6 @@ export function PrintInvoiceDialog({
           </Box>
         </Row>
       </Box>
-    </Dialog>
+    </BottomSheet>
   );
 }

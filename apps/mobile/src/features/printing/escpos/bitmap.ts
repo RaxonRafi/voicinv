@@ -21,7 +21,7 @@ export interface BitmapRasterInput {
  */
 export function convertToEscPosRaster(
   input: BitmapRasterInput,
-  paper: PaperSize = '58mm',
+  _paper: PaperSize = '58mm',
 ): Uint8Array {
   const { width, height, data, threshold = 128 } = input;
   const isRgba = data.length >= width * height * 4;
@@ -33,21 +33,22 @@ export function convertToEscPosRaster(
       let luminance: number;
       if (isRgba) {
         const offset = (y * width + x) * 4;
-        const r = data[offset];
-        const g = data[offset + 1];
-        const b = data[offset + 2];
-        const a = data[offset + 3];
+        const r = data[offset] ?? 0;
+        const g = data[offset + 1] ?? 0;
+        const b = data[offset + 2] ?? 0;
+        const a = data[offset + 3] ?? 255;
         // Treat transparent pixels as white
         luminance = a < 128 ? 255 : (r * 299 + g * 587 + b * 114) / 1000;
       } else {
-        luminance = data[y * width + x];
+        luminance = data[y * width + x] ?? 255;
       }
 
       // If darker than threshold, mark bit as 1 (black)
       if (luminance < threshold) {
         const byteIndex = y * widthBytes + (x >> 3);
         const bitIndex = 7 - (x & 7);
-        rasterBytes[byteIndex] |= 1 << bitIndex;
+        const currentByte = rasterBytes[byteIndex] ?? 0;
+        rasterBytes[byteIndex] = currentByte | (1 << bitIndex);
       }
     }
   }

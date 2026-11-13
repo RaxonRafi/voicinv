@@ -85,7 +85,8 @@
           "androidSpeechServicePackages": ["com.google.android.googlequicksearchbox"]
         }
       ],
-      "expo-asset"
+      "expo-asset",
+      "./plugins/with-short-native-build-dir.cjs"
     ],
     "experiments": {
       "typedRoutes": true,

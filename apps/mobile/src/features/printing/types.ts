@@ -1,10 +1,6 @@
 export type PaperSize = '58mm' | '80mm';
 
-export type PrinterConnectionStatus =
-  | 'disconnected'
-  | 'connecting'
-  | 'connected'
-  | 'error';
+export type PrinterConnectionStatus = 'disconnected' | 'connecting' | 'connected' | 'error';
 
 export interface BluetoothDevice {
   id: string;
