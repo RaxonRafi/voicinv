@@ -11,10 +11,13 @@
 //   1. Every Gradle module's `.cxx` folder moves to <system drive>\vl-cxx\<module>. Set the
 //      VOICELEDGER_CXX_DIR environment variable to use another folder. It only holds build
 //      output and can be deleted at any time.
-//   2. CMake's object path limit goes back to a Windows-safe 240 characters (Expo raises it to
-//      1024), so CMake shortens object file names that would not fit. Some generated file
-//      names are over 120 characters long on their own. An explicit
-//      `expo.android.cmakeObjectPathMax` Gradle property still wins.
+//   2. CMake's object path limit goes back to a Windows-safe 250 characters (Expo raises it to
+//      1024), so CMake shortens object file names that would not fit. CMake can only hash the
+//      folders of a path, never the file name, and some generated file names are over 130
+//      characters on their own (react-native-iap's Nitro variants): with 240 the shortened
+//      path still did not fit, so CMake kept the full one and the build failed. 250 leaves
+//      room under Windows' 260 for the ".d" files ninja writes next to each object. An
+//      explicit `expo.android.cmakeObjectPathMax` Gradle property still wins.
 //
 // `android/` is generated (continuous native generation), so this has to be a plugin: it is
 // re-applied whenever `expo prebuild` or `expo run:android` regenerates the project.
@@ -27,7 +30,7 @@ if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
   // Expo raises CMake's object path limit to 1024, which needs a ninja with long-path support.
   // A Windows-safe limit makes CMake shorten (hash) object file names that would not fit.
   if (!project.hasProperty('expo.android.cmakeObjectPathMax')) {
-    project.ext.set('expo.android.cmakeObjectPathMax', '240')
+    project.ext.set('expo.android.cmakeObjectPathMax', '250')
   }
   def cxxRoot = new File(System.getenv('VOICELEDGER_CXX_DIR') ?: "\${System.getenv('SystemDrive') ?: 'C:'}\\\\vl-cxx")
   subprojects { module ->
