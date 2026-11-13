@@ -10,6 +10,6 @@ export async function parseVoiceTranscript(
   language: LanguageCode,
 ): Promise<ParseResult> {
   const context = await loadParserContext(orm, language);
-  return parseVoice(transcript, context, language);
+  return parseVoice(transcript, context);
 }
 

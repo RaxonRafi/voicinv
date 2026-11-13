@@ -122,8 +122,8 @@ describe('VoiceSection and useVoiceBilling', () => {
       expect(screen.getByTestId('voice-query-answer')).toBeOnTheScreen();
     });
 
-    expect(screen.getByText('Karim owes ৳500.00.')).toBeOnTheScreen();
-    expect(fakeTts.lastSpokenText).toBe('Karim owes ৳500.00.');
+    expect(screen.getByText('Karim owes ৳500.')).toBeOnTheScreen();
+    expect(fakeTts.lastSpokenText).toBe('Karim owes ৳500.');
 
     // Test repeating answer
     const repeatButton = screen.getByTestId('voice-repeat-answer');

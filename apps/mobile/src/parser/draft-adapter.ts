@@ -28,3 +28,5 @@ export function draftFromParsedSale(sale: ParsedSale): InvoiceDraftShape {
     sourceText: sale.sourceText,
   };
 }
+
+export const parsedSaleToDraft = draftFromParsedSale;

@@ -69,7 +69,12 @@ describe('voice usecases', () => {
         expect(res.items[0]?.name).toBe('Rice');
         expect(res.items[0]?.productId).toBe(productId);
         expect(res.items[0]?.qtyMilli).toBe(2000);
-        expect(res.payment).toEqual({ type: 'FRACTION', numerator: 1, denominator: 2 });
+        expect(res.payment).toEqual({
+          type: 'FRACTION',
+          numerator: 1,
+          denominator: 2,
+          value: 0.5,
+        });
       }
     });
 
@@ -136,10 +141,10 @@ describe('voice usecases', () => {
         now: app.ctx.now,
       });
 
-      expect(answer.text).toBe('Karim owes ৳750.00.');
+      expect(answer.text).toBe('Karim owes ৳750.');
       expect(answer.spoken).toBe(true);
       expect(answer.amount).toBe(75000);
-      expect(tts.lastSpokenText).toBe('Karim owes ৳750.00.');
+      expect(tts.lastSpokenText).toBe('Karim owes ৳750.');
     });
 
     it('answers customer balance query with zero balance', async () => {
