@@ -1,0 +1,18 @@
+{
+  "title": "Backups",
+  "exportTitle": "Export Backup",
+  "exportHint": "Save an encrypted copy of all your records",
+  "exportButton": "Create Backup File",
+  "restoreTitle": "Restore Backup",
+  "restoreHint": "Restore from a previous VoiceLedger backup file",
+  "restoreButton": "Choose Backup File",
+  "confirmRestoreTitle": "Restore this backup?",
+  "confirmRestoreMessage": "Restoring will replace all current shop records with the backup file data. Are you sure?",
+  "confirmRestore": "Restore Now",
+  "cancel": "Cancel",
+  "exportSuccess": "Backup created successfully",
+  "restoreSuccess": "Database restored successfully",
+  "invalidFile": "Selected file is not a valid VoiceLedger backup",
+  "lastBackup": "Last backup: {{date}}",
+  "noBackups": "No local backups created yet"
+}

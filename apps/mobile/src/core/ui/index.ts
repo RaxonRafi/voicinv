@@ -1,6 +1,7 @@
 // The mobile design system. Feature and route code builds UI from these components only and
 // never imports from react-native directly (AGENTS.md §7.2 rule 2). If something is missing,
 // add it here first. Every component takes design tokens, not raw colors or sizes.
+export { useUi } from './use-ui';
 export {
   Badge,
   type BadgeProps,

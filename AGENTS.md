@@ -507,8 +507,8 @@ cd apps/mobile && pnpm install && pnpm start
 - [x] **M5** Manual invoice creation, numbering, PDF, share sheet
 - [x] **M6** Ledger: payments, balances from entries, cancel/edit with audit trail, statements
 - [x] **M7** `parser` module with language packs and fixtures (Node tests only)
-- [ ] **M8** Voice feature: SpeechEngine, confirmation screen, corrections, TTS answers
-- [ ] **M9** Reports, CSV/PDF export, local backup/restore, biometric lock
+- [x] **M8** Voice feature: SpeechEngine, confirmation screen, corrections, TTS answers
+- [x] **M9** Reports, CSV/PDF export, local backup/restore, biometric lock
 - [ ] **M10** Bluetooth thermal printing
 - [ ] **M11** API: auth, users, shops, devices, app-config
 - [ ] **M12** Sync engine + encrypted cloud backups

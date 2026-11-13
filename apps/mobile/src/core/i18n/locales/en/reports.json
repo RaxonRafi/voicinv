@@ -1,0 +1,21 @@
+{
+  "title": "Business Reports",
+  "today": "Today",
+  "thisWeek": "This Week",
+  "thisMonth": "This Month",
+  "summary": "Sales Summary",
+  "totalSales": "Total Sales",
+  "totalPaid": "Collected",
+  "totalDue": "Outstanding Due",
+  "invoiceCount": "Invoices",
+  "topProducts": "Top Products",
+  "topDebtors": "Top Debtors",
+  "soldQuantity": "Sold: {{quantity}} {{unit}}",
+  "noData": "No activity recorded for this period.",
+  "export": "Export Report",
+  "exportCsv": "Export as CSV",
+  "exportPdf": "Export as PDF",
+  "exported": "Report exported successfully",
+  "documentTitle": "{{shopName}} - Sales Report ({{period}})",
+  "generatedAt": "Generated on {{date}}"
+}

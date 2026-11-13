@@ -3,7 +3,7 @@ import { VoiceSection } from '@/features/voice';
 
 export default function HomeRoute() {
   return (
-    <HomeScreen>
+    <HomeScreen showReports>
       <VoiceSection />
     </HomeScreen>
   );

@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router';
 
 import { AppRoot, useStackScreenOptions } from '@/core/app';
+import { AppLockOverlay } from '@/features/security';
 
 function RootStack() {
   return <Stack screenOptions={useStackScreenOptions()} />;
@@ -9,7 +10,9 @@ function RootStack() {
 export default function RootLayout() {
   return (
     <AppRoot>
-      <RootStack />
+      <AppLockOverlay>
+        <RootStack />
+      </AppLockOverlay>
     </AppRoot>
   );
 }

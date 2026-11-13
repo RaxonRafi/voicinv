@@ -66,3 +66,24 @@ jest.mock('expo-speech-recognition', () => ({
     addListener: jest.fn(() => ({ remove: jest.fn() })),
   },
 }));
+
+jest.mock('expo-local-authentication', () => ({
+  hasHardwareAsync: jest.fn(async () => true),
+  isEnrolledAsync: jest.fn(async () => true),
+  authenticateAsync: jest.fn(async () => ({ success: true })),
+}));
+
+jest.mock('expo-crypto', () => {
+  const crypto = require('crypto');
+  return {
+    CryptoDigestAlgorithm: { SHA256: 'SHA-256' },
+    digestStringAsync: jest.fn(async (_algo, str) =>
+      crypto.createHash('sha256').update(str).digest('hex'),
+    ),
+    randomUUID: jest.fn(() => crypto.randomUUID()),
+  };
+});
+
+jest.mock('expo-document-picker', () => ({
+  getDocumentAsync: jest.fn(async () => ({ canceled: true })),
+}));

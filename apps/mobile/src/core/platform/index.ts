@@ -2,7 +2,7 @@ import { Asset } from 'expo-asset';
 import { File, Paths } from 'expo-file-system';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
-import { Share } from 'react-native';
+import { AppState, Share } from 'react-native';
 
 import { FONT_FACE_PLACEHOLDER, PAGE_FORMATS, type PageFormat } from '@/core/documents';
 
@@ -102,4 +102,22 @@ export async function writeCacheFile(fileName: string, content: string): Promise
   target.create();
   await target.write(content);
   return target.uri;
+}
+
+export type AppLifecycleState = 'active' | 'background' | 'inactive';
+
+export function getCurrentAppState(): AppLifecycleState {
+  const current = AppState.currentState;
+  return current === 'background' || current === 'inactive' ? current : 'active';
+}
+
+export function onAppStateChange(listener: (state: AppLifecycleState) => void): () => void {
+  const subscription = AppState.addEventListener('change', (nextState) => {
+    if (nextState === 'active' || nextState === 'background' || nextState === 'inactive') {
+      listener(nextState);
+    }
+  });
+  return () => {
+    subscription.remove();
+  };
 }

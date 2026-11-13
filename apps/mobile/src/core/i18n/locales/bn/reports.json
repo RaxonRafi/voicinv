@@ -1,0 +1,21 @@
+{
+  "title": "ব্যবসার রিপোর্ট",
+  "today": "আজকে",
+  "thisWeek": "এই সপ্তাহে",
+  "thisMonth": "এই মাসে",
+  "summary": "বিক্রির সারসংক্ষেপ",
+  "totalSales": "মোট বিক্রি",
+  "totalPaid": "আদায় হয়েছে",
+  "totalDue": "বাকি রয়েছে",
+  "invoiceCount": "মোট ইনভয়েস",
+  "topProducts": "শীর্ষ পণ্যসমূহ",
+  "topDebtors": "সর্বোচ্চ দেনাদার",
+  "soldQuantity": "বিক্রি: {{quantity}} {{unit}}",
+  "noData": "এই সময়ের জন্য কোনো লেনদেন পাওয়া যায়নি।",
+  "export": "রিপোর্ট পাঠান",
+  "exportCsv": "CSV হিসেবে পাঠান",
+  "exportPdf": "PDF হিসেবে পাঠান",
+  "exported": "রিপোর্ট সফলভাবে প্রস্তুত হয়েছে",
+  "documentTitle": "{{shopName}} - বিক্রির রিপোর্ট ({{period}})",
+  "generatedAt": "তৈরির তারিখ: {{date}}"
+}
