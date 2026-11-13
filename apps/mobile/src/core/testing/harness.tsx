@@ -52,10 +52,11 @@ export interface TestApp {
 }
 
 /** A started app without a shop: database migrated, device identity created. */
-export async function createTestApp(): Promise<TestApp> {
+/** `seed` gives a test phone its own IDs, for tests that use several phones at once. */
+export async function createTestApp(seed = 1): Promise<TestApp> {
   const db = await createTestDatabase();
   const clock = createTestClock();
-  const newId = createUuidV7Generator({ now: clock.now, randomBytes: seededRandomBytes() });
+  const newId = createUuidV7Generator({ now: clock.now, randomBytes: seededRandomBytes(seed) });
   const device = await loadOrCreateDevice(db, newId);
   return {
     services: {
@@ -79,8 +80,11 @@ export interface TestShopApp extends TestApp {
 }
 
 /** A started app with one shop ("Rahim Store", BDT, prefix RS), ready for use cases. */
-export async function createTestShopApp(language: LanguageCode = 'en'): Promise<TestShopApp> {
-  const app = await createTestApp();
+export async function createTestShopApp(
+  language: LanguageCode = 'en',
+  seed = 1,
+): Promise<TestShopApp> {
+  const app = await createTestApp(seed);
   const { services, db, clock } = app;
   const shopId = services.newId();
   await db.write(async (tx) => {

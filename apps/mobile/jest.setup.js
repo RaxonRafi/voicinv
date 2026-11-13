@@ -112,6 +112,10 @@ jest.mock('expo-crypto', () => {
     ),
     randomUUID: jest.fn(() => crypto.randomUUID()),
     getRandomBytes: jest.fn((count) => new Uint8Array(crypto.randomBytes(count))),
+    digest: jest.fn(async (_algo, data) => {
+      const hash = crypto.createHash('sha256').update(Buffer.from(data)).digest();
+      return hash.buffer.slice(hash.byteOffset, hash.byteOffset + hash.byteLength);
+    }),
     AESEncryptionKey,
     AESSealedData,
     aesEncryptAsync: jest.fn(async (plaintext, key, options) => {

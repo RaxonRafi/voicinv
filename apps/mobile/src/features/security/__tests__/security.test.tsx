@@ -159,7 +159,7 @@ describe('AppLockOverlay', () => {
     // Covered, but still there underneath: nothing the user was doing is lost.
     expect(screen.getByTestId('records', { includeHiddenElements: true })).toBeTruthy();
 
-    fireEvent.press(screen.getByTestId('app-lock-unlock-button'));
+    await fireEvent.press(screen.getByTestId('app-lock-unlock-button'));
     await waitFor(() => expect(screen.queryByTestId('app-lock-screen')).toBeNull());
 
     // Leaving the app locks it; nothing is prompted while it is in the background.

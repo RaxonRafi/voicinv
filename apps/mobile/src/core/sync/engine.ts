@@ -1,7 +1,15 @@
 import { and, eq, inArray } from 'drizzle-orm';
 
 import { type ApiClient } from '@/core/api';
-import { customers, type Database, getValue, payments, setValue, TABLES, type Tx } from '@/core/db';
+import {
+  type customers,
+  type Database,
+  getValue,
+  type payments,
+  setValue,
+  TABLES,
+  type Tx,
+} from '@/core/db';
 import {
   INITIAL_SYNC_CURSOR,
   isAppendOnlyTable,

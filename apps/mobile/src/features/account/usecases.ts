@@ -145,7 +145,9 @@ async function finishSignIn(services: AppServices, me: MeResponse, deviceName: s
   await saveDeviceCode(services.db, device.deviceCode);
   // Invoice numbering reads the stored code; the in-memory identity is kept in step for display.
   services.device.deviceCode = device.deviceCode;
-  await services.db.write((tx) => setValue(tx, SYNC_SETTINGS.accountIdentifier, me.user.identifier));
+  await services.db.write((tx) =>
+    setValue(tx, SYNC_SETTINGS.accountIdentifier, me.user.identifier),
+  );
   useSyncStore.setState({ signedIn: true, identifier: me.user.identifier, errorCode: null });
   // In the background: the user can keep working while the first sync runs.
   void runSync(services);
