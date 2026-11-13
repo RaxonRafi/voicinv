@@ -4,18 +4,29 @@ import { useReducer, useState } from 'react';
 import { useLiveQuery } from '@/core/db';
 import { isLanguage, useTranslation } from '@/core/i18n';
 import { type ShopContext, useShopContext } from '@/core/services';
-import { Button, EmptyState, Screen, ScreenHeader, showToast, Spinner, TextField } from '@/core/ui';
+import {
+  Box,
+  Button,
+  EmptyState,
+  Screen,
+  ScreenHeader,
+  showToast,
+  Spinner,
+  TextField,
+} from '@/core/ui';
 import { isDomainError } from '@/core/utils';
 import { findCustomer } from '@/features/customers';
 import { detectAndSaveCorrections } from '@/features/voice';
 
 import { InvoiceEditor } from '../components/invoice-editor';
+import { VoiceDraftSummary } from '../components/voice-draft-summary';
 import {
   draftFromInvoice,
   type DraftProblem,
   draftProblems,
   draftReducer,
   draftToInput,
+  draftTotals,
   emptyDraft,
   type InvoiceDraft,
 } from '../draft';
@@ -34,7 +45,14 @@ function InvoiceForm({ app, initialDraft, invoiceId, guard }: InvoiceFormProps) 
   const { t } = useTranslation();
   const [draft, dispatch] = useReducer(draftReducer, initialDraft);
   const [reason, setReason] = useState('');
-  const [attempted, setAttempted] = useState(false);
+  /** A spoken invoice (not an edit), confirmed on a summary when it can be saved as heard. */
+  const fromVoice = invoiceId === undefined && initialDraft.sourceText !== null;
+  const [view, setView] = useState<'summary' | 'edit'>(() =>
+    fromVoice && draftProblems(initialDraft).length === 0 ? 'summary' : 'edit',
+  );
+  // A spoken invoice that cannot be saved as heard opens in the editor with its problems
+  // already shown, so the user sees at once what to fill in.
+  const [attempted, setAttempted] = useState(fromVoice);
   const [saving, setSaving] = useState(false);
 
   const problems: DraftProblem[] = attempted ? draftProblems(draft) : [];
@@ -83,6 +101,39 @@ function InvoiceForm({ app, initialDraft, invoiceId, guard }: InvoiceFormProps) 
       setSaving(false);
     }
   };
+
+  const totals = view === 'summary' ? draftTotals(draft) : null;
+  if (view === 'summary' && totals) {
+    return (
+      <Screen
+        testID="invoice-confirm-screen"
+        footer={
+          <Box gap="sm">
+            <Button
+              label={t('invoices.save')}
+              icon="check"
+              onPress={() => void save()}
+              loading={saving}
+              fullWidth
+              testID="invoice-save"
+            />
+            <Button
+              label={t('invoices.editDetails')}
+              icon="edit"
+              variant="ghost"
+              onPress={() => setView('edit')}
+              disabled={saving}
+              fullWidth
+              testID="invoice-edit-details"
+            />
+          </Box>
+        }
+      >
+        <ScreenHeader title={t('invoices.confirmTitle')} />
+        <VoiceDraftSummary app={app} draft={draft} totals={totals} />
+      </Screen>
+    );
+  }
 
   return (
     <Screen
