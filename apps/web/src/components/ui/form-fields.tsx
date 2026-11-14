@@ -77,7 +77,10 @@ interface FieldProps {
 type TextFieldProps = FieldProps & {
   /** Short text shown inside the field before the value, e.g. a currency symbol. */
   prefix?: string;
-} & Omit<ComponentProps<'input'>, 'id' | 'className' | 'aria-invalid' | 'aria-describedby' | 'prefix'>;
+} & Omit<
+    ComponentProps<'input'>,
+    'id' | 'className' | 'aria-invalid' | 'aria-describedby' | 'prefix'
+  >;
 
 /**
  * Single-line text input.

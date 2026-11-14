@@ -38,3 +38,11 @@
     outline-offset: 2px;
   }
 }
+
+/* While the web app prints a document (dashboard/documents/print.tsx), only that document is
+   on paper. Ordinary printing of a page is left alone. */
+@media print {
+  html.vl-printing body > :not(#vl-print-root) {
+    display: none !important;
+  }
+}

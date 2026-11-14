@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { getContent } from '@/content';
 import { formatNumber } from '@/lib/format';
 import { type Locale } from '@/lib/locales';
-import { pagePath, waitlistPath } from '@/lib/routes';
+import { appSignUpPath, pagePath } from '@/lib/routes';
 
 import { ButtonLink, Card, Heading, IconTile, Section, Text } from './ui';
 import { VoiceDemo } from './voice-demo';
@@ -24,7 +24,7 @@ export function Hero({ locale }: { locale: Locale }) {
           </Heading>
           <Text>{hero.subtitle}</Text>
           <div className="flex flex-wrap gap-3">
-            <ButtonLink href={waitlistPath(locale)}>{hero.primaryCta}</ButtonLink>
+            <ButtonLink href={appSignUpPath(locale)}>{hero.primaryCta}</ButtonLink>
             <ButtonLink variant="secondary" href={`#${HOW_IT_WORKS_ID}`}>
               {hero.secondaryCta}
             </ButtonLink>

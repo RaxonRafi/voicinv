@@ -169,7 +169,8 @@ export class DashboardStore {
       try {
         await this.load();
       } catch (error) {
-        if (this.state.phase !== 'signedOut') this.set({ phase: 'failed', errorCode: errorCode(error) });
+        if (this.state.phase !== 'signedOut')
+          this.set({ phase: 'failed', errorCode: errorCode(error) });
       }
     });
   }
@@ -216,7 +217,8 @@ export class DashboardStore {
       try {
         await this.load();
       } catch (error) {
-        if (this.state.phase !== 'signedOut') this.set({ phase: 'failed', errorCode: errorCode(error) });
+        if (this.state.phase !== 'signedOut')
+          this.set({ phase: 'failed', errorCode: errorCode(error) });
       }
       return { recoveryCode: response.recoveryCode };
     });

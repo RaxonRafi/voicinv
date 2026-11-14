@@ -100,22 +100,6 @@ export const deviceResponseSchema = z.object({
 });
 export type DeviceResponse = z.infer<typeof deviceResponseSchema>;
 
-export const waitlistRequestSchema = z
-  .strictObject({
-    email: emailSchema.optional(),
-    phone: phoneSchema.optional(),
-    name: z.string().trim().max(120).optional(),
-    locale: languageCodeSchema,
-    shopType: z.string().trim().max(60).optional(),
-    /** Honeypot; must stay empty for real signups. */
-    website: z.string().max(200).optional(),
-  })
-  .refine((value) => value.email !== undefined || value.phone !== undefined, {
-    message: 'either email or phone is required',
-    path: ['email'],
-  });
-export type WaitlistRequest = z.infer<typeof waitlistRequestSchema>;
-
 export const STORES = ['google_play', 'app_store'] as const;
 export type Store = (typeof STORES)[number];
 

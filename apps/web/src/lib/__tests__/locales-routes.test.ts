@@ -1,5 +1,5 @@
 import { isLocale, LOCALES, otherLocale, preferredLocale } from '../locales';
-import { isCurrentPage, PAGES, pagePath, switchLocalePath, waitlistPath } from '../routes';
+import { appSignUpPath, isCurrentPage, PAGES, pagePath, switchLocalePath } from '../routes';
 
 describe('locales', () => {
   it('publishes English and Bengali', () => {
@@ -35,8 +35,8 @@ describe('routes', () => {
     }
   });
 
-  it('points the waitlist link at the home page form', () => {
-    expect(waitlistPath('bn')).toBe('/bn/#waitlist');
+  it('points the get-started links at the web app sign-up', () => {
+    expect(appSignUpPath('bn')).toBe('/bn/app/?mode=create');
   });
 
   it.each([

@@ -4,7 +4,7 @@ import { type ReactNode } from 'react';
 import { getContent, type LegalDocument as LegalDocumentContent, type Plan } from '@/content';
 import { fill, formatDate, formatNumber } from '@/lib/format';
 import { type Locale } from '@/lib/locales';
-import { waitlistPath } from '@/lib/routes';
+import { appSignUpPath } from '@/lib/routes';
 import { CONTACT_EMAIL, FREE_INVOICES_PER_MONTH, LEGAL_UPDATED_ON } from '@/lib/site-config';
 
 import { Badge, ButtonLink, Card, Heading, IconTile, Section, Text } from './ui';
@@ -98,7 +98,7 @@ function PlanCard({ locale, plan, highlighted, cta }: PlanCardProps) {
       <CheckList items={plan.features.map((feature) => fill(feature, values))} />
       <div className="mt-auto pt-2">
         <ButtonLink
-          href={waitlistPath(locale)}
+          href={appSignUpPath(locale)}
           variant={highlighted ? 'primary' : 'secondary'}
           fullWidth
         >
@@ -115,13 +115,8 @@ export function PricingPlans({ locale }: { locale: Locale }) {
     <Section tone="sunken">
       <div className="flex flex-col gap-6">
         <div className="grid gap-4 md:grid-cols-2">
-          <PlanCard
-            locale={locale}
-            plan={pricing.free}
-            highlighted={false}
-            cta={nav.joinWaitlist}
-          />
-          <PlanCard locale={locale} plan={pricing.pro} highlighted cta={nav.joinWaitlist} />
+          <PlanCard locale={locale} plan={pricing.free} highlighted={false} cta={nav.getStarted} />
+          <PlanCard locale={locale} plan={pricing.pro} highlighted cta={nav.getStarted} />
         </div>
         <Text>{pricing.note}</Text>
       </div>
@@ -139,7 +134,7 @@ export function DownloadPanel({ locale }: { locale: Locale }) {
         </Badge>
         <Text>{download.body}</Text>
         <CheckList items={download.points} />
-        <ButtonLink href={waitlistPath(locale)}>{nav.joinWaitlist}</ButtonLink>
+        <ButtonLink href={appSignUpPath(locale)}>{nav.getStarted}</ButtonLink>
       </div>
     </PageIntro>
   );

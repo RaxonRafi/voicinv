@@ -15,6 +15,7 @@ export interface AppContent {
     loading: string;
     walkIn: string;
     somethingWrong: string;
+    copy: string;
     copied: string;
     today: string;
     yesterday: string;
@@ -188,6 +189,7 @@ export interface AppContent {
     customer: string;
     tapToChange: string;
     chooseCustomer: string;
+    chooseProduct: string;
     items: string;
     noItems: string;
     addProduct: string;

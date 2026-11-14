@@ -23,7 +23,7 @@ function origin(name: string, value: string): string {
  *
  * The site is a static export, so these values are baked into the generated files. A production
  * build therefore refuses to run without an explicit API URL instead of silently shipping a
- * waitlist form that posts to localhost.
+ * web app that talks to localhost.
  */
 export function resolvePublicEnv(
   env: Readonly<Record<string, string | undefined>>,

@@ -28,7 +28,7 @@ describe.each(LOCALES)('page sections (%s)', (locale) => {
     expect(html.match(/<h1/g)).toHaveLength(1);
     expect(text).toContain(content.home.hero.title);
     // The trailing slash before `#` is added by Next.js at build time (`trailingSlash: true`).
-    expect(html).toMatch(new RegExp(`href="/${locale}/?#waitlist"`));
+    expect(html).toContain(`href="/${locale}/app/?mode=create"`);
     expect(html).toContain('href="#how-it-works"');
   });
 

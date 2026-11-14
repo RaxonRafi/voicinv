@@ -1,4 +1,8 @@
+import { normalizeBengaliVariants } from './normalizer';
 import { type LanguagePack, type VoiceIntent } from './types';
+
+/** Phrases are matched against normalized input, so they are normalized the same way. */
+const phraseKey = (phrase: string) => normalizeBengaliVariants(phrase).toLowerCase();
 
 /**
  * Detects the voice intent based on phrases and structure in the input.
@@ -21,12 +25,12 @@ export function detectVoiceIntent(
   if (!isTowardsBalance) {
     for (const pack of packs) {
       for (const phrase of pack.intentPhrases.querySales) {
-        if (lower.includes(phrase.toLowerCase())) {
+        if (lower.includes(phraseKey(phrase))) {
           return { intent: 'QUERY', confidence: 0.95, queryType: 'TODAYS_SALES' };
         }
       }
       for (const phrase of pack.intentPhrases.queryBalance) {
-        if (lower.includes(phrase.toLowerCase())) {
+        if (lower.includes(phraseKey(phrase))) {
           return { intent: 'QUERY', confidence: 0.95, queryType: 'CUSTOMER_BALANCE' };
         }
       }
@@ -38,7 +42,7 @@ export function detectVoiceIntent(
   if (!hasItems) {
     for (const pack of packs) {
       for (const phrase of pack.intentPhrases.payment) {
-        if (lower.includes(phrase.toLowerCase())) {
+        if (lower.includes(phraseKey(phrase))) {
           return { intent: 'PAYMENT', confidence: 0.9 };
         }
       }
@@ -52,7 +56,7 @@ export function detectVoiceIntent(
 
   for (const pack of packs) {
     for (const phrase of pack.intentPhrases.sale) {
-      if (lower.includes(phrase.toLowerCase())) {
+      if (lower.includes(phraseKey(phrase))) {
         return { intent: 'SALE', confidence: 0.8 };
       }
     }

@@ -2,7 +2,6 @@ import '../globals.css';
 
 import { type Metadata } from 'next';
 
-import { MAIN_CONTENT_ID, SiteFooter, SiteHeader } from '@/components';
 import { LOCALES } from '@/lib/locales';
 import { requireLocale } from '@/lib/page-metadata';
 import { SITE_URL } from '@/lib/site-config';
@@ -16,17 +15,15 @@ export function generateStaticParams() {
 
 export const metadata: Metadata = { metadataBase: new URL(SITE_URL) };
 
+/**
+ * Root of every page in a language. The public pages (`(site)/`) add the marketing header and
+ * footer; the signed-in web app (`app/`) adds its own frame.
+ */
 export default async function LocaleLayout({ children, params }: LayoutProps<'/[locale]'>) {
   const locale = requireLocale((await params).locale);
   return (
     <html lang={locale}>
-      <body className="flex min-h-dvh flex-col">
-        <SiteHeader locale={locale} />
-        <main id={MAIN_CONTENT_ID} className="flex-1">
-          {children}
-        </main>
-        <SiteFooter locale={locale} />
-      </body>
+      <body className="flex min-h-dvh flex-col">{children}</body>
     </html>
   );
 }

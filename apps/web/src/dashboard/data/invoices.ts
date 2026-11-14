@@ -132,7 +132,8 @@ export function createInvoice(
     sourceText: parsed.sourceText,
   };
   const changes = new ChangeSet().put('invoices', invoice);
-  for (const item of itemRecords(ctx, invoice.id, parsed, totals)) changes.put('invoiceItems', item);
+  for (const item of itemRecords(ctx, invoice.id, parsed, totals))
+    changes.put('invoiceItems', item);
   if (parsed.customerId !== null && totals.dueAmount > 0) {
     changes.put(
       'ledgerEntries',

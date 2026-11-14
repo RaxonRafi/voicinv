@@ -1,6 +1,6 @@
 import { type Metadata } from 'next';
 
-import { Hero, Highlights, HowItWorks, WaitlistSection } from '@/components';
+import { Hero, Highlights, HowItWorks, GetStartedSection } from '@/components';
 import { getContent } from '@/content';
 import { pageMetadata, requireLocale } from '@/lib/page-metadata';
 
@@ -17,7 +17,7 @@ export default async function HomePage({ params }: PageProps<'/[locale]'>) {
       <Hero locale={locale} />
       <HowItWorks locale={locale} />
       <Highlights locale={locale} />
-      <WaitlistSection locale={locale} />
+      <GetStartedSection locale={locale} />
     </>
   );
 }

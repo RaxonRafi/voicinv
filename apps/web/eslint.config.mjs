@@ -56,8 +56,9 @@ export default tseslint.config(
             {
               // Module boundaries (AGENTS.md §6.1): other code imports a module's public API
               // (index.ts), never its internal files. Files inside a module use relative imports.
-              group: ['@/components/*', '@/content/*'],
-              message: "Import from the module's public API ('@/components' or '@/content').",
+              group: ['@/components/*', '@/content/*', '@/dashboard/*', '@/domain/*', '@/parser/*'],
+              message:
+                "Import from the module's public API ('@/components', '@/content', '@/dashboard', '@/domain' or '@/parser').",
             },
             {
               // The landing site, the backend and the mobile app are separate deployables.

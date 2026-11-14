@@ -121,7 +121,11 @@ export function getStatement(data: ShopData, customerId: string): StatementLine[
     .sort((a, b) => a.createdAt - b.createdAt || a.id.localeCompare(b.id))
     .map((entry) => {
       balance = Money.add(balance, entry.amount);
-      return { entry, invoiceNumber: data.invoices.get(entry.refId)?.invoiceNumber ?? null, balance };
+      return {
+        entry,
+        invoiceNumber: data.invoices.get(entry.refId)?.invoiceNumber ?? null,
+        balance,
+      };
     });
 }
 
@@ -407,7 +411,12 @@ export interface TopProduct {
 }
 
 /** Best-selling items of the period by revenue, grouped by name and unit as sold. */
-export function getTopProducts(data: ShopData, start: number, end: number, limit = 5): TopProduct[] {
+export function getTopProducts(
+  data: ShopData,
+  start: number,
+  end: number,
+  limit = 5,
+): TopProduct[] {
   const inPeriod = new Set(invoicesBetween(data, start, end).map((invoice) => invoice.id));
   const totals = new Map<string, TopProduct>();
   for (const item of live(data.invoiceItems.values())) {

@@ -1,6 +1,6 @@
 import { type Metadata } from 'next';
 
-import { FaqList, PageIntro, WaitlistSection } from '@/components';
+import { FaqList, PageIntro, GetStartedSection } from '@/components';
 import { getContent } from '@/content';
 import { pageMetadata, requireLocale } from '@/lib/page-metadata';
 
@@ -18,7 +18,7 @@ export default async function FaqPage({ params }: Props) {
     <>
       <PageIntro title={faq.title} intro={faq.intro} width="narrow" />
       <FaqList locale={locale} />
-      <WaitlistSection locale={locale} tone="canvas" />
+      <GetStartedSection locale={locale} tone="canvas" />
     </>
   );
 }

@@ -13,17 +13,20 @@ export const PAGES = {
 
 export type PageKey = keyof typeof PAGES;
 
-/** Id of the waitlist section on the home page. */
-export const WAITLIST_ANCHOR = 'waitlist';
-
 /** Site-relative URL of a page. The site is exported with trailing slashes. */
 export function pagePath(locale: Locale, page: PageKey): string {
   const segment = PAGES[page];
   return segment === '' ? `/${locale}/` : `/${locale}/${segment}/`;
 }
 
-export function waitlistPath(locale: Locale): string {
-  return `${pagePath(locale, 'home')}#${WAITLIST_ANCHOR}`;
+/** Home of the signed-in web app. */
+export function appHome(locale: Locale): string {
+  return `/${locale}/app/`;
+}
+
+/** The web app's sign-up: the sign-in screen opened on "Create account". */
+export function appSignUpPath(locale: Locale): string {
+  return `${appHome(locale)}?mode=create`;
 }
 
 /** The same page in another language, e.g. `/en/pricing/` → `/bn/pricing/`. */

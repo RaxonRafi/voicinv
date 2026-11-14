@@ -30,7 +30,8 @@ client-side tracking, and exactly one API call (`POST /api/v1/waitlist`).
 
 ## Consequences
 
-- The site keeps working when the API is down; only the waitlist form reports an error.
+- The site keeps working when the API is down; only the waitlist form reports an error. (ADR 0003
+  later added the signed-in web app, which needs the API.)
 - Server-only Next.js features (redirects, headers, middleware, image optimization) are not
   available. Security headers such as a Content-Security-Policy must be configured on the static
   host.

@@ -15,7 +15,6 @@ import {
   syncChangesSchema,
   syncPullResponseSchema,
   syncPushRequestSchema,
-  waitlistRequestSchema,
 } from '../../index';
 
 const uuid = createUuidV7Generator();
@@ -195,15 +194,5 @@ describe('API request schemas', () => {
     expect(registerRequestSchema.safeParse(request).success).toBe(true);
     expect(registerRequestSchema.safeParse({ ...request, password: 'short' }).success).toBe(false);
     expect(registerRequestSchema.safeParse({ ...request, role: 'admin' }).success).toBe(false);
-  });
-
-  it('requires an email or a phone number on the waitlist', () => {
-    expect(waitlistRequestSchema.safeParse({ phone: '01712345678', locale: 'bn' }).success).toBe(
-      true,
-    );
-    expect(waitlistRequestSchema.safeParse({ locale: 'bn' }).success).toBe(false);
-    expect(waitlistRequestSchema.safeParse({ email: 'a@example.com', locale: 'fr' }).success).toBe(
-      false,
-    );
   });
 });

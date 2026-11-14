@@ -10,7 +10,7 @@ import {
   priceItem,
   separateCurrencySymbols,
 } from './money';
-import { normalizeVoiceInput } from './normalizer';
+import { normalizeBengaliVariants, normalizeVoiceInput } from './normalizer';
 import { parseNumberAt } from './numbers';
 import { stripSuffix } from './string-similarity';
 import {
@@ -513,9 +513,12 @@ function findSubsequence(tokens: readonly string[], sub: readonly string[]): num
         match = false;
         break;
       }
+      // Phrases come from the language packs as written; the input was normalized, so the
+      // phrase must be too, or a word with য় / ড় / ঢ় ("দিয়েছে") could never match.
+      const subNormal = normalizeBengaliVariants(subJ).toLowerCase();
       const tokenClean = stripSuffix(tokI.toLowerCase(), []);
-      const subClean = stripSuffix(subJ.toLowerCase(), []);
-      if (tokenClean !== subClean && tokI.toLowerCase() !== subJ.toLowerCase()) {
+      const subClean = stripSuffix(subNormal, []);
+      if (tokenClean !== subClean && tokI.toLowerCase() !== subNormal) {
         match = false;
         break;
       }

@@ -2,7 +2,7 @@
   "name": "voiceledger-web",
   "version": "0.0.0",
   "private": true,
-  "description": "VoiceLedger landing site: static marketing pages and the waitlist form. Standalone app; deployed on its own.",
+  "description": "VoiceLedger website: static marketing pages and the signed-in web app. Standalone app; deployed on its own.",
   "type": "module",
   "packageManager": "pnpm@12.6.0",
   "engines": {

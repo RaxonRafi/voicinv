@@ -2,12 +2,7 @@ import { z } from 'zod';
 
 import { type Customer, LIMITS, type Product } from '@/domain';
 
-import {
-  findCustomer,
-  findProduct,
-  listCustomerAliases,
-  listProductAliases,
-} from './selectors';
+import { findCustomer, findProduct, listCustomerAliases, listProductAliases } from './selectors';
 import {
   ChangeSet,
   changedColumns,
@@ -17,14 +12,7 @@ import {
   type ShopData,
   type WriteContext,
 } from './shop-data';
-import {
-  cleanName,
-  diffAliases,
-  languageOf,
-  nameKey,
-  normalizePhone,
-  usefulAliases,
-} from './text';
+import { cleanName, diffAliases, languageOf, nameKey, normalizePhone, usefulAliases } from './text';
 
 // Customers and products: what the shop sells and to whom. Same rules as on the phone.
 

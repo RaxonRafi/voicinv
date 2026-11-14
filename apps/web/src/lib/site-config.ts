@@ -9,4 +9,4 @@ export const CONTACT_EMAIL: string | undefined = process.env.NEXT_PUBLIC_CONTACT
 export const FREE_INVOICES_PER_MONTH = 30;
 
 /** Date the privacy policy and terms were last changed (`YYYY-MM-DD`). */
-export const LEGAL_UPDATED_ON = '2026-11-12';
+export const LEGAL_UPDATED_ON = '2026-11-14';

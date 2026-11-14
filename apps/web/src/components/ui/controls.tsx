@@ -86,7 +86,12 @@ interface SegmentedProps<T extends string> {
  * A few mutually exclusive choices shown side by side. The chosen one is filled with the
  * action gradient and marked `aria-checked`, so it is not conveyed by color alone.
  */
-export function Segmented<T extends string>({ label, options, value, onChange }: SegmentedProps<T>) {
+export function Segmented<T extends string>({
+  label,
+  options,
+  value,
+  onChange,
+}: SegmentedProps<T>) {
   return (
     <div
       role="radiogroup"
@@ -155,7 +160,13 @@ interface SwitchProps {
 }
 
 /** On/off setting. States: off, on, focused, disabled. */
-export function Switch({ label, checked, onChange, disabled, labelPosition = 'before' }: SwitchProps) {
+export function Switch({
+  label,
+  checked,
+  onChange,
+  disabled,
+  labelPosition = 'before',
+}: SwitchProps) {
   return (
     <button
       type="button"

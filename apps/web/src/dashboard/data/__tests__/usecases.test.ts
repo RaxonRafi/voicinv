@@ -82,7 +82,9 @@ describe('shop setup', () => {
     const { data } = setup();
     const products = listProducts(data());
     expect(products.map((product) => product.name)).toContain('Rice');
-    expect(listProducts(data(), { search: 'চাল' }).map((product) => product.name)).toEqual(['Rice']);
+    expect(listProducts(data(), { search: 'চাল' }).map((product) => product.name)).toEqual([
+      'Rice',
+    ]);
     expect(products.every((product) => product.defaultPrice === null)).toBe(true);
   });
 
@@ -99,9 +101,9 @@ describe('shop setup', () => {
     expect(shop).toMatchObject({ name: 'Rahim Store', phone: '01712345678', invoicePrefix: 'RS' });
     const input = { name: 'X', phone: '', address: '', invoicePrefix: 'TOO-LONG' };
     expect(() => updateShopProfile(data(), ctx, input)).toThrow(DomainError);
-    expect(() => updateShopProfile(data(), ctx, { ...input, invoicePrefix: 'X', phone: '12' })).toThrow(
-      DomainError,
-    );
+    expect(() =>
+      updateShopProfile(data(), ctx, { ...input, invoicePrefix: 'X', phone: '12' }),
+    ).toThrow(DomainError);
   });
 });
 
@@ -109,19 +111,23 @@ describe('customers and products', () => {
   it('refuses duplicates but allows two people with the same name and different phones', () => {
     const { ctx, save, data } = setup();
     save(createCustomer(data(), ctx, { ...CUSTOMER, phone: '01711111111' }));
-    expect(() => createCustomer(data(), ctx, { ...CUSTOMER, name: ' karim ' })).toThrow(DomainError);
-    save(createCustomer(data(), ctx, { ...CUSTOMER, phone: '01722222222' }));
-    expect(listCustomers(data())).toHaveLength(2);
-    expect(() => createProduct(data(), ctx, { name: 'rice', unit: 'kg', defaultPrice: null, aliases: [] })).toThrow(
+    expect(() => createCustomer(data(), ctx, { ...CUSTOMER, name: ' karim ' })).toThrow(
       DomainError,
     );
+    save(createCustomer(data(), ctx, { ...CUSTOMER, phone: '01722222222' }));
+    expect(listCustomers(data())).toHaveLength(2);
+    expect(() =>
+      createProduct(data(), ctx, { name: 'rice', unit: 'kg', defaultPrice: null, aliases: [] }),
+    ).toThrow(DomainError);
   });
 
   it('finds customers by other names and hides archived ones', () => {
     const { ctx, save, data } = setup();
     const karim = save(createCustomer(data(), ctx, CUSTOMER));
     expect(listCustomers(data(), { search: 'করিম' })).toHaveLength(1);
-    save(editCustomer(data(), ctx, karim.id, { ...CUSTOMER, aliases: ['Korim'], isArchived: true }));
+    save(
+      editCustomer(data(), ctx, karim.id, { ...CUSTOMER, aliases: ['Korim'], isArchived: true }),
+    );
     expect(listCustomers(data())).toHaveLength(0);
     expect(listCustomers(data(), { includeArchived: true, search: 'korim' })).toHaveLength(1);
     expect(listCustomers(data(), { includeArchived: true, search: 'করিম' })).toHaveLength(0);
@@ -136,13 +142,28 @@ describe('customers and products', () => {
         data(),
         ctx,
         sale(null, {
-          items: [{ productId: rice.id, name: rice.name, unit: rice.unit, qtyMilli: 1500, unitPrice: 8000 }],
+          items: [
+            {
+              productId: rice.id,
+              name: rice.name,
+              unit: rice.unit,
+              qtyMilli: 1500,
+              unitPrice: 8000,
+            },
+          ],
           payment: { type: 'FULL' },
         }),
         invoiceNumber(),
       ),
     );
-    save(editProduct(data(), ctx, rice.id, { name: 'Miniket rice', unit: 'kg', defaultPrice: 9000, aliases: [] }));
+    save(
+      editProduct(data(), ctx, rice.id, {
+        name: 'Miniket rice',
+        unit: 'kg',
+        defaultPrice: 9000,
+        aliases: [],
+      }),
+    );
     expect(getInvoiceDetails(data(), invoice.id)?.items[0]).toMatchObject({
       nameSnapshot: 'Rice',
       lineTotal: 12_000,
@@ -173,7 +194,12 @@ describe('invoices and the ledger', () => {
     const first = save(createInvoice(data(), ctx, sale(karim.id), invoiceNumber()));
     const second = save(createInvoice(data(), ctx, sale(karim.id), invoiceNumber()));
     const { balance } = save(
-      recordPayment(data(), ctx, { customerId: karim.id, amount: 300_000, note: '', invoiceId: null }),
+      recordPayment(data(), ctx, {
+        customerId: karim.id,
+        amount: 300_000,
+        note: '',
+        invoiceId: null,
+      }),
     );
     expect(balance).toBe(200_000);
     expect(settledAmounts(data()).get(first.id)).toBe(250_000);
@@ -187,7 +213,14 @@ describe('invoices and the ledger', () => {
   it('keeps an advance when a customer pays more than they owe', () => {
     const { ctx, save, data } = setup();
     const karim = save(createCustomer(data(), ctx, CUSTOMER));
-    save(recordPayment(data(), ctx, { customerId: karim.id, amount: 10_000, note: 'advance', invoiceId: null }));
+    save(
+      recordPayment(data(), ctx, {
+        customerId: karim.id,
+        amount: 10_000,
+        note: 'advance',
+        invoiceId: null,
+      }),
+    );
     expect(receivables(data())).toEqual({ toCollect: 0, advanceHeld: 10_000 });
     expect(getTopDebtors(data())).toEqual([]);
   });
@@ -222,7 +255,15 @@ describe('invoices and the ledger', () => {
     expect(customerBalances(data()).get(karim.id)).toBe(500_000);
     expect(getInvoiceDetails(data(), invoice.id)?.items).toHaveLength(1);
 
-    save(editInvoice(data(), ctx, invoice.id, { ...draftToInput(draft), customerId: rahim.id }, 'Wrong name'));
+    save(
+      editInvoice(
+        data(),
+        ctx,
+        invoice.id,
+        { ...draftToInput(draft), customerId: rahim.id },
+        'Wrong name',
+      ),
+    );
     expect(customerBalances(data()).get(karim.id)).toBe(0);
     expect(customerBalances(data()).get(rahim.id)).toBe(500_000);
     expect(getInvoiceDetails(data(), invoice.id)?.revisions).toHaveLength(2);
@@ -233,7 +274,8 @@ describe('invoices and the ledger', () => {
     // Property-style check (AGENTS.md §14) with a fixed pseudo-random sequence.
     const { ctx, save, data, invoiceNumber } = setup();
     let seed = 42;
-    const random = (limit: number) => (seed = (seed * 1_103_515_245 + 12_345) % 2_147_483_648) % limit;
+    const random = (limit: number) =>
+      (seed = (seed * 1_103_515_245 + 12_345) % 2_147_483_648) % limit;
     const customers = ['Karim', 'Rahim', 'Salma'].map((name) =>
       save(createCustomer(data(), ctx, { ...CUSTOMER, name, aliases: [] })),
     );
@@ -245,12 +287,31 @@ describe('invoices and the ledger', () => {
       const action = random(4);
       if (action === 0 || active.length === 0) {
         const input = sale(customer.id, {
-          items: [{ productId: null, name: 'Item', unit: 'kg', qtyMilli: 500 + random(5000), unitPrice: random(90_000) }],
-          payment: pick([{ type: 'FULL' }, { type: 'NONE' }, { type: 'AMOUNT', amount: random(50_000) }] as const),
+          items: [
+            {
+              productId: null,
+              name: 'Item',
+              unit: 'kg',
+              qtyMilli: 500 + random(5000),
+              unitPrice: random(90_000),
+            },
+          ],
+          payment: pick([
+            { type: 'FULL' },
+            { type: 'NONE' },
+            { type: 'AMOUNT', amount: random(50_000) },
+          ] as const),
         });
         save(createInvoice(data(), ctx, input, invoiceNumber()));
       } else if (action === 1) {
-        save(recordPayment(data(), ctx, { customerId: customer.id, amount: 1 + random(80_000), note: '', invoiceId: null }));
+        save(
+          recordPayment(data(), ctx, {
+            customerId: customer.id,
+            amount: 1 + random(80_000),
+            note: '',
+            invoiceId: null,
+          }),
+        );
       } else if (action === 2) {
         save(cancelInvoice(data(), ctx, pick(active).invoice.id, 'test'));
       } else {
@@ -258,7 +319,11 @@ describe('invoices and the ledger', () => {
         const details = getInvoiceDetails(data(), row.invoice.id);
         if (!details) throw new Error('invoice not found');
         const input = draftToInput(draftFromInvoice(details));
-        const moved = { ...input, customerId: customer.id, payment: { type: 'AMOUNT', amount: random(20_000) } as const };
+        const moved = {
+          ...input,
+          customerId: customer.id,
+          payment: { type: 'AMOUNT', amount: random(20_000) } as const,
+        };
         save(editInvoice(data(), ctx, row.invoice.id, moved, 'test'));
       }
 
@@ -266,7 +331,10 @@ describe('invoices and the ledger', () => {
       const expected = new Map<string, number>();
       for (const { invoice } of listInvoices(data())) {
         if (invoice.status !== 'ACTIVE' || invoice.customerId === null) continue;
-        expected.set(invoice.customerId, (expected.get(invoice.customerId) ?? 0) + invoice.dueAmount);
+        expected.set(
+          invoice.customerId,
+          (expected.get(invoice.customerId) ?? 0) + invoice.dueAmount,
+        );
       }
       for (const payment of data().payments.values()) {
         expected.set(payment.customerId, (expected.get(payment.customerId) ?? 0) - payment.amount);
@@ -287,14 +355,18 @@ describe('reports', () => {
     const { ctx, save, data, invoiceNumber } = setup();
     const karim = save(createCustomer(data(), ctx, CUSTOMER));
     save(createInvoice(data(), ctx, sale(karim.id), invoiceNumber()));
-    const cancelled = save(createInvoice(data(), ctx, sale(null, { payment: { type: 'FULL' } }), invoiceNumber()));
+    const cancelled = save(
+      createInvoice(data(), ctx, sale(null, { payment: { type: 'FULL' } }), invoiceNumber()),
+    );
     save(cancelInvoice(data(), ctx, cancelled.id, 'mistake'));
     save(
       createInvoice(
         data(),
         ctx,
         sale(null, {
-          items: [{ productId: null, name: 'Egg', unit: 'piece', qtyMilli: 12_000, unitPrice: 1200 }],
+          items: [
+            { productId: null, name: 'Egg', unit: 'piece', qtyMilli: 12_000, unitPrice: 1200 },
+          ],
           payment: { type: 'FULL' },
         }),
         invoiceNumber(),
@@ -307,7 +379,10 @@ describe('reports', () => {
       totalDue: 250_000,
       invoiceCount: 2,
     });
-    expect(getTopProducts(data(), ...range).map((product) => product.name)).toEqual(['Rice', 'Egg']);
+    expect(getTopProducts(data(), ...range).map((product) => product.name)).toEqual([
+      'Rice',
+      'Egg',
+    ]);
     expect(getTopDebtors(data())).toMatchObject([{ name: 'Karim', balance: 250_000 }]);
     expect(getSalesSummary(data(), 0, 1).invoiceCount).toBe(0);
   });
@@ -323,7 +398,11 @@ describe('invoice draft', () => {
     });
     expect(draftProblems(draft).map((problem) => problem.code)).toEqual(['itemPrice']);
     const [item] = draft.items;
-    draft = draftReducer(draft, { type: 'updateItem', key: item?.key ?? '', changes: { unitPrice: 5000 } });
+    draft = draftReducer(draft, {
+      type: 'updateItem',
+      key: item?.key ?? '',
+      changes: { unitPrice: 5000 },
+    });
     draft = draftReducer(draft, { type: 'setPayment', payment: { type: 'NONE' } });
     expect(draftProblems(draft)).toEqual([{ code: 'walkInDue' }]);
     draft = draftReducer(draft, { type: 'setDiscount', discount: 6000 });

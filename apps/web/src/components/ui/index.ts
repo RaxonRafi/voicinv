@@ -13,15 +13,7 @@ export {
   Switch,
 } from './controls';
 export { cx } from './cx';
-export {
-  EmptyState,
-  Overline,
-  ProgressBar,
-  Spinner,
-  StatTile,
-  SummaryRow,
-  Tile,
-} from './display';
+export { EmptyState, Overline, ProgressBar, Spinner, StatTile, SummaryRow, Tile } from './display';
 export { SelectField, TextAreaField, TextField } from './form-fields';
 export { Icon, IconTile } from './icon';
 export { Container, Section } from './layout';

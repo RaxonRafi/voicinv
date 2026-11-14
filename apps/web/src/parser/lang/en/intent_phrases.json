@@ -22,7 +22,10 @@
     "check balance",
     "customer balance",
     "outstanding",
-    "outstanding of"
+    "outstanding of",
+    "owe",
+    "owes",
+    "owed"
   ],
   "querySales": [
     "today's sales",

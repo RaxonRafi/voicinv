@@ -1,6 +1,6 @@
 import { type Metadata } from 'next';
 
-import { FeatureGroups, PageIntro, WaitlistSection } from '@/components';
+import { FeatureGroups, PageIntro, GetStartedSection } from '@/components';
 import { getContent } from '@/content';
 import { pageMetadata, requireLocale } from '@/lib/page-metadata';
 
@@ -18,7 +18,7 @@ export default async function FeaturesPage({ params }: Props) {
     <>
       <PageIntro title={features.title} intro={features.intro} />
       <FeatureGroups locale={locale} />
-      <WaitlistSection locale={locale} tone="canvas" />
+      <GetStartedSection locale={locale} tone="canvas" />
     </>
   );
 }

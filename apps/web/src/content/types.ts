@@ -75,7 +75,10 @@ export interface SiteContent {
     faq: string;
     privacy: string;
     terms: string;
-    joinWaitlist: string;
+    /** Call to action that opens account creation in the web app. */
+    getStarted: string;
+    /** Link to the signed-in web app. */
+    openApp: string;
     skipToContent: string;
     /** Accessible name of the language link. `{language}` is the target language's own name. */
     switchLanguage: string;
@@ -152,34 +155,11 @@ export interface SiteContent {
     /** Shown before the contact email address. */
     contactBody: string;
   };
-  waitlist: {
+  getStarted: {
     title: string;
     body: string;
-    contactLabel: string;
-    contactHint: string;
-    nameLabel: string;
-    shopTypeLabel: string;
-    shopTypePlaceholder: string;
-    shopTypes: {
-      grocery: string;
-      wholesale: string;
-      pharmacy: string;
-      hardware: string;
-      clothing: string;
-      other: string;
-    };
-    optional: string;
-    submit: string;
-    submitting: string;
-    privacyNote: string;
-    successTitle: string;
-    successBody: string;
-    errors: {
-      contactRequired: string;
-      contactInvalid: string;
-      rateLimited: string;
-      unavailable: string;
-    };
+    create: string;
+    signIn: string;
   };
   footer: {
     tagline: string;

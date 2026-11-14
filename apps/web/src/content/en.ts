@@ -16,7 +16,8 @@ export const en: SiteContent = {
     faq: 'FAQ',
     privacy: 'Privacy',
     terms: 'Terms',
-    joinWaitlist: 'Join waitlist',
+    getStarted: 'Get started',
+    openApp: 'Sign in',
     skipToContent: 'Skip to content',
     switchLanguage: 'Switch language to {language}',
   },
@@ -27,7 +28,7 @@ export const en: SiteContent = {
       title: 'Say the sale. The invoice writes itself.',
       subtitle:
         'Speak in Bangla, English or a mix of both. VoiceLedger makes the invoice, keeps each customer’s due up to date, and works with no internet.',
-      primaryCta: 'Join the waitlist',
+      primaryCta: 'Start free on the web',
       secondaryCta: 'See how it works',
       points: ['Works fully offline', 'Your voice never leaves the phone', 'No account needed'],
     },
@@ -209,15 +210,15 @@ export const en: SiteContent = {
         'Encrypted cloud backup and sync between phones',
       ],
     },
-    note: 'Pro is a subscription paid through the app store. Join the waitlist and we will tell you the price before launch.',
+    note: 'Pro is a subscription paid through the app store. The price will be announced when the app launches.',
   },
   download: {
     title: 'Download',
     description:
-      'VoiceLedger is coming to Android first. Join the waitlist to hear when it is ready.',
+      'VoiceLedger is coming to Android first. You can already use it in your web browser.',
     status: 'Coming soon',
     intro: 'VoiceLedger is coming to Android first. An iPhone version will follow.',
-    body: 'The app is not in the store yet. Join the waitlist and we will let you know the day it is ready.',
+    body: 'The app is not in the store yet. Until then, use VoiceLedger in your web browser: create a free account and start billing today.',
     points: [
       'Android first, iPhone later',
       'Designed for low-cost phones',
@@ -273,7 +274,7 @@ export const en: SiteContent = {
       {
         question: 'When can I get it?',
         answer:
-          'We are getting the Android app ready now. Join the waitlist and we will contact you when it is available.',
+          'We are getting the Android app ready now. Until then you can use VoiceLedger in your web browser with a free account.',
       },
     ],
   },
@@ -297,10 +298,10 @@ export const en: SiteContent = {
         ],
       },
       {
-        heading: 'The waitlist',
+        heading: 'Using VoiceLedger on the web',
         paragraphs: [
-          'If you join the waitlist we store the phone number or email address you give us, plus your name, shop type and language if you add them.',
-          'We use these details only to tell you about the launch of VoiceLedger. We do not share them with anyone else. You can ask us to delete them at any time.',
+          'To use VoiceLedger in your browser you sign in with an account. Your shop records are stored on our server so you can see them on the web and on your phones.',
+          'Your browser keeps only your sign-in and a few display settings. When you speak to the web app, speech is recognised on your own device or not at all.',
         ],
       },
       {
@@ -327,9 +328,9 @@ export const en: SiteContent = {
   },
   terms: {
     title: 'Terms of use',
-    description: 'The terms for using the VoiceLedger website and waitlist.',
+    description: 'The terms for using the VoiceLedger website and web app.',
     intro:
-      'These terms cover this website and the waitlist. Terms for the app itself will be published here before the app is released.',
+      'These terms cover this website and the VoiceLedger web app. Terms for the phone app will be published here before it is released.',
     sections: [
       {
         heading: 'About VoiceLedger',
@@ -338,10 +339,10 @@ export const en: SiteContent = {
         ],
       },
       {
-        heading: 'The waitlist',
+        heading: 'Your account',
         paragraphs: [
-          'Joining the waitlist is free and does not oblige you to buy or use anything. It does not guarantee access by a particular date.',
-          'Please give contact details that belong to you. You can ask to be removed at any time.',
+          'Creating an account is free and does not oblige you to buy anything.',
+          'Keep your password and recovery code safe. Anyone who has them can see and change your shop records.',
         ],
       },
       {
@@ -373,34 +374,11 @@ export const en: SiteContent = {
     contactHeading: 'Contact',
     contactBody: 'Questions or requests about your information? Write to us at',
   },
-  waitlist: {
-    title: 'Be first to try VoiceLedger',
-    body: 'Leave your phone number or email and we will tell you when the app is ready.',
-    contactLabel: 'Phone number or email',
-    contactHint: 'For example 01712345678 or name@example.com',
-    nameLabel: 'Your name',
-    shopTypeLabel: 'Type of shop',
-    shopTypePlaceholder: 'Choose one',
-    shopTypes: {
-      grocery: 'Grocery',
-      wholesale: 'Wholesale',
-      pharmacy: 'Pharmacy',
-      hardware: 'Hardware',
-      clothing: 'Clothing',
-      other: 'Other',
-    },
-    optional: 'optional',
-    submit: 'Join the waitlist',
-    submitting: 'Sending…',
-    privacyNote: 'We only use this to tell you about the launch.',
-    successTitle: 'You are on the list',
-    successBody: 'Thank you. We will contact you when VoiceLedger is ready.',
-    errors: {
-      contactRequired: 'Enter your phone number or email.',
-      contactInvalid: 'Enter a valid phone number or email address.',
-      rateLimited: 'Too many attempts. Please wait a minute and try again.',
-      unavailable: 'We could not send your details. Check your internet and try again.',
-    },
+  getStarted: {
+    title: 'Start using VoiceLedger today',
+    body: 'Create a free account and make your first invoice in your web browser. The Android app is coming soon.',
+    create: 'Create free account',
+    signIn: 'Sign in',
   },
   footer: {
     tagline: 'Voice invoicing and credit ledger for small shops. Works offline.',

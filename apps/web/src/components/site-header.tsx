@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { getContent } from '@/content';
 import { fill } from '@/lib/format';
 import { LOCALE_NAMES, type Locale, otherLocale } from '@/lib/locales';
-import { pagePath, waitlistPath } from '@/lib/routes';
+import { appHome, appSignUpPath, pagePath } from '@/lib/routes';
 
 import { LocaleSwitch } from './locale-switch';
 import { NavLinks } from './nav-links';
@@ -45,9 +45,12 @@ export function SiteHeader({ locale }: { locale: Locale }) {
             locale={locale}
             label={fill(nav.switchLanguage, { language: LOCALE_NAMES[otherLocale(locale)] })}
           />
+          <ButtonLink variant="secondary" href={appHome(locale)}>
+            {nav.openApp}
+          </ButtonLink>
           {/* On phones the hero's own button sits right below, so this one would only add a row. */}
           <span className="hidden sm:inline-flex">
-            <ButtonLink href={waitlistPath(locale)}>{nav.joinWaitlist}</ButtonLink>
+            <ButtonLink href={appSignUpPath(locale)}>{nav.getStarted}</ButtonLink>
           </span>
         </div>
         <NavLinks

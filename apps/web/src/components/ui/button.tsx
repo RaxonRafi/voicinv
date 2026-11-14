@@ -15,8 +15,7 @@ const VARIANT: Readonly<Record<ButtonVariant, string>> = {
   secondary:
     'bg-bg-sunken text-text-primary hover:bg-bg-accent active:bg-bg-accent ' +
     'disabled:bg-action-disabled disabled:text-text-disabled',
-  ghost:
-    'text-text-link hover:bg-bg-sunken active:bg-bg-sunken disabled:text-text-disabled',
+  ghost: 'text-text-link hover:bg-bg-sunken active:bg-bg-sunken disabled:text-text-disabled',
   danger:
     'bg-status-danger-bg text-status-danger hover:bg-bg-sunken active:bg-bg-sunken ' +
     'disabled:bg-action-disabled disabled:text-text-disabled',

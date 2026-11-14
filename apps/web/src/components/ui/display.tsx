@@ -72,7 +72,7 @@ export function StatTile({ label, value, tone = 'surface', valueTone = 'primary'
   return (
     <div
       className={cx(
-        'flex min-w-0 flex-1 flex-col gap-1 rounded-xl p-4',
+        'flex min-w-0 flex-1 flex-col gap-1 rounded-xl p-3 sm:p-4',
         tone === 'glass' ? 'bg-bg-surface/60' : 'bg-bg-surface shadow-sm',
       )}
     >
@@ -122,7 +122,11 @@ interface EmptyStateProps {
 export function EmptyState({ icon, title, body, action }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-2xl bg-bg-surface p-8 text-center shadow-sm">
-      {icon ? <Tile tone="success" shape="round">{icon}</Tile> : null}
+      {icon ? (
+        <Tile tone="success" shape="round">
+          {icon}
+        </Tile>
+      ) : null}
       <p className="text-heading text-text-primary">{title}</p>
       {body ? <p className="text-body text-text-secondary">{body}</p> : null}
       {action}
@@ -151,10 +155,20 @@ interface SummaryRowProps {
 export function SummaryRow({ label, value, tone = 'primary', strong = false }: SummaryRowProps) {
   return (
     <div className="flex flex-wrap items-baseline justify-between gap-x-4">
-      <dt className={cx(strong ? 'text-body-strong text-text-primary' : 'text-body text-text-secondary')}>
+      <dt
+        className={cx(
+          strong ? 'text-body-strong text-text-primary' : 'text-body text-text-secondary',
+        )}
+      >
         {label}
       </dt>
-      <dd className={cx('tabular-nums', strong ? 'text-amount' : 'text-body-strong', VALUE_TONE[tone])}>
+      <dd
+        className={cx(
+          'tabular-nums',
+          strong ? 'text-amount' : 'text-body-strong',
+          VALUE_TONE[tone],
+        )}
+      >
         {value}
       </dd>
     </div>

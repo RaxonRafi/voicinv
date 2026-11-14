@@ -161,7 +161,9 @@ There is no root `package.json`, no workspace and no `packages/` folder. Rules:
 - **Mirrored folders** hold code that two apps need. The copies must stay identical (apart from
   the `.js` import suffix the API's native ESM needs). After changing one copy run
   `node tools/mirror.mjs sync <group> <app you edited>`; CI runs `node tools/mirror.mjs check`.
-- The landing site shares nothing with the other apps except the design tokens.
+- The landing site shares nothing with the other apps except the design tokens. It keeps its own
+  copies of the domain code and parser (`apps/web/src/domain`, `apps/web/src/parser`), which are
+  not mirrored (`docs/adr/0003`).
 
 ---
 
@@ -278,14 +280,20 @@ Mobile rules:
 
 ```
 apps/web/src/
-├── app/[locale]/             # pages: home, features, pricing, download, faq, privacy, terms
-├── components/               # sections built from design-system primitives
-├── content/                  # copy per locale (en, bn)
+├── app/[locale]/(site)/      # public pages: home, features, pricing, download, faq, privacy, terms
+├── app/[locale]/app/         # signed-in web app (M12b): one route file per screen
+├── components/               # sections and design-system primitives (components/ui)
+├── content/                  # copy per locale (en, bn): site and app
+├── dashboard/                # the web app: API client, data/use cases, screens, voice, documents
+├── domain/                   # the site's own Money, IDs, formatters, schemas, sync contracts
+├── parser/                   # the site's own copy of the voice parser and language packs
 └── lib/
 ```
 
-Web rules: static generation for all pages; no client-side tracking; images optimized; the
-only API call is the waitlist form (`POST /api/v1/waitlist`).
+Web rules: static generation for all pages; no client-side tracking; images optimized. Public
+pages call only the waitlist (`POST /api/v1/waitlist`). The signed-in web app (`/<locale>/app/`)
+calls the auth, devices and sync endpoints, keeps records in memory only (never in browser
+storage) and uses speech recognition only on the device (`processLocally`); see `docs/adr/0003`.
 
 ---
 
@@ -522,8 +530,11 @@ cd apps/mobile && pnpm install && pnpm start
 - [ ] **M12** Sync engine + encrypted cloud backups
       (done: API sync/backups with e2e tests; mobile API client, optional account, sync engine
       and auto-sync. Open: cloud backup upload/restore in the mobile backup screen)
-- [ ] **M12b** Web dashboard (asked for on 2026-11-13): a signed-in, online-only site where the
-      shop owner sees and edits the same synced data through the API. Needs M12. No voice.
+- [x] **M12b** Web app (asked for on 2026-11-13; on 2026-11-14 widened to every app feature):
+      signed-in, online-only, in `apps/web` under `/<locale>/app/`. Invoices (voice/typed, edit,
+      cancel, print/PDF, share), ledger and payments, customers, products, reports with CSV/PDF,
+      settings, encrypted backup export/restore. Not on web: Bluetooth printing, contact import,
+      biometric lock (`docs/adr/0003`).
 - [ ] **M13** Billing: store purchases, server verification, entitlements, free-tier limits
 - [ ] **M14** (optional) whisper.rn engine with downloadable model packs
 

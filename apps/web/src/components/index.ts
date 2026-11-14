@@ -45,4 +45,4 @@ export {
   Tile,
   ToastRegion,
 } from './ui';
-export { WaitlistSection } from './waitlist-section';
+export { GetStartedSection } from './get-started-section';
