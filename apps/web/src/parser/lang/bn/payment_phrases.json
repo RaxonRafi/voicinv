@@ -1,0 +1,113 @@
+{
+  "full": [
+    "নগদ",
+    "ক্যাশ",
+    "পুরো পরিশোধ",
+    "পুরো দিছে",
+    "পুরো দিল",
+    "পুরো দিয়েছে",
+    "সব পরিশোধ",
+    "সব দিছে",
+    "সব দিল",
+    "সব দিয়েছে",
+    "ফুল পেইড",
+    "ক্যাশ দিল",
+    "ক্যাশ দিছে",
+    "নগদ দিল",
+    "নগদ দিছে",
+    "পরিশোধিত"
+  ],
+  "none": [
+    "বাকি",
+    "সব বাকি",
+    "পুরো বাকি",
+    "ধারে",
+    "বাকিতে",
+    "কিছু দেয়নি",
+    "কিছু দেয় নাই",
+    "কিছু দেয় নি",
+    "কোন টাকা দেয় নাই"
+  ],
+  "fraction": [
+    {
+      "phrase": "অর্ধেক দিল",
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    {
+      "phrase": "অর্ধেক দিছে",
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    {
+      "phrase": "অর্ধেক দিয়েছে",
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    {
+      "phrase": "অর্ধেক পরিশোধ",
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    {
+      "phrase": "আধা দিল",
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    {
+      "phrase": "আধা দিছে",
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    {
+      "phrase": "হাফ দিছে",
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    {
+      "phrase": "হাফ পেইড",
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    {
+      "phrase": "পোয়া দিল",
+      "value": 0.25,
+      "numerator": 1,
+      "denominator": 4
+    },
+    {
+      "phrase": "এক চতুর্থাংশ দিছে",
+      "value": 0.25,
+      "numerator": 1,
+      "denominator": 4
+    },
+    {
+      "phrase": "তিন পোয়া দিছে",
+      "value": 0.75,
+      "numerator": 3,
+      "denominator": 4
+    }
+  ],
+  "amountPatterns": [
+    "{amount} টাকা দিছে",
+    "{amount} টাকা দিল",
+    "{amount} টাকা দিয়েছে",
+    "{amount} দিল",
+    "{amount} দিছে",
+    "{amount} দিয়েছে",
+    "{amount} নগদ",
+    "নগদ {amount}",
+    "জমা {amount}",
+    "জমা দিল {amount}",
+    "{amount} পরিশোধ",
+    "অগ্রিম {amount}"
+  ]
+}

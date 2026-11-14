@@ -1,7 +1,7 @@
 // Keeps duplicated code identical across the standalone apps.
 //
 // Every app (apps/api, apps/web, apps/mobile) is standalone: it depends on nothing outside its
-// own folder and can be copied out and built alone. Code that two apps need is therefore
+// own folder and can be copied out and built alone. Code that several apps need is therefore
 // duplicated, and this script is the guard against the copies drifting apart while the apps
 // still live in one repository. It has no dependencies and belongs to no app.
 //
@@ -27,8 +27,17 @@ const GROUPS = {
     copies: [
       { app: 'apps/api', dir: 'apps/api/src/shared', importExtension: '.js' },
       { app: 'apps/mobile', dir: 'apps/mobile/src/shared', importExtension: '' },
+      { app: 'apps/web', dir: 'apps/web/src/shared', importExtension: '' },
     ],
     ignore: [],
+  },
+  parser: {
+    description: 'Voice text → DraftInvoice parser and its language packs (tested in apps/mobile)',
+    copies: [
+      { app: 'apps/mobile', dir: 'apps/mobile/src/parser', importExtension: '' },
+      { app: 'apps/web', dir: 'apps/web/src/parser', importExtension: '' },
+    ],
+    ignore: ['__tests__', 'fixtures'],
   },
   'design-tokens': {
     description: 'Design token source, generator, theme and token tests',

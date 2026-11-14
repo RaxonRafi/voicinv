@@ -1,0 +1,16 @@
+{
+  "canonical": {
+    "bag": ["bag", "bags", "sack", "sacks"],
+    "kg": ["kg", "kgs", "kilo", "kilos", "kilogram", "kilograms"],
+    "g": ["g", "gm", "gms", "gram", "grams"],
+    "piece": ["piece", "pieces", "pc", "pcs", "item", "items"],
+    "packet": ["packet", "packets", "pack", "packs", "pkt", "pkts"],
+    "liter": ["liter", "litre", "liters", "litres", "l"],
+    "dozen": ["dozen", "dozens", "dz"],
+    "box": ["box", "boxes"],
+    "carton": ["carton", "cartons"],
+    "bottle": ["bottle", "bottles"],
+    "can": ["can", "cans"],
+    "tin": ["tin", "tins"]
+  }
+}

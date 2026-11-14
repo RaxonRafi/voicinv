@@ -1,0 +1,35 @@
+{
+  "sale": ["to", "for", "give", "sold", "sell", "bill", "invoice", "add", "take"],
+  "payment": [
+    "payment from",
+    "received payment",
+    "paid towards balance",
+    "payment of",
+    "paid their due",
+    "paid debt",
+    "settled amount",
+    "installment",
+    "payment",
+    "paid",
+    "received"
+  ],
+  "queryBalance": [
+    "balance",
+    "balance of",
+    "what is the balance",
+    "how much due",
+    "due of",
+    "check balance",
+    "customer balance",
+    "outstanding",
+    "outstanding of"
+  ],
+  "querySales": [
+    "today's sales",
+    "todays sales",
+    "today sales",
+    "total sales today",
+    "how much sold today",
+    "sales summary"
+  ]
+}

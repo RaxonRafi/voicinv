@@ -1,0 +1,53 @@
+{
+  "standalone": {
+    "half": {
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    "a half": {
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    "quarter": {
+      "value": 0.25,
+      "numerator": 1,
+      "denominator": 4
+    },
+    "a quarter": {
+      "value": 0.25,
+      "numerator": 1,
+      "denominator": 4
+    },
+    "one and a half": {
+      "value": 1.5,
+      "numerator": 3,
+      "denominator": 2
+    },
+    "two and a half": {
+      "value": 2.5,
+      "numerator": 5,
+      "denominator": 2
+    },
+    "three quarters": {
+      "value": 0.75,
+      "numerator": 3,
+      "denominator": 4
+    }
+  },
+  "prefixes": {
+    "and a half": {
+      "type": "add",
+      "value": 0.5,
+      "numerator": 1,
+      "denominator": 2
+    },
+    "and a quarter": {
+      "type": "add",
+      "value": 0.25,
+      "numerator": 1,
+      "denominator": 4
+    }
+  }
+}
