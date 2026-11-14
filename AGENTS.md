@@ -66,7 +66,7 @@ Read **§1 Hard constraints**, **§5 Repository structure**, **§6 Modular archi
 │  PostgreSQL (TypeORM)            Encrypted backup storage (disk volume / self-hosted)   │
 └─────────────────────────────────────────────────────────────────────────────────────────┘
 ┌─────────────────────────────────────────────────────────────────────────────────────────┐
-│  Landing site (Next.js, static) → marketing pages, pricing, download, waitlist form     │
+│  Website (Next.js, static) → marketing pages, pricing, download, signed-in web app       │
 └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -291,7 +291,7 @@ apps/web/src/
 ```
 
 Web rules: static generation for all pages; no client-side tracking; images optimized. Public
-pages call only the waitlist (`POST /api/v1/waitlist`). The signed-in web app (`/<locale>/app/`)
+pages make no API calls. The signed-in web app (`/<locale>/app/`)
 calls the auth, devices and sync endpoints, keeps records in memory only (never in browser
 storage) and uses speech recognition only on the device (`processLocally`); see `docs/adr/0003`.
 
@@ -470,7 +470,9 @@ OpenAPI docs served at `/api/docs` in non-production environments.
 - **Account (optional):** sign up/login, encrypted cloud backup, multi-device sync.
 - **Plans:** Free = 30 invoices/month + watermark. Pro = unlimited, no watermark, logo, all
   templates, printing, full reports, cloud backup and sync. Entitlement cached for offline use.
-- **Landing site:** home, features, pricing, download, FAQ, privacy, terms, waitlist; en + bn.
+- **Landing site:** home, features, pricing, download, FAQ, privacy, terms; en + bn. Calls to
+  action lead to the web app (create account / sign in). The waitlist was removed from the site
+  on 2026-11-14; the API's `waitlist` module is unused by any client.
 
 ### Later (do not build unless asked)
 

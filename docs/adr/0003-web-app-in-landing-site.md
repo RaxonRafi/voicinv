@@ -36,7 +36,8 @@ shared code** of the other apps: it must run independently.
 
 ## Consequences
 
-- The landing site now makes more API calls than the waitlist form; the API's `CORS_ORIGINS`
+- The landing site now talks to the API for the web app (the waitlist form was removed on
+  2026-11-14; its calls to action open account creation instead); the API's `CORS_ORIGINS`
   must list the site's origin.
 - A fix in the phone's parser or domain code is not copied to the web automatically (and the
   other way round). Example: the web parser normalises language-pack phrases before matching,
