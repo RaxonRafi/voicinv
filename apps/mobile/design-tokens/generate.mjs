@@ -82,6 +82,8 @@ function generateTypeScript() {
         lineHeight: t.lineHeight,
         fontWeight: String(t.fontWeight),
         tabularNums: t.tabularNums === true,
+        letterSpacing: t.letterSpacing ?? 0,
+        uppercase: t.uppercase === true,
       },
     ]),
   );
@@ -174,6 +176,7 @@ function generateTailwind() {
     `--text-${kebab(name)}: ${rem(t.fontSize)};`,
     `--text-${kebab(name)}--line-height: ${rem(t.lineHeight)};`,
     `--text-${kebab(name)}--font-weight: ${t.fontWeight};`,
+    ...(t.letterSpacing ? [`--text-${kebab(name)}--letter-spacing: ${rem(t.letterSpacing)};`] : []),
   ]);
 
   return [

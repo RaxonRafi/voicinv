@@ -28,7 +28,7 @@ const JUSTIFY = {
   between: 'space-between',
 } as const;
 
-export type Surface = 'canvas' | 'surface' | 'raised' | 'sunken';
+export type Surface = 'canvas' | 'surface' | 'raised' | 'sunken' | 'accent';
 
 export interface BoxProps {
   children?: ReactNode;
@@ -167,33 +167,55 @@ export interface ScreenProps {
   scroll?: boolean;
   /** Pinned to the bottom, above the keyboard and the system navigation bar. */
   footer?: ReactNode;
+  /** Floats over the content at the bottom trailing corner, usually a `Fab`. */
+  fab?: ReactNode;
   padded?: boolean;
+  /**
+   * The screen is one of the bottom tabs: the tab bar below it already covers the system
+   * navigation area, so the screen adds no bottom inset of its own.
+   */
+  tab?: boolean;
+  /** The screen has no header (onboarding, app lock): keep the content below the status bar. */
+  safeTop?: boolean;
   testID?: string;
 }
 
 /**
- * Root of every screen: canvas background, safe areas, keyboard avoidance and an optional
- * pinned footer for the primary action.
+ * Root of every screen: canvas background, safe areas, keyboard avoidance, an optional pinned
+ * footer for the primary action and an optional floating action button.
  */
-export function Screen({ children, scroll = true, footer, padded = true, testID }: ScreenProps) {
+export function Screen({
+  children,
+  scroll = true,
+  footer,
+  fab,
+  padded = true,
+  tab = false,
+  safeTop = false,
+  testID,
+}: ScreenProps) {
   const { theme } = useUi();
   const insets = useSafeAreaInsets();
   const padding = padded ? theme.spacing.lg : 0;
+  const bottomInset = tab ? 0 : insets.bottom;
+  const topInset = safeTop ? insets.top : 0;
+  // Room for the floating button, so it never hides the last row for good.
+  const fabSpace = fab ? theme.size.control + theme.spacing.xl : 0;
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: theme.colors.bg.canvas }}
+      style={{ flex: 1, backgroundColor: theme.colors.bg.canvas, paddingTop: topInset }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       testID={testID}
     >
       {scroll ? (
         <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{
+            flexGrow: 1,
             padding,
             gap: theme.spacing.lg,
-            paddingBottom: padding + (footer ? 0 : insets.bottom),
+            paddingBottom: padding + fabSpace + (footer ? 0 : bottomInset),
           }}
         >
           {children}
@@ -201,15 +223,27 @@ export function Screen({ children, scroll = true, footer, padded = true, testID 
       ) : (
         <View style={{ flex: 1, padding, gap: theme.spacing.lg }}>{children}</View>
       )}
+      {fab ? (
+        <View
+          pointerEvents="box-none"
+          style={{
+            position: 'absolute',
+            right: theme.spacing.lg,
+            bottom: theme.spacing.lg + bottomInset,
+            zIndex: theme.zIndex.raised,
+          }}
+        >
+          {fab}
+        </View>
+      ) : null}
       {footer ? (
         <View
           style={{
-            padding: theme.spacing.lg,
-            paddingBottom: theme.spacing.lg + insets.bottom,
+            paddingHorizontal: theme.spacing.lg,
+            paddingTop: theme.spacing.md,
+            paddingBottom: theme.spacing.lg + bottomInset,
             gap: theme.spacing.sm,
-            backgroundColor: theme.colors.bg.surface,
-            borderTopWidth: StyleSheet.hairlineWidth,
-            borderTopColor: theme.colors.border.default,
+            backgroundColor: theme.colors.bg.canvas,
           }}
         >
           {footer}

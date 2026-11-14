@@ -7,6 +7,7 @@ export const SETTINGS = {
   deviceCode: 'device.code',
   invoiceSequence: 'invoice.sequence',
   language: 'app.language',
+  appearance: 'app.appearance',
   lockEnabled: 'security.lock-enabled',
   lastLocalBackupAt: 'backup.last-local-at',
   syncCursor: 'sync.cursor',

@@ -3,6 +3,7 @@ import { Switch, TextInput, type TextInputProps, View } from 'react-native';
 
 import { useTranslation } from '@/core/i18n';
 import { textStyle } from '@/core/theme';
+import { primitives } from '@tokens/theme';
 import {
   formatMoney,
   formatQuantity,
@@ -30,10 +31,12 @@ export function FieldFrame({ label, optional = false, hint, error, children }: F
   const { theme } = useUi();
   const { t } = useTranslation();
   return (
-    <View style={{ gap: theme.spacing.xs }}>
-      <Text variant="label" tone="secondary">
-        {optional ? `${label} (${t('common.optional')})` : label}
-      </Text>
+    <View style={{ gap: theme.spacing.sm }}>
+      <View style={{ paddingHorizontal: theme.spacing.xs }}>
+        <Text variant="overline" tone="secondary">
+          {optional ? `${label} (${t('common.optional')})` : label}
+        </Text>
+      </View>
       {children}
       {error ? (
         <Text variant="label" tone="danger" accessibilityRole="alert">
@@ -53,17 +56,18 @@ function useInputStyle(error: string | undefined, focused: boolean, disabled: bo
   const { colors } = theme;
   return {
     ...textStyle(theme, 'body', script),
-    minHeight: theme.size.touchTarget,
+    minHeight: theme.size.control,
     paddingHorizontal: theme.spacing.lg,
     paddingVertical: theme.spacing.sm,
-    borderRadius: theme.radius.md,
+    borderRadius: theme.radius.lg,
     borderCurve: 'continuous' as const,
-    borderWidth: focused ? 2 : 1,
+    // The border keeps its width in every state, so the text does not shift on focus.
+    borderWidth: 2,
     borderColor: error
       ? colors.status.danger
       : focused
         ? colors.border.focus
-        : colors.border.strong,
+        : colors.border.default,
     backgroundColor: disabled ? colors.bg.sunken : colors.bg.surface,
     color: disabled ? colors.text.disabled : colors.text.primary,
   };
@@ -93,7 +97,7 @@ export interface TextFieldProps {
 
 /**
  * Single- or multi-line text input.
- * States: default, focused (thicker focus-colored border), disabled (sunken, muted, not
+ * States: default, focused (focus-colored border), disabled (sunken, muted, not
  * editable) and error (danger border plus a message announced as an alert).
  */
 export function TextField({
@@ -199,9 +203,18 @@ export function AmountField({
   const symbol = getCurrency(currency).symbol;
 
   return (
-    <FieldFrame label={`${label} (${symbol})`} optional={optional} hint={hint} error={error}>
-      <TextInput
-        value={draft ?? amountText(value, locale, currency)}
+    <FieldFrame label={label} optional={optional} hint={hint} error={error}>
+      <View style={{ justifyContent: 'center' }}>
+        <View
+          pointerEvents="none"
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+          style={{ position: 'absolute', left: theme.spacing.lg, zIndex: theme.zIndex.raised }}
+        >
+          <Text tone={disabled ? 'disabled' : 'secondary'}>{symbol}</Text>
+        </View>
+        <TextInput
+          value={draft ?? amountText(value, locale, currency)}
         onChangeText={(text) => {
           setDraft(text);
           onChange(text.trim() === '' ? null : parseMoneyInput(text, locale, currency));
@@ -214,14 +227,19 @@ export function AmountField({
         editable={!disabled}
         keyboardType="decimal-pad"
         selectTextOnFocus
+        placeholder={amountText(0, locale, currency)}
         placeholderTextColor={theme.colors.text.disabled}
         accessibilityLabel={label}
         accessibilityHint={error ?? hint}
         accessibilityState={{ disabled }}
         maxFontSizeMultiplier={2}
-        style={[style, { fontVariant: ['tabular-nums'], textAlign: 'right' }]}
-        testID={testID}
-      />
+          style={[
+            style,
+            { fontVariant: ['tabular-nums'], paddingLeft: theme.spacing.lg + theme.spacing.xl },
+          ]}
+          testID={testID}
+        />
+      </View>
     </FieldFrame>
   );
 }
@@ -309,6 +327,8 @@ export interface SwitchFieldProps {
   value: boolean;
   onChange: (value: boolean) => void;
   disabled?: boolean;
+  /** Keep label and switch together at their natural width, e.g. beside a list heading. */
+  inline?: boolean;
   testID?: string;
 }
 
@@ -319,6 +339,7 @@ export function SwitchField({
   value,
   onChange,
   disabled = false,
+  inline = false,
   testID,
 }: SwitchFieldProps) {
   const { theme } = useUi();
@@ -327,12 +348,14 @@ export function SwitchField({
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        gap: theme.spacing.lg,
+        gap: inline ? theme.spacing.sm : theme.spacing.lg,
         minHeight: theme.size.touchTarget,
       }}
     >
-      <View style={{ flex: 1, gap: theme.spacing.xs }}>
-        <Text tone={disabled ? 'disabled' : 'primary'}>{label}</Text>
+      <View style={inline ? null : { flex: 1, gap: theme.spacing.xs }}>
+        <Text variant={inline ? 'label' : 'bodyStrong'} tone={disabled ? 'disabled' : 'primary'}>
+          {label}
+        </Text>
         {description ? (
           <Text variant="label" tone="secondary">
             {description}
@@ -344,8 +367,10 @@ export function SwitchField({
         onValueChange={onChange}
         disabled={disabled}
         accessibilityLabel={label}
-        trackColor={{ true: theme.colors.action.primary, false: theme.colors.border.strong }}
-        thumbColor={theme.colors.bg.surface}
+        trackColor={{ true: theme.colors.action.primary, false: theme.colors.border.default }}
+        thumbColor={
+          value || theme.scheme === 'light' ? primitives.neutral[0] : theme.colors.text.secondary
+        }
         testID={testID}
       />
     </View>

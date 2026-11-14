@@ -6,7 +6,7 @@ import { type ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from '@/core/i18n';
 import { AutoSync } from '@/core/sync';
 import { type AppServices, AppServicesProvider } from '@/core/services';
-import { fontFamily, useTheme } from '@/core/theme';
+import { useTheme } from '@/core/theme';
 import { Button, EmptyState, Screen, ToastHost } from '@/core/ui';
 
 import { bootstrap } from './bootstrap';
@@ -21,7 +21,10 @@ type BootState =
 function StartupFailed({ onRetry }: { onRetry: () => void }) {
   const { t } = useTranslation();
   return (
-    <Screen footer={<Button label={t('common.retry')} icon="refresh" onPress={onRetry} />}>
+    <Screen
+      safeTop
+      footer={<Button label={t('common.retry')} icon="refresh" onPress={onRetry} />}
+    >
       <EmptyState icon="error" title={t('startup.failedTitle')} body={t('startup.failedBody')} />
     </Screen>
   );
@@ -53,6 +56,7 @@ export function AppRoot({ children }: { children: ReactNode }) {
   const [state, setState] = useState<BootState>({ status: 'starting' });
   const [attempt, setAttempt] = useState(0);
   const navigationTheme = useNavigationTheme();
+  const theme = useTheme();
 
   useEffect(() => {
     let active = true;
@@ -90,24 +94,20 @@ export function AppRoot({ children }: { children: ReactNode }) {
         />
       )}
       <ToastHost />
-      <StatusBar style="auto" />
+      {/* The appearance can differ from the phone's, so the status bar follows the theme. */}
+      <StatusBar style={theme.scheme === 'dark' ? 'light' : 'dark'} />
     </ThemeProvider>
   );
 }
 
-/** Header look shared by every stack screen. */
+/**
+ * Options shared by every stack screen. No header until the screen asks for one: each screen
+ * draws its own through `ScreenHeader`, so nothing flashes before it is ready.
+ */
 export function useStackScreenOptions() {
   const theme = useTheme();
-  const { i18n } = useTranslation();
-  const script = i18n.language === 'bn' ? 'bengali' : 'latin';
   return {
-    headerStyle: { backgroundColor: theme.colors.bg.surface },
-    headerTintColor: theme.colors.text.primary,
-    headerTitleStyle: {
-      fontFamily: fontFamily(theme.typography.heading.fontWeight, script),
-      fontSize: theme.typography.heading.fontSize,
-    },
-    headerShadowVisible: false,
+    headerShown: false,
     contentStyle: { backgroundColor: theme.colors.bg.canvas },
   } as const;
 }

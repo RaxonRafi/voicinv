@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { AccessibilityInfo, Animated, Pressable, useAnimatedValue, View } from 'react-native';
 
 import { useTranslation } from '@/core/i18n';
+import { actionGlow, actionGradient } from '@/core/theme';
 
 import { Icon } from './icon';
 import { Text } from './text';
@@ -15,15 +16,20 @@ export interface MicButtonProps {
   /** Called when the person lets go. */
   onStop: () => void;
   disabled?: boolean;
+  /** `lg` (default) stands alone; `md` sits at the end of a card that explains it. */
+  size?: 'md' | 'lg';
+  /** Write the state out below the button. Turn off only when the state is shown beside it. */
+  showLabel?: boolean;
   testID?: string;
 }
 
 /**
  * Hold-to-talk button, the entry point of voice billing.
  *
- * States: idle ("Hold to talk"), listening (darker fill, pulsing ring, "Listening…" text) and
- * disabled (muted, e.g. while speech recognition is unavailable). The state is always written
- * out below the button, not only shown by color or motion. The ring does not pulse when the
+ * States: idle (brand gradient, "Hold to talk"), listening (solid darker fill, pulsing ring,
+ * "Listening…" text) and disabled (muted, e.g. while speech recognition is unavailable). The
+ * state is always written out, below the button or by the caller beside it, not only shown by
+ * color or motion. The ring does not pulse when the
  * system asks for reduced motion. Screen-reader users, who cannot press and hold, toggle
  * listening with a double tap.
  */
@@ -32,12 +38,15 @@ export function MicButton({
   onStart,
   onStop,
   disabled = false,
+  size: sizeName = 'lg',
+  showLabel = true,
   testID,
 }: MicButtonProps) {
   const { theme } = useUi();
   const { t } = useTranslation();
   const pulse = useAnimatedValue(0);
-  const size = theme.size.touchTarget * 2;
+  const size = sizeName === 'lg' ? theme.size.touchTarget * 2 : theme.size.mic;
+  const idle = !disabled && !listening;
 
   useEffect(() => {
     if (!listening) {
@@ -110,14 +119,18 @@ export function MicButton({
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: fill,
+            backgroundImage: idle ? actionGradient(theme) : undefined,
+            boxShadow: idle ? actionGlow(theme) : undefined,
           }}
         >
           <Icon name="mic" size="xl" tone={disabled ? 'disabled' : 'onAction'} />
         </Pressable>
       </View>
-      <Text variant="bodyStrong" tone={disabled ? 'disabled' : 'primary'} align="center">
-        {listening ? t('ui.micListening') : t('ui.micHold')}
-      </Text>
+      {showLabel ? (
+        <Text variant="bodyStrong" tone={disabled ? 'disabled' : 'primary'} align="center">
+          {listening ? t('ui.micListening') : t('ui.micHold')}
+        </Text>
+      ) : null}
     </View>
   );
 }

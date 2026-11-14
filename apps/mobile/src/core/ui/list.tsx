@@ -6,6 +6,18 @@ import { View } from 'react-native';
 import { Divider } from './layout';
 import { useUi } from './use-ui';
 
+function Gap() {
+  const { theme } = useUi();
+  return <View style={{ height: theme.spacing.md }} />;
+}
+
+function Seam() {
+  const { theme } = useUi();
+  return <View style={{ height: theme.spacing.xs / 2 }} />;
+}
+
+const SEPARATORS = { divider: Divider, gap: Gap, seam: Seam, none: undefined } as const;
+
 export interface ListProps<T> {
   data: readonly T[];
   /**
@@ -18,7 +30,13 @@ export interface ListProps<T> {
   footer?: ReactElement;
   /** Shown when `data` is empty, usually an EmptyState. */
   empty?: ReactElement;
-  separators?: boolean;
+  /**
+   * What goes between rows: a `divider` line (default), a `gap` between rows that are cards of
+   * their own, a thin `seam` between rows that join into one card, or `none`.
+   */
+  separator?: keyof typeof SEPARATORS;
+  /** Keep the rows away from the screen edges (rows with their own card surface). */
+  padded?: boolean;
   testID?: string;
 }
 
@@ -33,7 +51,8 @@ export function List<T>({
   header,
   footer,
   empty,
-  separators = true,
+  separator = 'divider',
+  padded = false,
   testID,
 }: ListProps<T>) {
   const { theme } = useUi();
@@ -45,9 +64,13 @@ export function List<T>({
       ListHeaderComponent={header}
       ListFooterComponent={footer}
       ListEmptyComponent={empty}
-      ItemSeparatorComponent={separators ? Divider : undefined}
+      ItemSeparatorComponent={SEPARATORS[separator]}
       keyboardShouldPersistTaps="handled"
-      contentContainerStyle={{ paddingBottom: theme.spacing['3xl'] }}
+      contentContainerStyle={{
+        paddingHorizontal: padded ? theme.spacing.lg : 0,
+        // Room to scroll the last row clear of a floating action button.
+        paddingBottom: theme.spacing['4xl'] + theme.spacing['2xl'],
+      }}
       testID={testID}
     />
   );
@@ -68,7 +91,7 @@ export function Logo({ uri, accessibilityLabel }: LogoProps) {
       style={{
         width: size,
         height: size,
-        borderRadius: theme.radius.md,
+        borderRadius: theme.radius.lg,
         borderCurve: 'continuous',
         overflow: 'hidden',
         backgroundColor: theme.colors.bg.sunken,

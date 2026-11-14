@@ -15,9 +15,20 @@ export {
   Button,
   type ButtonProps,
   type ButtonVariant,
+  Fab,
+  type FabProps,
   IconButton,
   type IconButtonProps,
 } from './button';
+export {
+  ChipGroup,
+  type ChipGroupProps,
+  type ChoiceOption,
+  SearchField,
+  type SearchFieldProps,
+  SegmentedControl,
+  type SegmentedControlProps,
+} from './controls';
 export {
   AmountField,
   type AmountFieldProps,
@@ -43,7 +54,7 @@ export {
 export { List, type ListProps, Logo, type LogoProps } from './list';
 export { MicButton, type MicButtonProps } from './mic-button';
 export { BottomSheet, type BottomSheetProps, Dialog, type DialogProps } from './overlays';
-export { ScreenHeader, type ScreenHeaderProps } from './screen-header';
+export { ScreenHeader, type ScreenHeaderProps, TabBar, type TabBarItem } from './screen-header';
 export { Select, type SelectOption, type SelectProps } from './select';
 export {
   Avatar,
@@ -51,13 +62,22 @@ export {
   type CardProps,
   EmptyState,
   type EmptyStateProps,
+  IconTile,
+  type IconTileProps,
   initialsOf,
+  LegendItem,
+  type LegendItemProps,
   ListItem,
+  type ListItemGroup,
   type ListItemProps,
+  ProgressBar,
+  type ProgressBarProps,
   SectionHeader,
   type SectionHeaderProps,
   Skeleton,
   Spinner,
+  StatTile,
+  type StatTileProps,
 } from './surfaces';
 export { Text, type TextProps, type TextTone } from './text';
 export { showToast, ToastHost, type ToastTone } from './toast';

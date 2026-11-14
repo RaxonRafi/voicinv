@@ -88,7 +88,7 @@ export function ToastHost() {
           gap: theme.spacing.md,
           minHeight: theme.size.touchTarget,
           padding: theme.spacing.lg,
-          borderRadius: theme.radius.md,
+          borderRadius: theme.radius.xl,
           borderCurve: 'continuous',
           backgroundColor: theme.colors.bg.raised,
           borderWidth: 1,

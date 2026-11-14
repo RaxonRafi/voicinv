@@ -23,7 +23,7 @@ function badgeLook(theme: Theme, tone: BadgeTone): BadgeLook {
   const { status, bg } = theme.colors;
   switch (tone) {
     case 'paid':
-      return { icon: 'checkCircle', tone: 'success', background: status.successBg };
+      return { icon: 'check', tone: 'success', background: status.successBg };
     case 'partlyPaid':
       return { icon: 'clock', tone: 'warning', background: status.warningBg };
     case 'due':
@@ -42,13 +42,15 @@ function badgeLook(theme: Theme, tone: BadgeTone): BadgeLook {
 export interface BadgeProps {
   tone: BadgeTone;
   label: string;
+  /** Hide the icon when the badge is a plain value ("Off") rather than a status. */
+  showIcon?: boolean;
 }
 
 /**
  * Short status label (Paid / Partly paid / Due / Cancelled, …). Each tone has its own icon and
  * always shows text, so status is never conveyed by color alone (AGENTS.md §7.2 rule 3).
  */
-export function Badge({ tone, label }: BadgeProps) {
+export function Badge({ tone, label, showIcon = true }: BadgeProps) {
   const { theme } = useUi();
   const look = badgeLook(theme, tone);
   return (
@@ -64,7 +66,7 @@ export function Badge({ tone, label }: BadgeProps) {
         backgroundColor: look.background,
       }}
     >
-      <Icon name={look.icon} size="sm" tone={look.tone} />
+      {showIcon ? <Icon name={look.icon} size="sm" tone={look.tone} /> : null}
       <Text variant="label" tone={look.tone}>
         {label}
       </Text>
@@ -92,7 +94,7 @@ export function ConfidenceHighlight({ confidence, children }: ConfidenceHighligh
       style={{
         gap: theme.spacing.sm,
         padding: theme.spacing.sm,
-        borderRadius: theme.radius.md,
+        borderRadius: theme.radius.xl,
         borderCurve: 'continuous',
         borderWidth: 1,
         borderColor: theme.colors.confidence.low,
@@ -139,7 +141,7 @@ export function Banner({ tone, title, message, icon, action }: BannerProps) {
         flexDirection: 'row',
         gap: theme.spacing.md,
         padding: theme.spacing.lg,
-        borderRadius: theme.radius.md,
+        borderRadius: theme.radius.xl,
         borderCurve: 'continuous',
         backgroundColor: background,
       }}
@@ -149,7 +151,13 @@ export function Banner({ tone, title, message, icon, action }: BannerProps) {
         <Text variant="bodyStrong">{title}</Text>
         {message ? <Text>{message}</Text> : null}
         {action ? (
-          <Button label={action.label} onPress={action.onPress} variant="ghost" fullWidth={false} />
+          <Button
+            label={action.label}
+            onPress={action.onPress}
+            variant="ghost"
+            size="md"
+            fullWidth={false}
+          />
         ) : null}
       </View>
     </View>

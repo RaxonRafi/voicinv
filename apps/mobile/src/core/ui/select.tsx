@@ -62,13 +62,13 @@ export function Select<T extends string>({
           flexDirection: 'row',
           alignItems: 'center',
           gap: theme.spacing.md,
-          minHeight: theme.size.touchTarget,
+          minHeight: theme.size.control,
           paddingHorizontal: theme.spacing.lg,
           paddingVertical: theme.spacing.sm,
-          borderRadius: theme.radius.md,
+          borderRadius: theme.radius.lg,
           borderCurve: 'continuous',
-          borderWidth: 1,
-          borderColor: error ? theme.colors.status.danger : theme.colors.border.strong,
+          borderWidth: 2,
+          borderColor: error ? theme.colors.status.danger : theme.colors.border.default,
           backgroundColor: disabled || pressed ? theme.colors.bg.sunken : theme.colors.bg.surface,
         })}
       >
