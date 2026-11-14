@@ -1,4 +1,4 @@
-import { type MinorUnits, type PaymentInstruction } from '@/shared';
+import { type MinorUnits, type PaymentInstruction } from '@/domain';
 
 import { matchCustomerInTokens, matchProductAt, resolveUnit } from './entity-matcher';
 import { detectVoiceIntent } from './intent-detector';

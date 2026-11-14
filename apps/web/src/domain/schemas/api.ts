@@ -11,7 +11,7 @@ import {
   phoneSchema,
 } from './common';
 
-// Request and response contracts of the API (AGENTS.md §10), shared by the mobile app and web.
+// Request and response contracts of the API (AGENTS.md §10), as the website uses them.
 // The API itself validates requests with class-validator DTOs that mirror these shapes.
 
 export const PASSWORD_MIN_LENGTH = 8;

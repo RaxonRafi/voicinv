@@ -1,0 +1,992 @@
+[
+  {
+    "input": "payment from Karim 500",
+    "customers": ["Karim", "Rahim", "Jamal", "Kamal", "Hasan", "Ali"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null
+      }
+    ],
+    "expected": {
+      "intent": "PAYMENT",
+      "customer": "Karim",
+      "amount": 50000
+    }
+  },
+  {
+    "input": "Rahim paid 1000",
+    "customers": ["Karim", "Rahim", "Jamal", "Kamal", "Hasan", "Ali"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null
+      }
+    ],
+    "expected": {
+      "intent": "PAYMENT",
+      "customer": "Rahim",
+      "amount": 100000
+    }
+  },
+  {
+    "input": "Jamal paid 200 towards balance",
+    "customers": ["Karim", "Rahim", "Jamal", "Kamal", "Hasan", "Ali"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null
+      }
+    ],
+    "expected": {
+      "intent": "PAYMENT",
+      "customer": "Jamal",
+      "amount": 20000
+    }
+  },
+  {
+    "input": "received payment from Kamal 1500",
+    "customers": ["Karim", "Rahim", "Jamal", "Kamal", "Hasan", "Ali"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null
+      }
+    ],
+    "expected": {
+      "intent": "PAYMENT",
+      "customer": "Kamal",
+      "amount": 150000
+    }
+  },
+  {
+    "input": "Hasan paid debt 300",
+    "customers": ["Karim", "Rahim", "Jamal", "Kamal", "Hasan", "Ali"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null
+      }
+    ],
+    "expected": {
+      "intent": "PAYMENT",
+      "customer": "Hasan",
+      "amount": 30000
+    }
+  },
+  {
+    "input": "Ali installment 800",
+    "customers": ["Karim", "Rahim", "Jamal", "Kamal", "Hasan", "Ali"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null
+      }
+    ],
+    "expected": {
+      "intent": "PAYMENT",
+      "customer": "Ali",
+      "amount": 80000
+    }
+  },
+  {
+    "input": "payment from Karim 2500",
+    "customers": ["Karim", "Rahim", "Jamal", "Kamal", "Hasan", "Ali"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null
+      }
+    ],
+    "expected": {
+      "intent": "PAYMENT",
+      "customer": "Karim",
+      "amount": 250000
+    }
+  },
+  {
+    "input": "received 400 from Rahim",
+    "customers": ["Karim", "Rahim", "Jamal", "Kamal", "Hasan", "Ali"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null
+      }
+    ],
+    "expected": {
+      "intent": "PAYMENT",
+      "customer": "Rahim",
+      "amount": 40000
+    }
+  },
+  {
+    "input": "Jamal paid 600",
+    "customers": ["Karim", "Rahim", "Jamal", "Kamal", "Hasan", "Ali"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null
+      }
+    ],
+    "expected": {
+      "intent": "PAYMENT",
+      "customer": "Jamal",
+      "amount": 60000
+    }
+  },
+  {
+    "input": "Kamal payment of 350",
+    "customers": ["Karim", "Rahim", "Jamal", "Kamal", "Hasan", "Ali"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null
+      }
+    ],
+    "expected": {
+      "intent": "PAYMENT",
+      "customer": "Kamal",
+      "amount": 35000
+    }
+  },
+  {
+    "input": "Hasan paid 1200",
+    "customers": ["Karim", "Rahim", "Jamal", "Kamal", "Hasan", "Ali"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null
+      }
+    ],
+    "expected": {
+      "intent": "PAYMENT",
+      "customer": "Hasan",
+      "amount": 120000
+    }
+  },
+  {
+    "input": "Ali paid 500 towards balance",
+    "customers": ["Karim", "Rahim", "Jamal", "Kamal", "Hasan", "Ali"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null
+      }
+    ],
+    "expected": {
+      "intent": "PAYMENT",
+      "customer": "Ali",
+      "amount": 50000
+    }
+  },
+  {
+    "input": "payment from Karim 750",
+    "customers": ["Karim", "Rahim", "Jamal", "Kamal", "Hasan", "Ali"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null
+      }
+    ],
+    "expected": {
+      "intent": "PAYMENT",
+      "customer": "Karim",
+      "amount": 75000
+    }
+  },
+  {
+    "input": "Rahim paid debt 900",
+    "customers": ["Karim", "Rahim", "Jamal", "Kamal", "Hasan", "Ali"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null
+      }
+    ],
+    "expected": {
+      "intent": "PAYMENT",
+      "customer": "Rahim",
+      "amount": 90000
+    }
+  },
+  {
+    "input": "received payment from Jamal 2000",
+    "customers": ["Karim", "Rahim", "Jamal", "Kamal", "Hasan", "Ali"],
+    "products": [
+      {
+        "name": "Rice",
+        "unit": "bag",
+        "price": 250000
+      },
+      {
+        "name": "Sugar",
+        "unit": "kg",
+        "price": 12000
+      },
+      {
+        "name": "Oil",
+        "unit": "liter",
+        "price": 18000
+      },
+      {
+        "name": "Flour",
+        "unit": "kg",
+        "price": 6500
+      },
+      {
+        "name": "Soap",
+        "unit": "piece",
+        "price": 5000
+      },
+      {
+        "name": "Salt",
+        "unit": "kg",
+        "price": 3500
+      },
+      {
+        "name": "Tea",
+        "unit": "packet",
+        "price": 15000
+      },
+      {
+        "name": "Lentils",
+        "unit": "kg",
+        "price": 14000
+      },
+      {
+        "name": "Egg",
+        "unit": "piece",
+        "price": 1200
+      },
+      {
+        "name": "Milk",
+        "unit": "liter",
+        "price": 9000
+      },
+      {
+        "name": "Wheat",
+        "unit": "kg",
+        "price": null
+      }
+    ],
+    "expected": {
+      "intent": "PAYMENT",
+      "customer": "Jamal",
+      "amount": 200000
+    }
+  }
+]

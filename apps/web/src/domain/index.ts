@@ -1,4 +1,6 @@
-// Public API of @voiceledger/shared.
+// The website's own domain code: money, IDs, formatters, record schemas and the API contracts.
+// It belongs to apps/web alone and is not copied from or checked against any other app; the
+// contracts must be kept compatible with the API by hand (see docs/adr/0003).
 export * from './backup/format';
 export * from './constants';
 export * from './format/date-format';

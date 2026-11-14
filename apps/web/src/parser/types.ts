@@ -1,4 +1,4 @@
-import { type LanguageCode, type MinorUnits, type PaymentInstruction } from '@/shared';
+import { type LanguageCode, type MinorUnits, type PaymentInstruction } from '@/domain';
 
 export type VoiceIntent = 'SALE' | 'PAYMENT' | 'QUERY';
 

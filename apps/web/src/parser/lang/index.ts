@@ -1,4 +1,4 @@
-import { type LanguageCode } from '@/shared';
+import { type LanguageCode } from '@/domain';
 
 import bnCurrency from './bn/currency.json';
 import bnFractions from './bn/fractions.json';

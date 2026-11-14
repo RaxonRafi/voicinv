@@ -1,4 +1,4 @@
-import { type MinorUnits } from '@/shared';
+import { type MinorUnits } from '@/domain';
 
 import { parseNumberAt } from './numbers';
 import { type LanguagePack, type ParsedItem } from './types';
