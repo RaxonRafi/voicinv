@@ -1,4 +1,5 @@
 {
+  "home": "হোম",
   "shortcuts": "শর্টকাট",
   "newInvoice": "নতুন ইনভয়েস",
   "takePayment": "টাকা জমা নিন",
@@ -6,5 +7,12 @@
   "customers": "কাস্টমার",
   "products": "পণ্য",
   "reports": "রিপোর্ট",
-  "settings": "সেটিংস"
+  "settings": "সেটিংস",
+  "salesToday": "আজকের বিক্রি",
+  "collected": "জমা",
+  "due": "বাকি",
+  "recent": "সাম্প্রতিক",
+  "seeAll": "সব দেখুন",
+  "holdToTalk": "কথা বলতে চেপে ধরুন",
+  "holdToTalkHint": "একটি ইনভয়েস, পেমেন্ট বা কাস্টমারের বাকি জানতে বলুন।"
 }

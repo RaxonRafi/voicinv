@@ -99,7 +99,7 @@ function groupStyle(theme: Theme, group: ListItemGroup): ViewStyle {
     borderBottomLeftRadius: bottom,
     borderBottomRightRadius: bottom,
     borderCurve: 'continuous',
-    boxShadow: group === 'only' ? boxShadow(theme, 'sm') : undefined,
+    boxShadow: boxShadow(theme, 'sm'),
   };
 }
 
@@ -228,6 +228,13 @@ export function IconTile({
   const side = size === 'lg' ? theme.spacing['4xl'] : theme.size.tile;
   const action = tone === 'action';
   const textTone: TextTone = action ? 'onAction' : tone === 'accent' ? 'success' : 'link';
+  const bg =
+    action
+      ? colors.action.primary
+      : tone === 'accent'
+        ? colors.bg.accent
+        : (theme.scheme === 'light' ? '#E6F4EA' : colors.bg.sunken);
+
   return (
     <View
       accessibilityElementsHidden
@@ -244,11 +251,7 @@ export function IconTile({
         borderCurve: 'continuous',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: action
-          ? colors.action.primary
-          : tone === 'accent'
-            ? colors.bg.accent
-            : colors.bg.sunken,
+        backgroundColor: bg,
         backgroundImage: action ? actionGradient(theme) : undefined,
         boxShadow: action && size === 'lg' ? actionGlow(theme) : undefined,
       }}
@@ -272,17 +275,16 @@ export function Avatar({ name }: { name: string }) {
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
       style={{
-        width: theme.size.touchTarget,
-        height: theme.size.touchTarget,
+        width: 48,
+        height: 48,
         borderRadius: theme.radius.full,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: theme.colors.action.primary,
-        backgroundImage: actionGradient(theme),
       }}
     >
-      <Text variant="bodyStrong" tone="onAction">
-        {initialsOf(name)}
+      <Text variant="heading" tone="onAction">
+        {initialsOf(name).slice(0, 1)}
       </Text>
     </View>
   );

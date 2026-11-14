@@ -62,7 +62,7 @@ function HeaderBar({ title, eyebrow, right, large = false }: Omit<ScreenHeaderPr
             {eyebrow}
           </Text>
         ) : null}
-        <Text variant={large && !eyebrow ? 'display' : 'title'} accessibilityRole="header">
+        <Text variant="display" accessibilityRole="header">
           {title}
         </Text>
       </View>
@@ -115,8 +115,6 @@ export function TabBar({ items }: { items: readonly TabBarItem[] }) {
         paddingBottom: theme.spacing.sm + insets.bottom,
         paddingHorizontal: theme.spacing.xs,
         backgroundColor: colors.bg.surface,
-        borderTopWidth: StyleSheet.hairlineWidth,
-        borderTopColor: colors.border.default,
       }}
     >
       {items.map((item) => (
@@ -130,7 +128,7 @@ export function TabBar({ items }: { items: readonly TabBarItem[] }) {
           style={{
             flex: 1,
             alignItems: 'center',
-            gap: theme.spacing.xs,
+            gap: 2,
             minHeight: theme.size.touchTarget,
           }}
         >
@@ -138,13 +136,13 @@ export function TabBar({ items }: { items: readonly TabBarItem[] }) {
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              width: theme.spacing['4xl'],
-              height: theme.spacing['2xl'],
+              width: 56,
+              height: 32,
               borderRadius: theme.radius.full,
-              backgroundColor: item.active ? colors.bg.accent : 'transparent',
+              backgroundColor: item.active ? (theme.scheme === 'dark' ? colors.bg.accent : '#DCFCE7') : 'transparent',
             }}
           >
-            <Icon name={item.icon} tone={item.active ? 'link' : 'secondary'} />
+            <Icon name={item.icon} size="md" tone={item.active ? (theme.scheme === 'dark' ? 'link' : 'primary') : 'secondary'} />
           </View>
           <Text
             variant={item.active ? 'captionStrong' : 'caption'}

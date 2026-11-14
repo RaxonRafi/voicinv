@@ -1,8 +1,10 @@
 import { type Dispatch, memo, useState } from 'react';
+import { View } from 'react-native';
 
 import { useLiveQuery } from '@/core/db';
 import { useLanguage, useTranslation } from '@/core/i18n';
 import { type ShopContext } from '@/core/services';
+import { useUi } from '@/core/ui/use-ui';
 import {
   AmountField,
   Banner,
@@ -13,11 +15,12 @@ import {
   Divider,
   Icon,
   IconButton,
+  IconTile,
   ListItem,
   QuantityField,
   Row,
   SectionHeader,
-  Select,
+  SegmentedControl,
   Text,
   TextField,
 } from '@/core/ui';
@@ -35,19 +38,18 @@ import {
   itemForProduct,
 } from '../draft';
 
-type PaymentMode = 'full' | 'none' | 'half' | 'amount';
+type PaymentMode = 'full' | 'half' | 'amount' | 'credit';
 
 function paymentMode(payment: PaymentInstruction): PaymentMode {
   switch (payment.type) {
     case 'FULL':
       return 'full';
     case 'NONE':
-      return 'none';
+      return 'credit';
+    case 'FRACTION':
+      return payment.numerator === 1 && payment.denominator === 2 ? 'half' : 'amount';
     case 'AMOUNT':
       return 'amount';
-    case 'FRACTION':
-      // "Paid half" has its own choice; any other fraction is shown as the amount it comes to.
-      return payment.numerator === 1 && payment.denominator === 2 ? 'half' : 'amount';
   }
 }
 
@@ -60,8 +62,6 @@ interface ItemCardProps {
   dispatch: Dispatch<DraftAction>;
 }
 
-// One card per line. Receives the item object (replaced only when that line changes) and the
-// stable dispatch, so editing one line does not re-render the others.
 const ItemCard = memo(function ItemCard({
   item,
   currency,
@@ -71,6 +71,7 @@ const ItemCard = memo(function ItemCard({
   dispatch,
 }: ItemCardProps) {
   const { t } = useTranslation();
+  const { theme } = useUi();
   const update = (changes: Partial<Omit<DraftItem, 'key'>>) =>
     dispatch({ type: 'updateItem', key: item.key, changes });
   const has = (code: DraftProblem['code']) => problemCodes.split(',').includes(code);
@@ -85,57 +86,61 @@ const ItemCard = memo(function ItemCard({
               {item.name}
             </Text>
           ) : (
-            <Box flex>
-              <TextField
-                label={t('invoices.itemName')}
-                value={item.name}
-                onChangeText={(name) => update({ name })}
-                error={
-                  has('itemName') && item.name.trim() === '' ? t('errors.required') : undefined
-                }
-                testID={`invoice-item-name-${item.key}`}
-              />
-            </Box>
+            <View style={{ flex: 1, flexDirection: 'row', gap: theme.spacing.sm }}>
+              <View style={{ flex: 2 }}>
+                <TextField
+                  label={t('invoices.itemName')}
+                  value={item.name}
+                  onChangeText={(name) => update({ name })}
+                  error={
+                    has('itemName') && item.name.trim() === '' ? t('errors.required') : undefined
+                  }
+                  testID={`invoice-item-name-${item.key}`}
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <TextField
+                  label={t('invoices.unit')}
+                  value={item.unit}
+                  onChangeText={(unit) => update({ unit })}
+                  testID={`invoice-item-unit-${item.key}`}
+                />
+              </View>
+            </View>
           )}
           <IconButton
-            icon="trash"
-            tone="danger"
-            accessibilityLabel={t('invoices.removeItem', { name: item.name })}
+            icon="close"
+            accessibilityLabel={`${t('invoices.removeItem')}: ${item.name}`}
             onPress={() => dispatch({ type: 'removeItem', key: item.key })}
-            testID={`invoice-item-remove-${item.key}`}
+            tone="secondary"
           />
         </Row>
-        {fromCatalog ? null : (
-          <TextField
-            label={t('invoices.unit')}
-            value={item.unit}
-            onChangeText={(unit) => update({ unit })}
-            autoCapitalize="none"
-            error={has('itemName') && item.unit.trim() === '' ? t('errors.required') : undefined}
-            testID={`invoice-item-unit-${item.key}`}
-          />
-        )}
-        <QuantityField
-          label={t('invoices.quantity')}
-          unit={item.unit}
-          value={item.qtyMilli}
-          onChange={(qtyMilli) => update({ qtyMilli })}
-          locale={language}
-          error={has('itemQuantity') ? t('errors.invalidQuantity') : undefined}
-          testID={`invoice-item-quantity-${item.key}`}
-        />
-        <AmountField
-          label={t('invoices.price')}
-          value={item.unitPrice}
-          onChange={(unitPrice) => update({ unitPrice })}
-          locale={language}
-          currency={currency}
-          error={has('itemPrice') ? t('errors.invalidAmount') : undefined}
-          testID={`invoice-item-price-${item.key}`}
-        />
+        <Row gap="md">
+          <Box flex>
+            <QuantityField
+              label={t('invoices.quantity')}
+              value={item.qtyMilli}
+              onChange={(qtyMilli) => update({ qtyMilli })}
+              unit={item.unit}
+              locale={language}
+              error={has('itemQuantity') ? t('errors.required') : undefined}
+              testID={`invoice-item-qty-${item.key}`}
+            />
+          </Box>
+          <Box flex>
+            <AmountField
+              label={t('invoices.price')}
+              value={item.unitPrice}
+              onChange={(unitPrice) => update({ unitPrice })}
+              locale={language}
+              currency={currency}
+              error={has('itemPrice') ? t('errors.invalidAmount') : undefined}
+              testID={`invoice-item-price-${item.key}`}
+            />
+          </Box>
+        </Row>
         {lineTotalText ? (
-          <Row justify="between">
-            <Text tone="secondary">{t('invoices.lineTotal')}</Text>
+          <Row justify="end">
             <Text variant="amount">{lineTotalText}</Text>
           </Row>
         ) : null}
@@ -148,44 +153,42 @@ export interface InvoiceEditorProps {
   app: ShopContext;
   draft: InvoiceDraft;
   dispatch: Dispatch<DraftAction>;
-  /** Problems to point out on the form; pass them once the user has tried to save. */
   problems: readonly DraftProblem[];
 }
 
-/**
- * Edits an invoice draft: customer, lines, discount and payment, with live totals. Used for
- * manual entry, for editing a saved invoice and for confirming a voice draft, where fields the
- * parser was unsure about are highlighted until the user touches them.
- */
 export function InvoiceEditor({ app, draft, dispatch, problems }: InvoiceEditorProps) {
   const { t } = useTranslation();
+  const { theme } = useUi();
   const language = useLanguage();
-  const { format, shop } = app;
+  const { shop, format } = app;
   const [customerPickerOpen, setCustomerPickerOpen] = useState(false);
   const [productPickerOpen, setProductPickerOpen] = useState(false);
+  const isDark = theme.scheme === 'dark';
 
-  const totals = draftTotals(draft);
-  const mode = paymentMode(draft.payment);
-  const customer = useLiveQuery(
-    `invoice-editor-customer:${draft.customerId ?? ''}`,
+  const customerQuery = useLiveQuery(
+    `invoice-customer-info:${draft.customerId ?? ''}`,
     ['customers', 'ledgerEntries'],
     (orm) => (draft.customerId ? findCustomer(orm, draft.customerId) : Promise.resolve(null)),
   );
-  const customerInfo = customer.status === 'ready' ? customer.data : null;
+  const customerInfo = customerQuery.status === 'ready' ? customerQuery.data : null;
+
+  const mode = paymentMode(draft.payment);
+  const totals = draftTotals(draft);
   const overLimit =
-    customerInfo !== null &&
-    totals !== null &&
+    customerInfo &&
+    customerInfo.customer.creditLimit !== null &&
+    totals &&
     creditStatus(
-      Money.add(customerInfo.balance, totals.dueAmount),
+      customerInfo.balance + totals.dueAmount,
       customerInfo.customer.creditLimit,
     ) === 'over';
 
   const setMode = (next: PaymentMode) => {
     const payments: Record<PaymentMode, PaymentInstruction> = {
       full: { type: 'FULL' },
-      none: { type: 'NONE' },
       half: { type: 'FRACTION', numerator: 1, denominator: 2 },
       amount: { type: 'AMOUNT', amount: totals?.paidAmount ?? 0 },
+      credit: { type: 'NONE' },
     };
     dispatch({ type: 'setPayment', payment: payments[next] });
   };
@@ -198,12 +201,12 @@ export function InvoiceEditor({ app, draft, dispatch, problems }: InvoiceEditorP
   const generalProblems = problems.filter((problem) => !('key' in problem));
 
   const totalLine = (label: string, amount: MinorUnits, tone?: 'paid' | 'due') => (
-    <Row justify="between">
-      <Text tone={tone ? 'primary' : 'secondary'}>{label}</Text>
+    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 2 }}>
+      <Text tone="secondary">{label}</Text>
       <Text variant="amount" tone={tone ?? 'primary'}>
         {format.money(amount)}
       </Text>
-    </Row>
+    </View>
   );
 
   return (
@@ -212,19 +215,37 @@ export function InvoiceEditor({ app, draft, dispatch, problems }: InvoiceEditorP
         <Banner key={problem.code} tone="danger" title={t(`invoices.problems.${problem.code}`)} />
       ))}
 
-      <SectionHeader title={t('invoices.customer')} />
-      <ConfidenceHighlight confidence={draft.customerConfidence ?? 1}>
-        <Card padding="none">
+      {/* Customer Header */}
+      <View style={{ gap: theme.spacing.xs }}>
+        <Text variant="overline" tone="secondary">
+          CUSTOMER
+        </Text>
+        <ConfidenceHighlight confidence={draft.customerConfidence ?? 1}>
           <ListItem
             title={draft.customerName ?? t('common.walkIn')}
-            subtitle={draft.customerId ? undefined : t('invoices.chooseCustomer')}
-            leading={<Icon name="customer" tone="secondary" />}
+            subtitle={draft.customerId ? undefined : 'Tap to change'}
+            leading={
+              <View
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: theme.radius.full,
+                  backgroundColor: isDark ? 'rgba(74, 222, 128, 0.15)' : '#DCFCE7',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Icon name="customer" tone="success" size="md" />
+              </View>
+            }
             onPress={() => setCustomerPickerOpen(true)}
             showChevron
+            group="only"
             testID="invoice-customer"
           />
-        </Card>
-      </ConfidenceHighlight>
+        </ConfidenceHighlight>
+      </View>
+
       {overLimit && customerInfo && customerInfo.customer.creditLimit !== null ? (
         <Banner
           tone="warning"
@@ -235,73 +256,117 @@ export function InvoiceEditor({ app, draft, dispatch, problems }: InvoiceEditorP
         />
       ) : null}
 
-      <SectionHeader title={t('invoices.items')} />
-      {draft.items.map((item) => (
-        <ItemCard
-          key={item.key}
-          item={item}
-          currency={shop.currencyCode}
-          language={language}
-          lineTotalText={
-            item.qtyMilli !== null && item.qtyMilli > 0 && item.unitPrice !== null
-              ? format.money(Money.multiplyByQuantity(item.unitPrice, item.qtyMilli))
-              : null
-          }
-          problemCodes={problemCodesFor(item.key)}
-          dispatch={dispatch}
-        />
-      ))}
-      <Button
-        label={t('invoices.chooseProduct')}
-        icon="add"
-        variant="secondary"
-        onPress={() => setProductPickerOpen(true)}
-        testID="invoice-add-product"
-      />
-      <Button
-        label={t('invoices.typeItem')}
-        icon="edit"
-        variant="ghost"
-        onPress={() =>
-          dispatch({
-            type: 'addItem',
-            item: {
-              productId: null,
-              name: '',
-              unit: '',
-              qtyMilli: QUANTITY_SCALE,
-              unitPrice: null,
-            },
-          })
-        }
-        testID="invoice-add-custom"
-      />
+      {/* Items Section */}
+      <View style={{ gap: theme.spacing.xs }}>
+        <Text variant="overline" tone="secondary">
+          ITEMS
+        </Text>
+        {draft.items.length === 0 ? (
+          <Card padding="xl" gap="lg">
+            <Text variant="body" tone="secondary" align="center">
+              No items yet
+            </Text>
+            <View style={{ flexDirection: 'row', gap: theme.spacing.md }}>
+              <View style={{ flex: 1 }}>
+                <Button
+                  label="Product"
+                  icon="add"
+                  onPress={() => setProductPickerOpen(true)}
+                  testID="invoice-add-product"
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Button
+                  label="Type item"
+                  icon="edit"
+                  variant="secondary"
+                  onPress={() =>
+                    dispatch({
+                      type: 'addItem',
+                      item: {
+                        productId: null,
+                        name: '',
+                        unit: '',
+                        qtyMilli: QUANTITY_SCALE,
+                        unitPrice: null,
+                      },
+                    })
+                  }
+                  testID="invoice-add-custom"
+                />
+              </View>
+            </View>
+          </Card>
+        ) : (
+          <View style={{ gap: theme.spacing.sm }}>
+            {draft.items.map((item) => (
+              <ItemCard
+                key={item.key}
+                item={item}
+                currency={shop.currencyCode}
+                language={language}
+                lineTotalText={
+                  item.qtyMilli !== null && item.qtyMilli > 0 && item.unitPrice !== null
+                    ? format.money(Money.multiplyByQuantity(item.unitPrice, item.qtyMilli))
+                    : null
+                }
+                problemCodes={problemCodesFor(item.key)}
+                dispatch={dispatch}
+              />
+            ))}
+            <View style={{ flexDirection: 'row', gap: theme.spacing.md, marginTop: theme.spacing.xs }}>
+              <View style={{ flex: 1 }}>
+                <Button
+                  label="Product"
+                  icon="add"
+                  onPress={() => setProductPickerOpen(true)}
+                  testID="invoice-add-product"
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Button
+                  label="Type item"
+                  icon="edit"
+                  variant="secondary"
+                  onPress={() =>
+                    dispatch({
+                      type: 'addItem',
+                      item: {
+                        productId: null,
+                        name: '',
+                        unit: '',
+                        qtyMilli: QUANTITY_SCALE,
+                        unitPrice: null,
+                      },
+                    })
+                  }
+                  testID="invoice-add-custom"
+                />
+              </View>
+            </View>
+          </View>
+        )}
+      </View>
 
-      <Divider />
-      <AmountField
-        label={t('invoices.discount')}
-        value={draft.discount === 0 ? null : draft.discount}
-        onChange={(discount) => dispatch({ type: 'setDiscount', discount: discount ?? 0 })}
-        locale={language}
-        currency={shop.currencyCode}
-        optional
-        testID="invoice-discount"
-      />
-      <ConfidenceHighlight confidence={draft.paymentConfidence ?? 1}>
-        <Box gap="md">
-          <Select<PaymentMode>
-            label={t('invoices.payment')}
-            value={mode}
-            options={[
-              { value: 'full', label: t('invoices.pay.full') },
-              { value: 'half', label: t('invoices.pay.half') },
-              { value: 'amount', label: t('invoices.pay.amount') },
-              { value: 'none', label: t('invoices.pay.none') },
-            ]}
-            onChange={setMode}
-            testID="invoice-payment-mode"
-          />
-          {mode === 'amount' ? (
+      {/* Payment Now */}
+      <View style={{ gap: theme.spacing.xs }}>
+        <Text variant="overline" tone="secondary">
+          PAYMENT NOW
+        </Text>
+        <SegmentedControl<PaymentMode>
+          accessibilityLabel="Payment now"
+          value={mode}
+          options={[
+            { value: 'full', label: t('invoices.pay.full') },
+            { value: 'half', label: t('invoices.pay.half') },
+            { value: 'amount', label: t('invoices.pay.amount') },
+            { value: 'credit', label: t('invoices.pay.none') },
+          ]}
+          onChange={setMode}
+          testID="invoice-payment-mode"
+        />
+        {mode === 'amount' ? (
+          <View style={{ marginTop: theme.spacing.sm }}>
             <AmountField
               label={t('invoices.amountPaid')}
               value={
@@ -314,25 +379,31 @@ export function InvoiceEditor({ app, draft, dispatch, problems }: InvoiceEditorP
               currency={shop.currencyCode}
               testID="invoice-amount-paid"
             />
-          ) : null}
-        </Box>
-      </ConfidenceHighlight>
+          </View>
+        ) : null}
+      </View>
 
+      {/* Discount */}
+      <View style={{ gap: theme.spacing.xs }}>
+        <AmountField
+          label="DISCOUNT (OPTIONAL)"
+          value={draft.discount === 0 ? null : draft.discount}
+          onChange={(discount) => dispatch({ type: 'setDiscount', discount: discount ?? 0 })}
+          locale={language}
+          currency={shop.currencyCode}
+          optional={false}
+          testID="invoice-discount"
+        />
+      </View>
+
+      {/* Totals Summary */}
       {totals ? (
-        <Card elevation="raised" testID="invoice-totals">
+        <View testID="invoice-totals" style={{ gap: 2, paddingVertical: theme.spacing.xs }}>
           {totalLine(t('invoices.subtotal'), totals.subtotal)}
-          {totals.discount > 0
-            ? totalLine(t('invoices.discount'), Money.negate(totals.discount))
-            : null}
-          <Divider />
-          <Row justify="between">
-            <Text variant="bodyStrong">{t('invoices.total')}</Text>
-            <Text variant="title">{format.money(totals.total)}</Text>
-          </Row>
+          {totalLine(t('invoices.discount'), Money.negate(totals.discount))}
           {totalLine(t('invoices.paid'), totals.paidAmount, 'paid')}
-          {totalLine(t('invoices.due'), totals.dueAmount, totals.dueAmount > 0 ? 'due' : undefined)}
-          {totals.change > 0 ? totalLine(t('invoices.change'), totals.change) : null}
-        </Card>
+          {totalLine(t('invoices.due'), totals.dueAmount)}
+        </View>
       ) : null}
 
       <CustomerPicker

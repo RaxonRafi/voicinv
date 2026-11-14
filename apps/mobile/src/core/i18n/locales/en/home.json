@@ -1,10 +1,18 @@
 {
+  "home": "Home",
   "shortcuts": "Shortcuts",
   "newInvoice": "New invoice",
-  "takePayment": "Take a payment",
+  "takePayment": "Take payment",
   "invoices": "Invoices",
   "customers": "Customers",
   "products": "Products",
   "reports": "Reports",
-  "settings": "Settings"
+  "settings": "Settings",
+  "salesToday": "Sales today",
+  "collected": "Collected",
+  "due": "Due",
+  "recent": "Recent",
+  "seeAll": "See all",
+  "holdToTalk": "Hold to talk",
+  "holdToTalkHint": "Speak an invoice, a payment or ask a customer's balance."
 }

@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { Text as NativeText } from 'react-native';
+import { type StyleProp, Text as NativeText, type TextStyle } from 'react-native';
 
 import { textStyle, type Theme, type TypographyVariant } from '@/core/theme';
 
@@ -65,6 +65,7 @@ export interface TextProps {
   accessibilityRole?: 'header' | 'text' | 'alert';
   accessibilityLabel?: string;
   testID?: string;
+  style?: StyleProp<TextStyle>;
 }
 
 /**
@@ -82,6 +83,7 @@ export function Text({
   accessibilityRole,
   accessibilityLabel,
   testID,
+  style,
 }: TextProps) {
   const { theme, script } = useUi();
   return (
@@ -97,6 +99,7 @@ export function Text({
         align ? { textAlign: align } : null,
         flex ? { flex: 1 } : null,
         strikethrough ? { textDecorationLine: 'line-through' } : null,
+        style,
       ]}
     >
       {children}

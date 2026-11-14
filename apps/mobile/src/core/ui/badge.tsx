@@ -11,7 +11,13 @@ import { Text, type TextTone } from './text';
 import { useUi } from './use-ui';
 
 export type BadgeTone =
-  'paid' | 'partlyPaid' | 'due' | 'cancelled' | 'info' | 'warning' | 'neutral';
+  | 'paid'
+  | 'partlyPaid'
+  | 'due'
+  | 'cancelled'
+  | 'info'
+  | 'warning'
+  | 'neutral';
 
 interface BadgeLook {
   icon: IconName;
@@ -42,14 +48,9 @@ function badgeLook(theme: Theme, tone: BadgeTone): BadgeLook {
 export interface BadgeProps {
   tone: BadgeTone;
   label: string;
-  /** Hide the icon when the badge is a plain value ("Off") rather than a status. */
   showIcon?: boolean;
 }
 
-/**
- * Short status label (Paid / Partly paid / Due / Cancelled, …). Each tone has its own icon and
- * always shows text, so status is never conveyed by color alone (AGENTS.md §7.2 rule 3).
- */
 export function Badge({ tone, label, showIcon = true }: BadgeProps) {
   const { theme } = useUi();
   const look = badgeLook(theme, tone);
@@ -59,31 +60,70 @@ export function Badge({ tone, label, showIcon = true }: BadgeProps) {
         flexDirection: 'row',
         alignItems: 'center',
         alignSelf: 'flex-start',
-        gap: theme.spacing.xs,
-        paddingHorizontal: theme.spacing.md,
-        paddingVertical: theme.spacing.xs,
+        gap: 4,
+        paddingHorizontal: theme.spacing.sm,
+        paddingVertical: 2,
         borderRadius: theme.radius.full,
         backgroundColor: look.background,
       }}
     >
       {showIcon ? <Icon name={look.icon} size="sm" tone={look.tone} /> : null}
-      <Text variant="label" tone={look.tone}>
+      <Text variant="captionStrong" tone={look.tone}>
         {label}
       </Text>
     </View>
   );
 }
 
+export type BannerTone = 'info' | 'warning' | 'danger';
+
+export interface BannerProps {
+  tone?: BannerTone;
+  icon?: IconName;
+  title: string;
+  message?: string;
+  action?: { label: string; onPress: () => void };
+}
+
+export function Banner({ tone = 'info', icon, title, message, action }: BannerProps) {
+  const { theme } = useUi();
+  const { status } = theme.colors;
+  const bg = tone === 'danger' ? status.dangerBg : tone === 'warning' ? status.warningBg : status.infoBg;
+  const iconTone: TextTone = tone === 'danger' ? 'danger' : tone === 'warning' ? 'warning' : 'info';
+  const defaultIcon = tone === 'danger' ? 'error' : tone === 'warning' ? 'alert' : 'info';
+
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: theme.spacing.md,
+        padding: theme.spacing.md,
+        borderRadius: theme.radius.lg,
+        backgroundColor: bg,
+      }}
+    >
+      <Icon name={icon ?? defaultIcon} tone={iconTone} size="md" />
+      <View style={{ flex: 1, gap: 2 }}>
+        <Text variant="bodyStrong">{title}</Text>
+        {message ? (
+          <Text variant="caption" tone="secondary">
+            {message}
+          </Text>
+        ) : null}
+      </View>
+      {action ? (
+        <Button label={action.label} onPress={action.onPress} variant="ghost" size="md" fullWidth={false} />
+      ) : null}
+    </View>
+  );
+}
+
 export interface ConfidenceHighlightProps {
-  /** Parser confidence for the wrapped field, from 0 to 1. */
   confidence: number;
   children: ReactNode;
 }
 
-/**
- * Marks a voice-draft field the parser was unsure about (confidence below 0.75) with a tinted
- * frame, a warning icon and a "please check" message. Confident fields render unchanged.
- */
 export function ConfidenceHighlight({ confidence, children }: ConfidenceHighlightProps) {
   const { theme } = useUi();
   const { t } = useTranslation();
@@ -101,65 +141,13 @@ export function ConfidenceHighlight({ confidence, children }: ConfidenceHighligh
         backgroundColor: theme.colors.confidence.lowBg,
       }}
     >
-      {children}
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}>
         <Icon name="alert" size="sm" tone="warning" />
         <Text variant="label" tone="warning">
           {t('ui.checkThis')}
         </Text>
       </View>
-    </View>
-  );
-}
-
-export type BannerTone = 'info' | 'warning' | 'danger' | 'success';
-
-const BANNER_ICON: Record<BannerTone, IconName> = {
-  info: 'info',
-  warning: 'alert',
-  danger: 'error',
-  success: 'checkCircle',
-};
-
-export interface BannerProps {
-  tone: BannerTone;
-  title: string;
-  message?: string;
-  /** Overrides the tone's default icon, e.g. `offline`. */
-  icon?: IconName;
-  action?: { label: string; onPress: () => void };
-}
-
-/** Persistent message at the top of a screen: offline notice, backup reminder, plan limit. */
-export function Banner({ tone, title, message, icon, action }: BannerProps) {
-  const { theme } = useUi();
-  const background = theme.colors.status[`${tone}Bg`];
-  return (
-    <View
-      accessibilityRole={tone === 'danger' || tone === 'warning' ? 'alert' : 'summary'}
-      style={{
-        flexDirection: 'row',
-        gap: theme.spacing.md,
-        padding: theme.spacing.lg,
-        borderRadius: theme.radius.xl,
-        borderCurve: 'continuous',
-        backgroundColor: background,
-      }}
-    >
-      <Icon name={icon ?? BANNER_ICON[tone]} tone={tone} />
-      <View style={{ flex: 1, gap: theme.spacing.xs }}>
-        <Text variant="bodyStrong">{title}</Text>
-        {message ? <Text>{message}</Text> : null}
-        {action ? (
-          <Button
-            label={action.label}
-            onPress={action.onPress}
-            variant="ghost"
-            size="md"
-            fullWidth={false}
-          />
-        ) : null}
-      </View>
+      {children}
     </View>
   );
 }

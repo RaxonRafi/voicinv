@@ -1,7 +1,9 @@
 import { type ReactNode } from 'react';
+import { View } from 'react-native';
 
 import { useTranslation } from '@/core/i18n';
-import { Box, Button, Card, Covered, Icon, Screen, Text } from '@/core/ui';
+import { useUi } from '@/core/ui/use-ui';
+import { Button, Covered, Icon, Screen, Text } from '@/core/ui';
 
 import { useBiometricLock } from '../hooks/use-biometric-lock';
 
@@ -11,6 +13,7 @@ import { useBiometricLock } from '../hooks/use-biometric-lock';
  */
 export function AppLockOverlay({ children }: { children: ReactNode }) {
   const { t } = useTranslation();
+  const { theme } = useUi();
   const { ready, isLocked, unlock } = useBiometricLock(
     t('security.unlockPrompt'),
     t('security.usePin'),
@@ -23,26 +26,55 @@ export function AppLockOverlay({ children }: { children: ReactNode }) {
       cover={
         // Before the setting is read the cover stays blank: nothing to unlock yet.
         ready ? (
-          <Screen>
-            <Box flex align="center" justify="center" gap="lg" padding="xl">
-              <Card elevation="raised" padding="xl" gap="md">
-                <Box align="center" gap="md">
-                  <Icon name="lock" size="xl" tone="primary" />
-                  <Text variant="title" align="center">
-                    {t('common.appName')}
-                  </Text>
-                  <Text tone="secondary" align="center">
+          <Screen safeTop padded={false}>
+            <View
+              style={{
+                flex: 1,
+                paddingHorizontal: theme.spacing['2xl'],
+                paddingTop: theme.spacing['4xl'],
+                paddingBottom: theme.spacing['2xl'],
+                justifyContent: 'space-between',
+              }}
+            >
+              <View style={{ gap: theme.spacing.xl }}>
+                {/* Brand lock icon tile with glowing pill */}
+                <View
+                  style={{
+                    width: 64,
+                    height: 64,
+                    borderRadius: theme.radius['2xl'],
+                    backgroundColor: theme.colors.action.primary,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 8px 24px rgba(74, 222, 128, 0.45)',
+                  }}
+                >
+                  <Icon name="lock" size="lg" tone="onAction" />
+                </View>
+
+                <View style={{ gap: theme.spacing.md }}>
+                  <Text variant="hero">{t('common.appName')}</Text>
+                  <Text variant="body" tone="secondary">
                     {t('security.authRequired')}
                   </Text>
-                  <Button
-                    label={t('security.unlockButton')}
-                    icon="lock"
-                    onPress={() => void unlock()}
-                    testID="app-lock-unlock-button"
-                  />
-                </Box>
-              </Card>
-            </Box>
+                </View>
+              </View>
+
+              <View style={{ gap: theme.spacing.lg, paddingBottom: theme.spacing.lg }}>
+                <Button
+                  label={t('security.unlockButton')}
+                  icon="fingerprint"
+                  onPress={() => void unlock()}
+                  testID="app-lock-unlock-button"
+                />
+                <Button
+                  variant="ghost"
+                  label={t('security.usePin')}
+                  onPress={() => void unlock()}
+                  testID="app-lock-pin-button"
+                />
+              </View>
+            </View>
           </Screen>
         ) : null
       }

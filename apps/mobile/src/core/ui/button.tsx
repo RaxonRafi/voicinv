@@ -44,7 +44,7 @@ function lookOf(theme: Theme, variant: ButtonVariant, disabled: boolean): Look {
       };
     case 'secondary':
       return {
-        background: colors.bg.sunken,
+        background: theme.scheme === 'light' ? '#EBF5F0' : colors.bg.sunken,
         pressed: colors.border.default,
         gradient: undefined,
         tone: 'primary',

@@ -11,6 +11,7 @@ import {
   Dialog,
   Divider,
   Icon,
+  IconTile,
   ListItem,
   SectionHeader,
   TextField,
@@ -114,37 +115,24 @@ export function BackupSettingsSection() {
   };
 
   return (
-    <Box gap="sm">
-      <SectionHeader title={t('backup.title')} />
+    <>
       <Card padding="none" gap="none">
         <ListItem
-          title={t('backup.exportTitle')}
-          subtitle={t('backup.exportHint')}
-          leading={<Icon name="download" tone="secondary" />}
-          trailing={
-            <Button
-              variant="secondary"
-              label={t('backup.exportButton')}
-              onPress={() => setStep({ kind: 'export' })}
-              disabled={busy}
-              testID="backup-export-button"
-            />
-          }
+          title="Create backup file"
+          subtitle="Password-protected copy of all records"
+          leading={<IconTile icon="download" />}
+          showChevron
+          onPress={() => setStep({ kind: 'export' })}
+          testID="backup-export-button"
         />
         <Divider />
         <ListItem
-          title={t('backup.restoreTitle')}
-          subtitle={t('backup.restoreHint')}
-          leading={<Icon name="upload" tone="secondary" />}
-          trailing={
-            <Button
-              variant="ghost"
-              label={t('backup.restoreButton')}
-              onPress={() => void handlePickFile()}
-              disabled={busy}
-              testID="backup-restore-button"
-            />
-          }
+          title="Restore from backup"
+          subtitle="Choose a VoiceLedger backup file"
+          leading={<IconTile icon="upload" />}
+          showChevron
+          onPress={() => void handlePickFile()}
+          testID="backup-restore-button"
         />
       </Card>
 
@@ -207,6 +195,6 @@ export function BackupSettingsSection() {
           testID="backup-restore-password"
         />
       </Dialog>
-    </Box>
+    </>
   );
 }

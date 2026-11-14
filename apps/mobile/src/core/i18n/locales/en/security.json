@@ -1,15 +1,15 @@
 {
   "title": "App Security",
-  "lockTitle": "Biometric / Device Lock",
-  "lockHint": "Require fingerprint, face, or device PIN to open VoiceLedger",
+  "lockTitle": "App lock",
+  "lockHint": "Fingerprint or phone PIN on open",
   "lockEnabled": "App lock is active",
   "lockDisabled": "App lock is disabled",
   "unlockPrompt": "Unlock VoiceLedger",
-  "unlockButton": "Unlock Now",
+  "unlockButton": "Unlock with fingerprint",
   "authFailed": "Authentication failed",
-  "authRequired": "Authentication is required to access your records",
+  "authRequired": "Your records are locked. Unlock to see sales, dues and customers.",
   "notAvailable": "Biometric or PIN lock is not available on this device",
   "enable": "Enable",
   "disable": "Disable",
-  "usePin": "Use device PIN"
+  "usePin": "Use phone PIN instead"
 }

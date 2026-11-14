@@ -1,5 +1,7 @@
 import { useTranslation } from '@/core/i18n';
+import { useUi } from '@/core/ui/use-ui';
 import { Banner, Box, Button, Card, Divider, Icon, MicButton, Row, Text } from '@/core/ui';
+import { View } from 'react-native';
 
 import { useVoiceBilling, type UseVoiceBillingOptions } from '../hooks/use-voice-billing';
 
@@ -9,20 +11,29 @@ export interface VoiceSectionProps extends UseVoiceBillingOptions {
 
 export function VoiceSection({ speechEngine, ttsEngine, testID }: VoiceSectionProps) {
   const { t } = useTranslation();
+  const { theme } = useUi();
   const { state, onStart, onStop, dismissAnswer, repeatAnswer, languageMissing, installLanguage } =
     useVoiceBilling({ speechEngine, ttsEngine });
 
   return (
     <Card testID={testID ?? 'voice-section'} padding="lg" gap="md">
-      <Row justify="between" align="center">
-        <Box flex gap="xs">
-          <Text variant="title">{t('voice.title')}</Text>
-          <Text variant="caption" tone="secondary">
-            {t('voice.micHint')}
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: theme.spacing.md }}>
+        <View style={{ flex: 1, gap: 4 }}>
+          <Text variant="heading">{t('home.holdToTalk')}</Text>
+          <Text variant="label" tone="secondary">
+            {t('home.holdToTalkHint')}
           </Text>
-        </Box>
-        <Icon name="mic" tone="primary" />
-      </Row>
+        </View>
+        <MicButton
+          listening={state.status === 'listening'}
+          onStart={() => void onStart()}
+          onStop={() => void onStop()}
+          disabled={state.status === 'processing'}
+          size="md"
+          showLabel={false}
+          testID="voice-mic-button"
+        />
+      </View>
 
       {languageMissing ? (
         <Banner
@@ -33,27 +44,17 @@ export function VoiceSection({ speechEngine, ttsEngine, testID }: VoiceSectionPr
         />
       ) : null}
 
-      <Box align="center" gap="md">
-        <MicButton
-          listening={state.status === 'listening'}
-          onStart={() => void onStart()}
-          onStop={() => void onStop()}
-          disabled={state.status === 'processing'}
-          testID="voice-mic-button"
-        />
+      {state.status === 'listening' && state.transcript ? (
+        <Text variant="body" tone="secondary" align="center">
+          "{state.transcript}"
+        </Text>
+      ) : null}
 
-        {state.status === 'listening' && state.transcript ? (
-          <Text variant="body" tone="secondary" align="center">
-            "{state.transcript}"
-          </Text>
-        ) : null}
-
-        {state.status === 'processing' ? (
-          <Text variant="body" tone="secondary" align="center">
-            {t('voice.micProcessing')}
-          </Text>
-        ) : null}
-      </Box>
+      {state.status === 'processing' ? (
+        <Text variant="body" tone="secondary" align="center">
+          {t('voice.micProcessing')}
+        </Text>
+      ) : null}
 
       {state.status === 'answered' && state.lastSpokenAnswer ? (
         <Card elevation="raised" padding="md" gap="sm" testID="voice-query-answer">

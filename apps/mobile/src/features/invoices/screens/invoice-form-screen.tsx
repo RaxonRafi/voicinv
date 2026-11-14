@@ -1,17 +1,21 @@
 import { router } from 'expo-router';
 import { useReducer, useState } from 'react';
+import { View } from 'react-native';
 
 import { useLiveQuery } from '@/core/db';
 import { isLanguage, useTranslation } from '@/core/i18n';
 import { type ShopContext, useShopContext } from '@/core/services';
+import { useUi } from '@/core/ui/use-ui';
 import {
   Box,
   Button,
   EmptyState,
+  IconButton,
   Screen,
   ScreenHeader,
   showToast,
   Spinner,
+  Text,
   TextField,
 } from '@/core/ui';
 import { isDomainError } from '@/core/utils';
@@ -36,24 +40,22 @@ import { createInvoice, editInvoice, getInvoiceDetails } from '../usecases';
 interface InvoiceFormProps {
   app: ShopContext;
   initialDraft: InvoiceDraft;
-  /** Set when editing a saved invoice. */
   invoiceId?: string;
   guard?: InvoiceGuard;
 }
 
 function InvoiceForm({ app, initialDraft, invoiceId, guard }: InvoiceFormProps) {
   const { t } = useTranslation();
+  const { theme } = useUi();
   const [draft, dispatch] = useReducer(draftReducer, initialDraft);
   const [reason, setReason] = useState('');
-  /** A spoken invoice (not an edit), confirmed on a summary when it can be saved as heard. */
   const fromVoice = invoiceId === undefined && initialDraft.sourceText !== null;
   const [view, setView] = useState<'summary' | 'edit'>(() =>
     fromVoice && draftProblems(initialDraft).length === 0 ? 'summary' : 'edit',
   );
-  // A spoken invoice that cannot be saved as heard opens in the editor with its problems
-  // already shown, so the user sees at once what to fill in.
   const [attempted, setAttempted] = useState(fromVoice);
   const [saving, setSaving] = useState(false);
+  const isDark = theme.scheme === 'dark';
 
   const problems: DraftProblem[] = attempted ? draftProblems(draft) : [];
   const reasonMissing = attempted && invoiceId !== undefined && reason.trim() === '';
@@ -84,7 +86,7 @@ function InvoiceForm({ app, initialDraft, invoiceId, guard }: InvoiceFormProps) 
               );
             });
           } catch {
-            // Non-fatal correction recording failure
+            // Non-fatal
           }
         }
         showToast(t('invoices.saved', { number: invoice.invoiceNumber }));
@@ -102,7 +104,8 @@ function InvoiceForm({ app, initialDraft, invoiceId, guard }: InvoiceFormProps) 
     }
   };
 
-  const totals = view === 'summary' ? draftTotals(draft) : null;
+  const totals = draftTotals(draft);
+
   if (view === 'summary' && totals) {
     return (
       <Screen
@@ -139,15 +142,49 @@ function InvoiceForm({ app, initialDraft, invoiceId, guard }: InvoiceFormProps) 
     <Screen
       testID="invoice-form-screen"
       footer={
-        <Button
-          label={t('invoices.save')}
-          onPress={() => void save()}
-          loading={saving}
-          testID="invoice-save"
-        />
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: theme.spacing.lg }}>
+          <View style={{ gap: 2 }}>
+            <Text variant="caption" tone="secondary">
+              TOTAL
+            </Text>
+            <Text variant="title">
+              {totals ? app.format.money(totals.total) : '৳0'}
+            </Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Button
+              label="Save invoice"
+              icon="check"
+              onPress={() => void save()}
+              loading={saving}
+              testID="invoice-save"
+            />
+          </View>
+        </View>
       }
     >
-      <ScreenHeader title={invoiceId ? t('invoices.edit') : t('invoices.new')} />
+      <ScreenHeader
+        title={invoiceId ? t('invoices.edit') : 'New invoice'}
+        right={
+          <View
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: theme.radius.full,
+              backgroundColor: isDark ? 'rgba(74, 222, 128, 0.15)' : '#DCFCE7',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <IconButton
+              icon="mic"
+              accessibilityLabel="Voice input"
+              onPress={() => {}}
+              tone={isDark ? 'primary' : 'primary'}
+            />
+          </View>
+        }
+      />
       <InvoiceEditor app={app} draft={draft} dispatch={dispatch} problems={problems} />
       {invoiceId !== undefined ? (
         <TextField
@@ -164,17 +201,12 @@ function InvoiceForm({ app, initialDraft, invoiceId, guard }: InvoiceFormProps) 
 }
 
 export interface InvoiceFormScreenProps {
-  /** Edit this invoice instead of creating a new one. */
   invoiceId?: string;
-  /** Start a new invoice for this customer. */
   customerId?: string;
-  /** Start from a prepared draft (voice). Takes precedence over `customerId`. */
   initialDraft?: InvoiceDraft;
-  /** Checked inside the saving transaction, e.g. the free plan's monthly limit. */
   guard?: InvoiceGuard;
 }
 
-/** Manual invoice entry, editing a saved invoice, or confirming a prepared draft. */
 export function InvoiceFormScreen({
   invoiceId,
   customerId,
@@ -185,7 +217,6 @@ export function InvoiceFormScreen({
   const app = useShopContext();
   const loaded = useLiveQuery(
     `invoice-form:${invoiceId ?? ''}:${customerId ?? ''}`,
-    // Loaded once: later changes must not reset what the user is typing.
     [],
     async (orm): Promise<InvoiceDraft | null> => {
       if (invoiceId) {
@@ -200,7 +231,7 @@ export function InvoiceFormScreen({
         : draft;
     },
   );
-  const title = invoiceId ? t('invoices.edit') : t('invoices.new');
+  const title = invoiceId ? t('invoices.edit') : 'New invoice';
 
   if (!app || loaded.status === 'loading') {
     return (
