@@ -49,7 +49,7 @@ export function Icon({ name, size = 'lg', className }: IconProps) {
 /** Icon on a tinted tile, used to lead feature cards. */
 export function IconTile({ name }: { name: IconName }) {
   return (
-    <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-md bg-status-success-bg text-status-success">
+    <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl bg-status-success-bg text-status-success">
       <Icon name={name} />
     </span>
   );
