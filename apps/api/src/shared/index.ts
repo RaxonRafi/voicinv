@@ -3,12 +3,7 @@ export * from './backup/format.js';
 export * from './constants.js';
 export * from './format/date-format.js';
 export * from './format/number-format.js';
-export {
-  DIGIT_SETS,
-  type NumberingSystem,
-  toAsciiDigits,
-  toLocalDigits,
-} from './format/numerals.js';
+export * from './format/numerals.js';
 export {
   createUuidV7Generator,
   isUuidV7,

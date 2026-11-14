@@ -34,11 +34,17 @@ export interface BackupPayload {
   tables: BackupTableData;
 }
 
-export interface EncryptedBackupEnvelope {
-  magic: 'VOICELEDGER_BACKUP';
-  version: 1;
-  createdAt: number;
-  shopId: string;
-  checksum: string;
-  data: string; // Base64 or serialized JSON payload
+export type BackupErrorCode =
+  /** The file is not a VoiceLedger backup, or its decrypted content is not valid. */
+  | 'NOT_A_BACKUP'
+  /** The password is wrong, or the file was altered after it was made. */
+  | 'WRONG_PASSWORD'
+  | 'PASSWORD_TOO_SHORT';
+
+/** A backup problem the user can act on; `code` selects the message shown. */
+export class BackupError extends Error {
+  constructor(readonly code: BackupErrorCode) {
+    super(`Backup error: ${code}`);
+    this.name = 'BackupError';
+  }
 }

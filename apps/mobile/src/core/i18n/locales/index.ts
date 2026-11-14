@@ -1,3 +1,4 @@
+import bnAccount from './bn/account.json';
 import bnBackup from './bn/backup.json';
 import bnCore from './bn/core.json';
 import bnCustomers from './bn/customers.json';
@@ -11,6 +12,7 @@ import bnReports from './bn/reports.json';
 import bnSecurity from './bn/security.json';
 import bnSettings from './bn/settings.json';
 import bnVoice from './bn/voice.json';
+import enAccount from './en/account.json';
 import enBackup from './en/backup.json';
 import enCore from './en/core.json';
 import enCustomers from './en/customers.json';
@@ -43,6 +45,7 @@ export const en = {
   backup: enBackup,
   security: enSecurity,
   printing: enPrinting,
+  account: enAccount,
 };
 
 export const bn: typeof en = {
@@ -59,4 +62,5 @@ export const bn: typeof en = {
   backup: bnBackup,
   security: bnSecurity,
   printing: bnPrinting,
+  account: bnAccount,
 };

@@ -1,71 +1,80 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
-import { type AppLifecycleState, getCurrentAppState, onAppStateChange } from '@/core/platform';
+import { getCurrentAppState, onAppStateChange } from '@/core/platform';
 import { useServices } from '@/core/services';
 
-import { authenticateWithBiometrics, getSecurityLockEnabled } from '../service';
+import {
+  applyLockSetting,
+  type AuthPrompt,
+  handleAppStateChange,
+  unlock as unlockApp,
+  useLockStore,
+} from '../lock-store';
+import { getSecurityLockEnabled } from '../service';
 
-export function useBiometricLock(promptMessage: string) {
+/**
+ * App lock for the root layout. Reads the setting once, locks when the app goes to the
+ * background, and shows the system prompt by itself once per lock (when the app is in the
+ * foreground). If the user dismisses that prompt, the lock screen's button tries again.
+ */
+export function useBiometricLock(prompt: string, fallbackLabel: string) {
   const services = useServices();
-  const [isLocked, setIsLocked] = useState(false);
-  const [isLockEnabled, setIsLockEnabled] = useState(false);
-  const appState = useRef<AppLifecycleState>(getCurrentAppState());
-
-  const checkLockStatus = useCallback(async () => {
-    try {
-      const enabled = await getSecurityLockEnabled(services.db);
-      setIsLockEnabled(enabled);
-      if (enabled) {
-        setIsLocked(true);
-      }
-    } catch {
-      // Ignored if DB is not ready yet
-    }
-  }, [services.db]);
+  const enabled = useLockStore((state) => state.enabled);
+  const locked = useLockStore((state) => state.locked);
+  const authPrompt = useMemo<AuthPrompt>(
+    () => ({ prompt, fallbackLabel }),
+    [prompt, fallbackLabel],
+  );
+  /** The current lock already showed its automatic prompt. */
+  const prompted = useRef(false);
 
   useEffect(() => {
     let mounted = true;
     void getSecurityLockEnabled(services.db)
-      .then((enabled) => {
-        if (!mounted) return;
-        setIsLockEnabled(enabled);
-        if (enabled) {
-          setIsLocked(true);
-        }
+      .then((value) => {
+        if (mounted) applyLockSetting(value);
       })
+      // If the setting cannot be read, the app opens without the lock rather than shutting
+      // the user out of their records with no way to reach the setting.
       .catch(() => {
-        // Ignored if DB is not ready yet
+        if (mounted) applyLockSetting(false);
       });
     return () => {
       mounted = false;
     };
   }, [services.db]);
 
-  const unlock = useCallback(async (): Promise<boolean> => {
-    const success = await authenticateWithBiometrics(promptMessage);
-    if (success) {
-      setIsLocked(false);
-    }
-    return success;
-  }, [promptMessage]);
+  const unlock = useCallback(() => unlockApp(authPrompt), [authPrompt]);
+
+  const promptOnce = useCallback(() => {
+    if (prompted.current) return;
+    prompted.current = true;
+    void unlock();
+  }, [unlock]);
 
   useEffect(() => {
-    return onAppStateChange((nextState) => {
-      if (
-        (appState.current === 'inactive' || appState.current === 'background') &&
-        nextState === 'active' &&
-        isLockEnabled
-      ) {
-        setIsLocked(true);
-      }
-      appState.current = nextState;
-    });
-  }, [isLockEnabled]);
+    if (!locked) {
+      prompted.current = false;
+      return;
+    }
+    if (enabled && getCurrentAppState() === 'active') promptOnce();
+  }, [enabled, locked, promptOnce]);
+
+  useEffect(
+    () =>
+      onAppStateChange((next) => {
+        handleAppStateChange(next);
+        const state = useLockStore.getState();
+        if (next === 'active' && state.enabled && state.locked) promptOnce();
+      }),
+    [promptOnce],
+  );
 
   return {
-    isLocked,
-    isLockEnabled,
+    /** The setting has been read; before that the app stays covered. */
+    ready: enabled !== null,
+    isLocked: enabled !== false && locked,
+    isLockEnabled: enabled === true,
     unlock,
-    refreshStatus: checkLockStatus,
   };
 }

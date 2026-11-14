@@ -8,7 +8,7 @@ import { parsedSaleToDraft } from '@/parser';
 
 import { PlatformSpeechEngine } from '../speech-engine/platform-engine';
 import { PlatformTTSEngine } from '../tts/platform-tts';
-import { type SpeechEngine, type TTSEngine, type VoiceBillingState } from '../types';
+import { type SpeechEngine, SpeechError, type TTSEngine, type VoiceBillingState } from '../types';
 import { answerVoiceQuery, parseVoiceTranscript } from '../usecases';
 import { useVoiceDraftStore } from './use-voice-draft';
 
@@ -36,32 +36,62 @@ export function useVoiceBilling(options: UseVoiceBillingOptions = {}) {
   });
 
   const transcriptRef = useRef('');
+  /** The start of the current press; release waits for it, so a quick tap never races it. */
+  const startRef = useRef<Promise<boolean> | null>(null);
+  /** The offline speech pack for the interface language is missing (offer to download it). */
+  const [languageMissing, setLanguageMissing] = useState(false);
+
+  /** Tells the user what went wrong, in words they can act on. */
+  const reportError = useCallback(
+    (error: unknown) => {
+      const code = error instanceof SpeechError ? error.code : 'UNKNOWN';
+      setState({ status: code === 'PERMISSION_REQUESTED' ? 'idle' : 'error', transcript: '' });
+      if (code === 'ABORTED') return;
+      if (code === 'LANGUAGE_NOT_INSTALLED') setLanguageMissing(true);
+      const tone = code === 'PERMISSION_REQUESTED' ? 'info' : 'danger';
+      showToast(t(`voice.errors.${code}`), tone);
+    },
+    [t],
+  );
 
   const onStart = useCallback(async () => {
     transcriptRef.current = '';
     setState({ status: 'listening', transcript: '', error: undefined });
 
-    try {
-      if (speechEngine.start) {
-        await speechEngine.start(language, {
+    const started = (async () => {
+      try {
+        await speechEngine.start?.(language, {
           onPartial: (text) => {
             transcriptRef.current = text;
             setState((prev) => ({ ...prev, transcript: text }));
           },
-          onError: (err) => {
-            setState({ status: 'error', transcript: '', error: err.message });
-            showToast(t('voice.permissionDenied'), 'danger');
-          },
+          onError: reportError,
         });
+        setLanguageMissing(false);
+        return true;
+      } catch (error) {
+        reportError(error);
+        return false;
       }
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      setState({ status: 'error', transcript: '', error: message });
-      showToast(t('voice.permissionDenied'), 'danger');
-    }
+    })();
+    startRef.current = started;
+    await started;
+  }, [language, reportError, speechEngine]);
+
+  const installLanguage = useCallback(async () => {
+    const requested = (await speechEngine.installLanguage?.(language)) ?? false;
+    showToast(
+      t(requested ? 'voice.languagePackRequested' : 'voice.languagePackUnavailable'),
+      requested ? 'info' : 'danger',
+    );
+    if (requested) setLanguageMissing(false);
   }, [language, speechEngine, t]);
 
   const onStop = useCallback(async () => {
+    // Released before listening began (or it could not begin): nothing to process.
+    const started = startRef.current ? await startRef.current : false;
+    startRef.current = null;
+    if (!started) return;
     setState((prev) => ({ ...prev, status: 'processing' }));
 
     try {
@@ -153,5 +183,7 @@ export function useVoiceBilling(options: UseVoiceBillingOptions = {}) {
     onStop,
     dismissAnswer,
     repeatAnswer,
+    languageMissing,
+    installLanguage,
   };
 }

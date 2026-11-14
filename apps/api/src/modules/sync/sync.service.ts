@@ -57,7 +57,7 @@ function rejection(problem: PushRejection): AppException {
         HttpStatus.BAD_REQUEST,
         ErrorCode.APPEND_ONLY_VIOLATION,
         'Financial records can only be added, never changed or deleted.',
-        { table: problem.table },
+        problem.id ? { table: problem.table, id: problem.id } : { table: problem.table },
       );
     case 'SHOP_DELETE':
       return new AppException(
@@ -116,6 +116,8 @@ export class SyncService {
           seq,
           now: now.getTime(),
         });
+        // Thrown inside the transaction, so nothing of this push is stored.
+        if (plan.rejection) throw rejection(plan.rejection);
         seq = plan.seq;
         writes.push(...plan.writes);
         if (plan.conflicts.updated.length > 0 || plan.conflicts.deleted.length > 0) {

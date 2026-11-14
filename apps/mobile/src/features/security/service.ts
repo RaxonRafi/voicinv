@@ -15,11 +15,15 @@ export async function isBiometricSupported(): Promise<boolean> {
   }
 }
 
-export async function authenticateWithBiometrics(prompt: string): Promise<boolean> {
+/** Shows the system biometric / device PIN prompt. Both labels must already be translated. */
+export async function authenticateWithBiometrics(
+  prompt: string,
+  fallbackLabel?: string,
+): Promise<boolean> {
   try {
     const result = await LocalAuthentication.authenticateAsync({
       promptMessage: prompt,
-      fallbackLabel: 'Use Device PIN',
+      ...(fallbackLabel ? { fallbackLabel } : {}),
       disableDeviceFallback: false,
     });
     return result.success;

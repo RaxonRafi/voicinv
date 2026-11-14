@@ -10,5 +10,6 @@
   "authRequired": "Authentication is required to access your records",
   "notAvailable": "Biometric or PIN lock is not available on this device",
   "enable": "Enable",
-  "disable": "Disable"
+  "disable": "Disable",
+  "usePin": "Use device PIN"
 }

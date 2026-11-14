@@ -6,4 +6,5 @@ export * from './string-similarity';
 export * from './entity-matcher';
 export * from './intent-detector';
 export * from './draft-adapter';
+export * from './money';
 export * from './parser';

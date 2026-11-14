@@ -36,7 +36,7 @@ describe('with-short-native-build-dir', () => {
     const result = addShortNativeBuildDir(BUILD_GRADLE);
 
     expect(result).toContain("if (!project.hasProperty('expo.android.cmakeObjectPathMax'))");
-    expect(result).toContain("project.ext.set('expo.android.cmakeObjectPathMax', '240')");
+    expect(result).toContain("project.ext.set('expo.android.cmakeObjectPathMax', '250')");
     // The Expo root plugin reads the property when it is applied.
     expect(result.indexOf('cmakeObjectPathMax')).toBeLessThan(
       result.indexOf('apply plugin: "expo-root-project"'),

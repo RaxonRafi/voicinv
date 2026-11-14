@@ -39,6 +39,10 @@ jest.mock('@/core/platform', () => ({
   htmlToPdf: jest.fn(async (_html, fileName) => `file:///cache/${fileName}.pdf`),
   printHtml: jest.fn(async () => undefined),
   writeCacheFile: jest.fn(async (fileName) => `file:///cache/${fileName}`),
+  writeCacheBytes: jest.fn(async (fileName) => `file:///cache/${fileName}`),
+  readFileBytes: jest.fn(async () => new Uint8Array()),
+  downloadBytes: jest.fn(async () => new Uint8Array()),
+  devicePlatform: jest.fn(() => 'android'),
   getCurrentAppState: jest.fn(() => 'active'),
   onAppStateChange: jest.fn(() => () => undefined),
 }));
@@ -62,6 +66,11 @@ jest.mock('expo-speech-recognition', () => ({
     supportsOnDeviceRecognition: jest.fn(() => true),
     requestPermissionsAsync: jest.fn(async () => ({ granted: true })),
     getPermissionsAsync: jest.fn(async () => ({ granted: true })),
+    isRecognitionAvailable: jest.fn(() => true),
+    androidTriggerOfflineModelDownload: jest.fn(async () => ({
+      status: 'opened_dialog',
+      message: '',
+    })),
     start: jest.fn(),
     stop: jest.fn(),
     abort: jest.fn(),
@@ -75,14 +84,61 @@ jest.mock('expo-local-authentication', () => ({
   authenticateAsync: jest.fn(async () => ({ success: true })),
 }));
 
+// expo-crypto's AES-GCM is native code; Node's implementation of the same cipher stands in
+// for it, with the same call shapes, so encrypted backups are produced and checked for real.
 jest.mock('expo-crypto', () => {
   const crypto = require('crypto');
+  const TAG = 16;
+
+  const AESEncryptionKey = {
+    import: async (bytes) => {
+      if (bytes.length !== 32) throw new Error('fake AES: only 256-bit keys are used');
+      return { key: Buffer.from(bytes) };
+    },
+  };
+
+  class AESSealedData {
+    constructor(iv, ciphertextWithTag) {
+      this.ivBytes = Buffer.from(iv);
+      this.data = Buffer.from(ciphertextWithTag);
+    }
+    static fromParts(iv, ciphertextWithTag) {
+      return new AESSealedData(iv, ciphertextWithTag);
+    }
+    async ciphertext() {
+      return new Uint8Array(this.data);
+    }
+  }
+
   return {
     CryptoDigestAlgorithm: { SHA256: 'SHA-256' },
     digestStringAsync: jest.fn(async (_algo, str) =>
       crypto.createHash('sha256').update(str).digest('hex'),
     ),
     randomUUID: jest.fn(() => crypto.randomUUID()),
+    getRandomBytes: jest.fn((count) => new Uint8Array(crypto.randomBytes(count))),
+    digest: jest.fn(async (_algo, data) => {
+      const hash = crypto.createHash('sha256').update(Buffer.from(data)).digest();
+      return hash.buffer.slice(hash.byteOffset, hash.byteOffset + hash.byteLength);
+    }),
+    AESEncryptionKey,
+    AESSealedData,
+    aesEncryptAsync: jest.fn(async (plaintext, key, options) => {
+      const nonce = Buffer.from(options.nonce.bytes);
+      const cipher = crypto.createCipheriv('aes-256-gcm', key.key, nonce, { authTagLength: TAG });
+      cipher.setAAD(Buffer.from(options.additionalData));
+      const body = Buffer.concat([cipher.update(Buffer.from(plaintext)), cipher.final()]);
+      return new AESSealedData(nonce, Buffer.concat([body, cipher.getAuthTag()]));
+    }),
+    aesDecryptAsync: jest.fn(async (sealed, key, options) => {
+      const body = sealed.data.subarray(0, sealed.data.length - TAG);
+      const decipher = crypto.createDecipheriv('aes-256-gcm', key.key, sealed.ivBytes, {
+        authTagLength: TAG,
+      });
+      decipher.setAAD(Buffer.from(options.additionalData));
+      decipher.setAuthTag(sealed.data.subarray(sealed.data.length - TAG));
+      return new Uint8Array(Buffer.concat([decipher.update(body), decipher.final()]));
+    }),
   };
 });
 

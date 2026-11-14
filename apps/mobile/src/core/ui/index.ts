@@ -29,7 +29,17 @@ export {
   type TextFieldProps,
 } from './fields';
 export { Icon, type IconName, type IconProps } from './icon';
-export { Box, type BoxProps, Divider, Row, Screen, type ScreenProps, type Surface } from './layout';
+export {
+  Box,
+  type BoxProps,
+  Covered,
+  type CoveredProps,
+  Divider,
+  Row,
+  Screen,
+  type ScreenProps,
+  type Surface,
+} from './layout';
 export { List, type ListProps, Logo, type LogoProps } from './list';
 export { MicButton, type MicButtonProps } from './mic-button';
 export { BottomSheet, type BottomSheetProps, Dialog, type DialogProps } from './overlays';

@@ -1,5 +1,5 @@
 import { useTranslation } from '@/core/i18n';
-import { Box, Button, Card, Divider, Icon, MicButton, Row, Text } from '@/core/ui';
+import { Banner, Box, Button, Card, Divider, Icon, MicButton, Row, Text } from '@/core/ui';
 
 import { useVoiceBilling, type UseVoiceBillingOptions } from '../hooks/use-voice-billing';
 
@@ -9,10 +9,8 @@ export interface VoiceSectionProps extends UseVoiceBillingOptions {
 
 export function VoiceSection({ speechEngine, ttsEngine, testID }: VoiceSectionProps) {
   const { t } = useTranslation();
-  const { state, onStart, onStop, dismissAnswer, repeatAnswer } = useVoiceBilling({
-    speechEngine,
-    ttsEngine,
-  });
+  const { state, onStart, onStop, dismissAnswer, repeatAnswer, languageMissing, installLanguage } =
+    useVoiceBilling({ speechEngine, ttsEngine });
 
   return (
     <Card testID={testID ?? 'voice-section'} padding="lg" gap="md">
@@ -25,6 +23,15 @@ export function VoiceSection({ speechEngine, ttsEngine, testID }: VoiceSectionPr
         </Box>
         <Icon name="mic" tone="primary" />
       </Row>
+
+      {languageMissing ? (
+        <Banner
+          tone="warning"
+          title={t('voice.languagePackTitle')}
+          message={t('voice.languagePackMessage')}
+          action={{ label: t('voice.languagePackDownload'), onPress: () => void installLanguage() }}
+        />
+      ) : null}
 
       <Box align="center" gap="md">
         <MicButton

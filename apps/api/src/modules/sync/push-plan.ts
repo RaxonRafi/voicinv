@@ -22,8 +22,13 @@ export interface StoredVersion {
 
 export type PushRejection =
   | { reason: 'FOREIGN_SHOP'; table: SyncTableName; id: string }
-  | { reason: 'APPEND_ONLY'; table: SyncTableName }
+  | { reason: 'APPEND_ONLY'; table: SyncTableName; id?: string }
   | { reason: 'SHOP_DELETE' };
+
+/** A cancelled invoice stays cancelled: its REVERSAL ledger entry can never be taken back. */
+function isCancelledInvoice(table: SyncTableName, data: Record<string, unknown>): boolean {
+  return table === 'invoices' && data.status === 'CANCELLED';
+}
 
 function entries(changes: SyncChanges, table: SyncTableName) {
   const entry = changes[table];
@@ -79,6 +84,8 @@ export interface TablePlan {
   conflicts: { updated: RecordData[]; deleted: string[] };
   /** The last sequence number used. */
   seq: number;
+  /** Set when the push must be refused as a whole; nothing in the plan may then be applied. */
+  rejection: PushRejection | null;
 }
 
 export interface PlanInput {
@@ -99,17 +106,25 @@ export interface PlanInput {
  *
  * - A record the server has not seen is stored.
  * - A record that is already stored unchanged is skipped, which makes re-pushing a no-op.
- * - Append-only records are never replaced: the first version to arrive stays.
+ * - Append-only records are never replaced. Re-sending one unchanged is a no-op; sending it
+ *   with different content is an update and rejects the push.
  * - A changed mutable record replaces the stored one (last write wins by receive order). If
  *   the stored version came from another device after this device's last pull, the pushed
  *   version is also reported as a conflict, so the client knows it overwrote an unseen change.
+ * - Exception: a cancelled invoice is never brought back by a stale active copy. The stored
+ *   version wins and is returned as the conflict, so the device adopts it.
  * - A delete sent as a bare ID soft-deletes the stored record.
  */
 export function planTable(input: PlanInput): TablePlan {
   const { table, stored, deviceId, lastPulledCursor, now } = input;
   const { created, updated, deleted } = entries(input.changes, table);
   const appendOnly = isAppendOnlyTable(table);
-  const plan: TablePlan = { writes: [], conflicts: { updated: [], deleted: [] }, seq: input.seq };
+  const plan: TablePlan = {
+    writes: [],
+    conflicts: { updated: [], deleted: [] },
+    seq: input.seq,
+    rejection: null,
+  };
 
   const overwritesUnseenChange = (existing: StoredVersion): boolean =>
     existing.serverSeq > lastPulledCursor && existing.deviceId !== deviceId;
@@ -120,7 +135,18 @@ export function planTable(input: PlanInput): TablePlan {
 
   for (const record of incoming.values()) {
     const existing = stored.get(record.id);
-    if (existing && (appendOnly || sameRecord(existing.data, record))) continue;
+    if (existing && sameRecord(existing.data, record)) continue;
+    if (existing && appendOnly) {
+      return { ...plan, writes: [], rejection: { reason: 'APPEND_ONLY', table, id: record.id } };
+    }
+    if (
+      existing &&
+      isCancelledInvoice(table, existing.data) &&
+      !isCancelledInvoice(table, record)
+    ) {
+      plan.conflicts.updated.push(existing.data as RecordData);
+      continue;
+    }
 
     plan.seq += 1;
     plan.writes.push({

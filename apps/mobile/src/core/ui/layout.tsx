@@ -105,6 +105,48 @@ export function Box({
   );
 }
 
+export interface CoveredProps {
+  /** When true, `cover` hides the content completely. */
+  covered: boolean;
+  cover: ReactNode;
+  children: ReactNode;
+  testID?: string;
+}
+
+/**
+ * Content that can be hidden behind an opaque, full-size layer (the app lock). The content
+ * stays mounted underneath, so navigation state and unsaved input survive, but it is neither
+ * visible nor reachable by screen readers while covered.
+ *
+ * States: uncovered (content only), covered (cover on top, content hidden from accessibility).
+ */
+export function Covered({ covered, cover, children, testID }: CoveredProps) {
+  const { theme } = useUi();
+  return (
+    <View style={{ flex: 1 }}>
+      <View
+        style={{ flex: 1 }}
+        importantForAccessibility={covered ? 'no-hide-descendants' : 'auto'}
+        accessibilityElementsHidden={covered}
+      >
+        {children}
+      </View>
+      {covered ? (
+        <View
+          style={[
+            StyleSheet.absoluteFill,
+            { backgroundColor: theme.colors.bg.canvas, zIndex: theme.zIndex.toast },
+          ]}
+          accessibilityViewIsModal
+          testID={testID}
+        >
+          {cover}
+        </View>
+      ) : null}
+    </View>
+  );
+}
+
 /** Horizontal Box that centers its children vertically and wraps at large text sizes. */
 export function Row({ align = 'center', wrap = true, ...rest }: Omit<BoxProps, 'direction'>) {
   return <Box direction="row" align={align} wrap={wrap} {...rest} />;

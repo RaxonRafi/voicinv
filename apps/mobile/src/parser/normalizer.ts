@@ -55,6 +55,9 @@ export function normalizePunctuation(text: string): string {
       .replace(/।/g, ' ')
       // Standardize hyphens
       .replace(/[–—]/g, '-')
+      // Digit-group commas, in both the international (1,000) and the Bangladeshi lakh
+      // (1,50,000) style, belong to the number; without this "1,000" would read as "1 000".
+      .replace(/([0-9০-৯]),(?=[0-9০-৯])/g, '$1')
       // Punctuation (commas, question marks, exclamation marks) to space
       .replace(/[,!?;:]/g, ' ')
       // Multiple whitespace to single space
